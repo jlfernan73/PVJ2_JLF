@@ -5,12 +5,12 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using static UnityEngine.RuleTile.TilingRuleOutput;
 
-public class Mover : MonoBehaviour
+public class MoverJugador : MonoBehaviour
 {
     // Variables a configurar desde el editor
     [Header("Configuracion")]
-    [SerializeField] float aceleracion = 10f;
-    [SerializeField] float freno = 2f;
+    [SerializeField] float aceleracion = 30f;
+    [SerializeField] float freno = 3f;
     [SerializeField] float maxAngulo = 0.3f;
     [SerializeField] float maxRapidez = 20f;
 
@@ -91,7 +91,7 @@ public class Mover : MonoBehaviour
         {
             if (frenando)
             {
-                miRigidbody2D.drag = 0.1f;
+                miRigidbody2D.drag = 1f;
                 frenando = false;
             }
         }
