@@ -7,7 +7,7 @@ public class MoverEnemigo_persigue : MonoBehaviour
     // Variables a configurar desde el editor
     [Header("Configuracion")]
     [SerializeField] float aceleracion = 60f;
-    [SerializeField] float rapidezMinima = 10f;
+    [SerializeField] float rapidezMinima;
     [SerializeField] float espera = 500;
 
     // Referencia al transform del jugador serializada
@@ -40,7 +40,7 @@ public class MoverEnemigo_persigue : MonoBehaviour
             contador++;
             if (contador > espera)
             {
-                miRigidbody2D.drag = 0.5f;
+                miRigidbody2D.drag = 1f;
                 minRapidez = rapidezMinima;
                 contador = 0;
             }
@@ -69,7 +69,7 @@ public class MoverEnemigo_persigue : MonoBehaviour
         {
             contador++;
             miRigidbody2D.drag = 5f;
-            minRapidez = 1.0f;
+            minRapidez = 1f;
         }
     }
 }

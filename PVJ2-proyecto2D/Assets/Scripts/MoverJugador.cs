@@ -20,7 +20,7 @@ public class MoverJugador : MonoBehaviour
     private Vector2 direccion = new Vector2(0, 1);
     private float rapidez = 0;
     private float angulo = 0;
-    private float deltaAngulo = 0.01f;
+    private float deltaAngulo = 0.05f;
     private float rotacionZ = 0;
     private bool frenando = false;
     private bool girando = false;
@@ -72,7 +72,7 @@ public class MoverJugador : MonoBehaviour
         {
             if (rapidez < 3.0)
             {
-                transform.eulerAngles = new Vector3(0, 0, transform.eulerAngles.z + angulo * 0.6f);
+                transform.eulerAngles = new Vector3(0, 0, transform.eulerAngles.z + angulo * 2f);
             }
             else
             {
