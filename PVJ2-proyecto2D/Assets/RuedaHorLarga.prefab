@@ -12,9 +12,10 @@ GameObject:
   - component: {fileID: 8713462618684974363}
   - component: {fileID: 7885038849464087978}
   - component: {fileID: 1549678802398141247}
+  - component: {fileID: 618815301917937328}
   m_Layer: 7
   m_Name: RuedaHorLarga
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -148,3 +149,16 @@ CapsuleCollider2D:
   m_Offset: {x: 0.026393892, y: -0.0065962113}
   m_Size: {x: 30, y: 1.9280512}
   m_Direction: 1
+--- !u!114 &618815301917937328
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1419089380930161703}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66bacae8f6c4dfb45ac1a4f8f60e3cb9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  puntos: 2

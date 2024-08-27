@@ -45,14 +45,13 @@ public class MoverEnemigo_persigue : MonoBehaviour
                 contador = 0;
             }
         }
-        direccion = (jugador.position - new Vector3(-1f, 0, 0) - transform.position).normalized;
+        direccion = (jugador.position - new Vector3(-0.5f,0,0) - transform.position).normalized;
         angulo = Mathf.Atan2(-1*direccion.x, direccion.y);
         transform.eulerAngles = new Vector3(0, 0, angulo/ Mathf.Deg2Rad);
         if (rapidez < minRapidez)
         {
             acelerar = true;
         }
-        //direccion = new Vector2(-1 * Mathf.Sin(angulo), Mathf.Cos(angulo));
         miRigidbody2D.velocity = new Vector2(-1 * rapidez * Mathf.Sin(angulo), rapidez * Mathf.Cos(angulo));
     }
     private void FixedUpdate()

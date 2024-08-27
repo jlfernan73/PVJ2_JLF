@@ -13,9 +13,10 @@ GameObject:
   - component: {fileID: 773835432452267518}
   - component: {fileID: 1596362200326169863}
   - component: {fileID: 8694917786592734510}
+  - component: {fileID: 727871569476425700}
   m_Layer: 8
   m_Name: Enemigo1
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -161,6 +162,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e6818e7e33aa154ea38bbac8da453af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  aceleracion: 200
-  angulo: 0
+  aceleracion: 50
   minRapidez: 10
+  maxImpulso: 25
+--- !u!114 &727871569476425700
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7812605981845138248}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66bacae8f6c4dfb45ac1a4f8f60e3cb9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  puntos: 3

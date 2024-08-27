@@ -7,12 +7,13 @@ public class MoverEnemigo_lineal : MonoBehaviour
     // Variables a configurar desde el editor
     [Header("Configuracion")]
     [SerializeField] float aceleracion = 40f;
-    [SerializeField] float angulo;
-    [SerializeField] float minRapidez = 2;
+    [SerializeField] float minRapidez = 20;
+    [SerializeField] float maxImpulso = 3;
 
     // Variables de uso interno en el script
     private Vector2 direccion;
-    private float rapidez = 0;
+    float angulo;
+    private float rapidez;
     private float deltaAngulo = 0;
     private int impulso = 0;
     private bool acelerar = true;
@@ -31,12 +32,11 @@ public class MoverEnemigo_lineal : MonoBehaviour
     private void Update()
     {
         rapidez = miRigidbody2D.velocity.magnitude;
-        angulo = transform.eulerAngles.z * Mathf.Deg2Rad;
         if (rapidez < minRapidez && !girar)
         {
             acelerar = true;
         }
-        if(impulso > 3)
+        if(impulso > maxImpulso)
         {
             impulso = 0;
             girar = true;
@@ -46,16 +46,19 @@ public class MoverEnemigo_lineal : MonoBehaviour
         {
             if(deltaAngulo < 90)
             {
-                transform.eulerAngles = new Vector3(0, 0, transform.eulerAngles.z + 1);
-                deltaAngulo++;
+                transform.eulerAngles = new Vector3(0, 0, transform.eulerAngles.z + 2);
+                deltaAngulo+=2;
             }
             else
             {
                 girar = false;
             }
         }
-        direccion = new Vector2(-1 * Mathf.Sin(angulo), Mathf.Cos(angulo));
-        miRigidbody2D.velocity = new Vector2(-1 * rapidez * Mathf.Sin(angulo), rapidez * Mathf.Cos(angulo));
+        //direccion = new Vector2(-1 * Mathf.Sin(angulo), Mathf.Cos(angulo));
+        direccion = transform.up.normalized;
+        angulo = transform.eulerAngles.z * Mathf.Deg2Rad;
+        //miRigidbody2D.velocity = new Vector2(-1 * rapidez * Mathf.Sin(angulo), rapidez * Mathf.Cos(angulo));
+        miRigidbody2D.velocity = new Vector2(rapidez * direccion.x, rapidez * direccion.y);
     }
     private void FixedUpdate()
     {
