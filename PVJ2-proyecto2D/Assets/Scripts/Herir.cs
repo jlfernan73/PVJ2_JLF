@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// En caso de colisión (OnCollision) del auto del jugador con otro objeto colisionador
+// recibe daño (resta energía)
+
 public class Herir : MonoBehaviour
 {
     // Variables a configurar desde el editor
@@ -13,10 +16,10 @@ public class Herir : MonoBehaviour
         if (collision.gameObject.CompareTag("Player"))
         {
             Jugador jugador = collision.gameObject.GetComponent<Jugador>();
-            // Verificar si el componente Jugador no es null
-            if (jugador != null)
+
+            if (jugador != null)            
             {
-                jugador.ModificarEnergia(-puntos);
+                jugador.ModificarEnergia(-puntos);      // resta puntos a la energía
                 Debug.Log("PUNTOS DE DAÑO REALIZADOS AL JUGADOR " + puntos);
             }
         }

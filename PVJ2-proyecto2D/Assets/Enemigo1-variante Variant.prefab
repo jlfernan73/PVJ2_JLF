@@ -14,11 +14,11 @@ PrefabInstance:
       objectReference: {fileID: 21300000, guid: 235c8a6f343c69b48b3db1daf0239b46, type: 3}
     - target: {fileID: 4284777772486664368, guid: 316d4825b8a0281418aadc5c811ca361, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -7.302128
+      value: 9.2
       objectReference: {fileID: 0}
     - target: {fileID: 4284777772486664368, guid: 316d4825b8a0281418aadc5c811ca361, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 90.18465
+      value: 70.2
       objectReference: {fileID: 0}
     - target: {fileID: 4284777772486664368, guid: 316d4825b8a0281418aadc5c811ca361, type: 3}
       propertyPath: m_LocalPosition.z
@@ -58,15 +58,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8694917786592734510, guid: 316d4825b8a0281418aadc5c811ca361, type: 3}
       propertyPath: maxImpulso
-      value: 20
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 8694917786592734510, guid: 316d4825b8a0281418aadc5c811ca361, type: 3}
       propertyPath: minRapidez
-      value: 20
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 8694917786592734510, guid: 316d4825b8a0281418aadc5c811ca361, type: 3}
       propertyPath: aceleracion
-      value: 50
+      value: 40
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

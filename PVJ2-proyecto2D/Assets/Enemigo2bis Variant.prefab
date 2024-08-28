@@ -78,15 +78,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9137392367738891143, guid: 43e90dd5dd726f1468a45c4378122694, type: 3}
       propertyPath: espera
-      value: 300
+      value: 250
       objectReference: {fileID: 0}
     - target: {fileID: 9137392367738891143, guid: 43e90dd5dd726f1468a45c4378122694, type: 3}
       propertyPath: aceleracion
-      value: 10
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 9137392367738891143, guid: 43e90dd5dd726f1468a45c4378122694, type: 3}
       propertyPath: rapidezMinima
-      value: 15
+      value: 20
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
