@@ -46,7 +46,7 @@ public class MoverJugador : MonoBehaviour
         girar = Input.GetAxis("Horizontal");
         mover = Input.GetAxis("Vertical");
         rapidez = miRigidbody2D.velocity.magnitude;     // se obtiene el módulo del vector velocidad, para mantenerlo en el vector al girar
-        
+        direccion = transform.up.normalized;            // se lee la dirección (normalizada) del auto
         if (girar != 0)                                 // si se presiona las teclas para girar
         {
             girando = true;                             // depende de la dirección de giro, se le agrega un delta al ángulo
@@ -68,12 +68,12 @@ public class MoverJugador : MonoBehaviour
 
         if (girando)                                // en cualquier caso en que se encuentre girando
         {
-            transform.eulerAngles = new Vector3(0, 0, transform.eulerAngles.z + angulo);    // se aplica el ángulo de giro al auto
-            rotacionZ = transform.eulerAngles.z * Mathf.Deg2Rad;                            // se lee el nuevo ángulo
-            miRigidbody2D.velocity = new Vector2(-1 * rapidez * Mathf.Sin(rotacionZ), rapidez * Mathf.Cos(rotacionZ));  // se recalcula el vector velocidad con el nuevo ángulo
+            rotacionZ = (transform.eulerAngles.z + angulo) * Mathf.Deg2Rad;                            // se calcula el nuevo ángulo
+            transform.up = (transform.up.normalized + new Vector3(-1 * Mathf.Sin(rotacionZ), Mathf.Cos(rotacionZ)))*transform.up.magnitude;
+            direccion = transform.up.normalized;                                         // se lee la nueva dirección (normalizada) del auto
+            miRigidbody2D.velocity = direccion * rapidez;                               // se recalcula el vector velocidad con la nueva dirección
         }
-        direccion = transform.up.normalized;        // se lee la nueva dirección (normalizada) del auto
-        
+
         if (mover < 0)                              // si frena, se incrementará momentaneamente el drag
         {
             miRigidbody2D.drag = freno;
