@@ -24,8 +24,7 @@ public class MoverJugador : MonoBehaviour
     private Vector2 direccion = new Vector2(0, 1);  // vector 2D con la direccion del automovil
     private float rapidez = 0;                      // modulo del vector velocidad
     private float angulo = 0;                       // angulo de giro de las ruedas del automovil (respecto al eje del auto)
-    private float deltaAngulo = 0.2f;               // agregado de ángulo de las ruedas que se suma al angulo de giro
-    private float rotacionZ = 0;                    // angulo de rotación del automovil respecto al eje de coordenadas
+    private float deltaAngulo = 0.05f;               // agregado de ángulo de las ruedas que se suma al angulo de giro
     private float dragInicial;                      // valor del drag lineal en condiciones normales
     private bool frenando = false;                  // bandera para activación del frenado
     private bool girando = false;                   // bandera para activacion del giro
@@ -68,9 +67,8 @@ public class MoverJugador : MonoBehaviour
 
         if (girando)                                // en cualquier caso en que se encuentre girando
         {
-            rotacionZ = (transform.eulerAngles.z + angulo) * Mathf.Deg2Rad;                            // se calcula el nuevo ángulo
-            transform.up = (transform.up.normalized + new Vector3(-1 * Mathf.Sin(rotacionZ), Mathf.Cos(rotacionZ)))*transform.up.magnitude;
-            direccion = transform.up.normalized;                                         // se lee la nueva dirección (normalizada) del auto
+            transform.Rotate(0, 0, angulo);                                             // se rota el auto
+            direccion = transform.up.normalized;                                        // se lee la nueva dirección (normalizada) del auto
             miRigidbody2D.velocity = direccion * rapidez;                               // se recalcula el vector velocidad con la nueva dirección
         }
 
