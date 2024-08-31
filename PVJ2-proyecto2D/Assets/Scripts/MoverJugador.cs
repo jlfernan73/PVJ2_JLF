@@ -2,11 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Assertions.Must;
 using UnityEngine.Rendering;
 using static UnityEngine.RuleTile.TilingRuleOutput;
 
 // clase para mover el automovil del jugador al presionar las cuatro teclas de desplazamiento
-// el auto acelera y frena con las flechas up/down (o W/S), y gira con las flechas laterales (o A/D)
+// el auto acelera hacia adelante/atras con las flechas up/down (o W/S), y gira con las flechas laterales (o A/D)
 // el control es complejo para una sola mano, por eso conviene combinar (por ej. flechas laterales y W/S)
 
 public class MoverJugador : MonoBehaviour
@@ -14,7 +15,6 @@ public class MoverJugador : MonoBehaviour
     // Variables a configurar desde el editor
     [Header("Configuracion")]
     [SerializeField] float aceleracion = 10f;       // modulo de la fuerza de arranque
-    [SerializeField] float freno = 3f;              // drag lineal que se aplica al frenar
     [SerializeField] float maxAngulo = 5.0f;        // máximo angulo de giro del auto al doblar
     [SerializeField] float maxRapidez = 20f;        // velocidad máxima que alcanza el auto al acelerar varias veces
 
@@ -22,11 +22,10 @@ public class MoverJugador : MonoBehaviour
     private float girar;                            // adquiere valores al presionar las flechas laterals (o A/D) para frenar
     private float mover;                            // adquiere valores al presionar las flecha up/down (o W/S) para acelerar
     private Vector2 direccion = new Vector2(0, 1);  // vector 2D con la direccion del automovil
+    private float sentido = 1f;                     //sentido de avance (1: arriba, -1: abajo)
     private float rapidez = 0;                      // modulo del vector velocidad
     private float angulo = 0;                       // angulo de giro de las ruedas del automovil (respecto al eje del auto)
-    private float deltaAngulo = 0.05f;               // agregado de ángulo de las ruedas que se suma al angulo de giro
-    private float dragInicial;                      // valor del drag lineal en condiciones normales
-    private bool frenando = false;                  // bandera para activación del frenado
+    private float deltaAngulo = 2f;                 // agregado de ángulo de las ruedas que se suma al angulo de giro
     private bool girando = false;                   // bandera para activacion del giro
 
     // Variable para referenciar otro componente del objeto
@@ -36,7 +35,7 @@ public class MoverJugador : MonoBehaviour
     private void OnEnable()
     {
         miRigidbody2D = GetComponent<Rigidbody2D>();
-        dragInicial = miRigidbody2D.drag;           // el drag inicial toma el valor del seteo original
+        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     // Codigo ejecutado en cada frame del juego (Intervalo variable)
@@ -67,30 +66,33 @@ public class MoverJugador : MonoBehaviour
 
         if (girando)                                // en cualquier caso en que se encuentre girando
         {
-            transform.Rotate(0, 0, angulo);                                             // se rota el auto
-            direccion = transform.up.normalized;                                        // se lee la nueva dirección (normalizada) del auto
-            miRigidbody2D.velocity = direccion * rapidez;                               // se recalcula el vector velocidad con la nueva dirección
-        }
-
-        if (mover < 0)                              // si frena, se incrementará momentaneamente el drag
-        {
-            miRigidbody2D.drag = freno;
-            frenando = true;
-        }
-        else
-        {
-            if (frenando)                           // si estaba frenando pero se soltó la tecla
+            float radioGiro = Mathf.Cos(angulo * Mathf.Deg2Rad) * (1+rapidez)/ 60f;     //se calcula un radio de giro en base al ángulo y a la rapidez
+            float velocidadAngular;
+            if (angulo > 0)
             {
-                miRigidbody2D.drag = dragInicial;   // se vuelve a las condiciones iniciales de avance
-                frenando = false;
+                velocidadAngular = sentido*(rapidez / radioGiro);           //se calcula la velocidad angular en base a la rapidez y el radio de giro
             }
+            else
+            {
+                velocidadAngular = -1*sentido*(rapidez / radioGiro);
+            }
+            transform.Rotate(0, 0, velocidadAngular * Time.deltaTime);                  // se rota el auto
+            direccion = transform.up.normalized;                                        // se lee la nueva dirección (normalizada) del auto
+            miRigidbody2D.velocity = sentido * direccion * rapidez;                     // se recalcula el vector velocidad con la nueva dirección
         }
     }
+
     private void FixedUpdate()
     {
         if (mover > 0 && rapidez < maxRapidez)                  // si se presiona la tecla para acelerar 
         {
+            sentido = 1;
             miRigidbody2D.AddForce(direccion * aceleracion);    // aplica fuerza en la dirección del auto
+        }
+        if (mover < 0 && rapidez < maxRapidez/2)                // para dar marcha atrás
+        {
+            sentido = -1;
+            miRigidbody2D.AddForce(-direccion * 200f);          // aplica fuerza en la dirección reversa al auto
         }
     }
 }
