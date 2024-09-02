@@ -85,6 +85,7 @@ public class MoverJugador : MonoBehaviour
         }
         miAnimator.SetFloat("Rapidez", rapidez);
         miAnimator.SetFloat("Giro", girar);
+        miAnimator.SetFloat("Avance", mover);
         miAnimator.SetInteger("Sentido", (int)sentido);
     }
 
