@@ -30,12 +30,15 @@ public class MoverJugador : MonoBehaviour
 
     // Variable para referenciar otro componente del objeto
     private Rigidbody2D miRigidbody2D;
+    private Animator miAnimator;
+    private SpriteRenderer miSprite;
 
     // Codigo ejecutado cuando el objeto se activa en el nivel
     private void OnEnable()
     {
         miRigidbody2D = GetComponent<Rigidbody2D>();
-        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
+        miAnimator = GetComponent<Animator>();
+        miSprite = GetComponent<SpriteRenderer>();
     }
 
     // Codigo ejecutado en cada frame del juego (Intervalo variable)
@@ -80,6 +83,9 @@ public class MoverJugador : MonoBehaviour
             direccion = transform.up.normalized;                                        // se lee la nueva dirección (normalizada) del auto
             miRigidbody2D.velocity = sentido * direccion * rapidez;                     // se recalcula el vector velocidad con la nueva dirección
         }
+        miAnimator.SetFloat("Rapidez", rapidez);
+        miAnimator.SetFloat("Giro", girar);
+        miAnimator.SetInteger("Sentido", (int)sentido);
     }
 
     private void FixedUpdate()
