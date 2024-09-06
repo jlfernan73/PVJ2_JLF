@@ -52,6 +52,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 90
       objectReference: {fileID: 0}
+    - target: {fileID: 5706973556236838574, guid: 316d4825b8a0281418aadc5c811ca361, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 07681127ea526fe4097581c06876cff3, type: 2}
     - target: {fileID: 7812605981845138248, guid: 316d4825b8a0281418aadc5c811ca361, type: 3}
       propertyPath: m_Name
       value: Enemigo1-variante Variant
