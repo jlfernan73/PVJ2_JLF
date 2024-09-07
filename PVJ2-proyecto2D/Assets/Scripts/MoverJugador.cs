@@ -17,6 +17,8 @@ public class MoverJugador : MonoBehaviour
     [SerializeField] float aceleracion = 10f;       // modulo de la fuerza de arranque
     [SerializeField] float maxAngulo = 5.0f;        // máximo angulo de giro del auto al doblar
     [SerializeField] float maxRapidez = 20f;        // velocidad máxima que alcanza el auto al acelerar varias veces
+    [SerializeField] private AudioClip reversaSFX;
+    [SerializeField] private AudioClip motorSFX;
 
     // Variables de uso interno en el script
     private float girar;                            // adquiere valores al presionar las flechas laterals (o A/D) para frenar
@@ -27,18 +29,25 @@ public class MoverJugador : MonoBehaviour
     private float angulo = 0;                       // angulo de giro de las ruedas del automovil (respecto al eje del auto)
     private float deltaAngulo = 2f;                 // agregado de ángulo de las ruedas que se suma al angulo de giro
     private bool girando = false;                   // bandera para activacion del giro
+    private float volMotor = 0.1f;
+    private float pitchMotor = 1f;
 
     // Variable para referenciar otro componente del objeto
     private Rigidbody2D miRigidbody2D;
     private Animator miAnimator;
-    private SpriteRenderer miSprite;
+//    private SpriteRenderer miSprite;
+    private AudioSource audioSource;
 
     // Codigo ejecutado cuando el objeto se activa en el nivel
     private void OnEnable()
     {
         miRigidbody2D = GetComponent<Rigidbody2D>();
         miAnimator = GetComponent<Animator>();
-        miSprite = GetComponent<SpriteRenderer>();
+//        miSprite = GetComponent<SpriteRenderer>();
+        audioSource = GetComponent<AudioSource>();
+        audioSource.clip = motorSFX;
+        SonidoMotor();
+        audioSource.Play();
     }
 
     // Codigo ejecutado en cada frame del juego (Intervalo variable)
@@ -83,10 +92,11 @@ public class MoverJugador : MonoBehaviour
             direccion = transform.up.normalized;                                        // se lee la nueva dirección (normalizada) del auto
             miRigidbody2D.velocity = sentido * direccion * rapidez;                     // se recalcula el vector velocidad con la nueva dirección
         }
-        miAnimator.SetFloat("Rapidez", rapidez);
         miAnimator.SetFloat("Giro", girar);
-        miAnimator.SetFloat("Avance", mover);
-        miAnimator.SetInteger("Sentido", (int)sentido);
+        miAnimator.SetBool("Avanza", (rapidez>2f && sentido > 0));
+        miAnimator.SetBool("Retrocede", (rapidez > 2f && sentido < 0));
+
+        SonidoMotor();
     }
 
     private void FixedUpdate()
@@ -96,10 +106,25 @@ public class MoverJugador : MonoBehaviour
             sentido = 1;
             miRigidbody2D.AddForce(direccion * aceleracion);    // aplica fuerza en la dirección del auto
         }
-        if (mover < 0 && rapidez < maxRapidez/2)                // para dar marcha atrás
+        if (mover < 0 && rapidez < maxRapidez / 2)                // para dar marcha atrás
         {
             sentido = -1;
             miRigidbody2D.AddForce(-direccion * 200f);          // aplica fuerza en la dirección reversa al auto
+            audioSource.pitch = 1;
+            audioSource.volume = 1;
+            audioSource.PlayOneShot(reversaSFX);
         }
     }
+
+    private void SonidoMotor()
+    {
+        volMotor = 0.1f + rapidez / maxRapidez * 0.9f;
+        pitchMotor = 0.5f + rapidez / maxRapidez * 0.8f;
+        audioSource.volume = volMotor;
+        if(sentido > 0)
+        {
+            audioSource.pitch = pitchMotor;
+        }
+    }
+
 }

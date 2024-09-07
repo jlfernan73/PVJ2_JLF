@@ -10,6 +10,13 @@ public class Herir : MonoBehaviour
     // Variables a configurar desde el editor
     [Header("Configuracion")]
     [SerializeField] float puntos = 5f;
+    [SerializeField] private AudioClip choqueSFX;
+    private AudioSource audioColision;
+
+    private void OnEnable()
+    {
+        audioColision = GetComponent<AudioSource>();
+    }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -21,7 +28,11 @@ public class Herir : MonoBehaviour
             {
                 jugador.ModificarEnergia(-puntos);      // resta puntos a la energía
                 Debug.Log("PUNTOS DE DAÑO REALIZADOS AL JUGADOR " + puntos);
+                if (audioColision.isPlaying) { return; }
+                audioColision.PlayOneShot(choqueSFX);
             }
         }
     }
+
+
 }
