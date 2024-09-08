@@ -10,6 +10,12 @@ public class Arreglar : MonoBehaviour
     // Variables a configurar desde el editor
     [Header("Configuracion")]
     [SerializeField] float puntos = 1f;            // puntos a adicionar a la energía del jugador
+    [SerializeField] private AudioClip toolSFX;
+    private AudioSource audioTool;
+    private void OnEnable()
+    {
+        audioTool = GetComponent<AudioSource>();
+    }
 
     private void OnParticleCollision(GameObject other)
     {
@@ -18,6 +24,7 @@ public class Arreglar : MonoBehaviour
             Jugador jugador = other.GetComponent<Jugador>();
             if (jugador != null)                    // verifica si el componente Jugador no es null
             {
+                audioTool.PlayOneShot(toolSFX);
                 jugador.ModificarEnergia(puntos);    // agrega los puntos a energía
                 Debug.Log("REPARACIONES REALIZADAS AL JUGADOR: " + puntos);
             }

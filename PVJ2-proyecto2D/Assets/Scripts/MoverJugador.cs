@@ -35,7 +35,6 @@ public class MoverJugador : MonoBehaviour
     // Variable para referenciar otro componente del objeto
     private Rigidbody2D miRigidbody2D;
     private Animator miAnimator;
-//    private SpriteRenderer miSprite;
     private AudioSource audioSource;
 
     // Codigo ejecutado cuando el objeto se activa en el nivel
@@ -43,7 +42,6 @@ public class MoverJugador : MonoBehaviour
     {
         miRigidbody2D = GetComponent<Rigidbody2D>();
         miAnimator = GetComponent<Animator>();
-//        miSprite = GetComponent<SpriteRenderer>();
         audioSource = GetComponent<AudioSource>();
         audioSource.clip = motorSFX;
         SonidoMotor();
@@ -121,7 +119,7 @@ public class MoverJugador : MonoBehaviour
         volMotor = 0.1f + rapidez / maxRapidez * 0.9f;
         pitchMotor = 0.5f + rapidez / maxRapidez * 0.8f;
         audioSource.volume = volMotor;
-        if(sentido > 0)
+        if (sentido > 0)
         {
             audioSource.pitch = pitchMotor;
         }

@@ -8,18 +8,35 @@ using UnityEngine;
 public class AbrirCaja : MonoBehaviour
 {
     [Header("Configuracion")]
-    [SerializeField] private new ParticleSystem particleSystem;    
+    [SerializeField] private new ParticleSystem particleSystem;
+    [SerializeField] private AudioClip cajaSFX;
+    private AudioSource audioCaja;
+    private SpriteRenderer miCaja;
+    private void OnEnable()
+    {
+        audioCaja = GetComponent<AudioSource>();
+    }
+    private void Update()
+    {
+        if (miCaja != null && !audioCaja.isPlaying)
+        {
+            gameObject.SetActive(false);
+            miCaja = null;
+            particleSystem.Play();
+        }
+    }
 
-    
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("Player"))
         {
             Jugador jugador = collision.gameObject.GetComponent<Jugador>();
+            miCaja = gameObject.GetComponent<SpriteRenderer>();
             if (jugador != null)                    // verifica si el componente Jugador no es null
             {
-                gameObject.SetActive(false);        // desactiva el objeto
-                particleSystem.Play();
+                audioCaja.PlayOneShot(cajaSFX);
+                miCaja.enabled = false;
             }
         }
     }

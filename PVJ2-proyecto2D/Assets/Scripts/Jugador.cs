@@ -30,8 +30,7 @@ public class Jugador : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)             //Método para chequear la llegada a Meta
     {
-        if (!collision.gameObject.CompareTag("Meta")) { return; }
-
+        if (!collision.gameObject.CompareTag("Meta")){return;}
         Debug.Log("LLEGASTE A LA META, GANASTE!!");
     }
 }
