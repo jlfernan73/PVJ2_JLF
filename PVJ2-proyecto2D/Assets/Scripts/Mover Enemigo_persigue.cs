@@ -28,11 +28,16 @@ public class MoverEnemigo_persigue : MonoBehaviour
 
     // Variable para referenciar otro componente del objeto
     private Rigidbody2D miRigidbody2D;
+    private Animator miAnimator;
+    private SpriteRenderer miSprite;
 
     // Codigo ejecutado cuando el objeto se activa en el nivel
     private void Awake()
     {
         miRigidbody2D = GetComponent<Rigidbody2D>();
+        miAnimator = GetComponent<Animator>();
+        miSprite = GetComponent<SpriteRenderer>();
+
         minRapidez = rapidezMinima;                 // se transfiere el valor seteado de rapidez minima a la variables usada
         dragInicial = miRigidbody2D.drag;           // el drag inicial toma el valor del seteo original
     }
@@ -63,6 +68,7 @@ public class MoverEnemigo_persigue : MonoBehaviour
         {
             acelerar = true;
         }
+        miAnimator.SetFloat("Rapidez", rapidez);
     }
     private void FixedUpdate()
     {

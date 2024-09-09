@@ -23,11 +23,15 @@ public class MoverEnemigo_lineal : MonoBehaviour
 
     // Variable para referenciar otro componente del objeto
     private Rigidbody2D miRigidbody2D;
+    private Animator miAnimator;
+    private SpriteRenderer miSprite;
 
     // Codigo ejecutado cuando el objeto se activa en el nivel
     private void OnEnable()
     {
         miRigidbody2D = GetComponent<Rigidbody2D>();
+        miAnimator = GetComponent<Animator>();
+        miSprite = GetComponent<SpriteRenderer>();
     }
 
     // Codigo ejecutado en cada frame del juego (Intervalo variable)
@@ -58,6 +62,9 @@ public class MoverEnemigo_lineal : MonoBehaviour
         }
         direccion = transform.up.normalized;                // se lee la dirección en que quedó el auto
         miRigidbody2D.velocity = new Vector2(rapidez * direccion.x, rapidez * direccion.y); // se recalcula el vector velocidad
+
+        miAnimator.SetFloat("Rapidez", rapidez);
+        miAnimator.SetBool("Girar", girar);
     }
     private void FixedUpdate()
     {
