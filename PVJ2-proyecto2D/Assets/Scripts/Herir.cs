@@ -26,6 +26,7 @@ public class Herir : MonoBehaviour
 
             if (jugador != null)            
             {
+                jugador.Colision();
                 jugador.ModificarEnergia(-puntos);      // resta puntos a la energía
                 Debug.Log("PUNTOS DE DAÑO REALIZADOS AL JUGADOR " + puntos);
                 if (audioColision.isPlaying) { return; }
