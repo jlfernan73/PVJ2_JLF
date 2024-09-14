@@ -26,11 +26,11 @@ public class Herir : MonoBehaviour
 
             if (jugador != null)            
             {
+                if (audioColision.isPlaying) { return; }
+                audioColision.PlayOneShot(choqueSFX);
                 jugador.Colision();
                 jugador.ModificarEnergia(-puntos);      // resta puntos a la energía
                 Debug.Log("PUNTOS DE DAÑO REALIZADOS AL JUGADOR " + puntos);
-                if (audioColision.isPlaying) { return; }
-                audioColision.PlayOneShot(choqueSFX);
             }
         }
     }

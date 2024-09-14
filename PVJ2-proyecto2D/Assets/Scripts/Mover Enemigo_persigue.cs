@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 // clase para que un tipo de enemigo busque al auto del jugador y acelere hacia él
@@ -58,11 +59,14 @@ public class MoverEnemigo_persigue : MonoBehaviour
             }
         }
 
-        // en cualquier caso se posiciona buscando al auto del jugador
-        direccion = (jugador.position - new Vector3(-0.5f,0,0) - transform.position).normalized;  // busca al auto del jugador, ligeramente corrido en x
-        angulo = Mathf.Atan2(-1*direccion.x, direccion.y);          // calcula el ángulo con la arcotangente, para girar el auto
-        transform.eulerAngles = new Vector3(0, 0, angulo/ Mathf.Deg2Rad);   //gira el auto ese ángulo
-        miRigidbody2D.velocity = new Vector2(-1 * rapidez * Mathf.Sin(angulo), rapidez * Mathf.Cos(angulo)); // recalcula el vector velocidad
+        if (jugador.gameObject.activeSelf)
+        {
+            // en cualquier caso se posiciona buscando al auto del jugador
+            direccion = (jugador.position - new Vector3(-0.5f, 0, 0) - transform.position).normalized;  // busca al auto del jugador, ligeramente corrido en x
+            angulo = Mathf.Atan2(-1 * direccion.x, direccion.y);          // calcula el ángulo con la arcotangente, para girar el auto
+            transform.eulerAngles = new Vector3(0, 0, angulo / Mathf.Deg2Rad);   //gira el auto ese ángulo
+            miRigidbody2D.velocity = new Vector2(-1 * rapidez * Mathf.Sin(angulo), rapidez * Mathf.Cos(angulo)); // recalcula el vector velocidad
+        }
 
         if (rapidez < minRapidez)                       // sólo si la rapidez llegó al mínimo activa la aceleración
         {

@@ -35,7 +35,7 @@ public class Jugador : MonoBehaviour
             humeando = true;
             particleSystemHumo.Play();
         }
-        if (energia >= 20 && humeando)
+        if ((energia >= 20 || energia <=0) && humeando)
         {
             humeando = false;
             particleSystemHumo.Stop();
@@ -45,6 +45,11 @@ public class Jugador : MonoBehaviour
     public void AgregarItem()                   // método público para agregar un ítem (usado para los diamantes)
     {
         items++;
+    }
+
+    public float GetEnergia()
+    {
+        return energia;
     }
 
     public void Colision()
