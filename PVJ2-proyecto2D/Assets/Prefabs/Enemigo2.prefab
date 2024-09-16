@@ -190,7 +190,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66bacae8f6c4dfb45ac1a4f8f60e3cb9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  puntos: 4
+  puntos: 8
   choqueSFX: {fileID: 8300000, guid: 3966ba4704b214f40a42b23efec9b849, type: 3}
 --- !u!95 &2917704987627071065
 Animator:

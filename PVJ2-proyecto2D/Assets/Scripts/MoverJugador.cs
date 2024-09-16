@@ -32,13 +32,12 @@ public class MoverJugador : MonoBehaviour
     private bool girando = false;                   // bandera para activacion del giro
     private float volMotor = 0.1f;
     private float pitchMotor = 1f;
-    private bool vive = true;
 
     // Variable para referenciar otro componente del objeto
     private Rigidbody2D miRigidbody2D;
+    private SpriteRenderer miSprite;
     private Animator miAnimator;
     private AudioSource audioSource;
-
 
     // Codigo ejecutado cuando el objeto se activa en el nivel
     private void OnEnable()
@@ -54,7 +53,8 @@ public class MoverJugador : MonoBehaviour
     // Codigo ejecutado en cada frame del juego (Intervalo variable)
     private void Update()
     {
-        if (vive)
+        Jugador jugador = gameObject.GetComponent<Jugador>();
+        if (jugador.EstaVivo() && !jugador.AlcanzoMeta())
         {
             girar = Input.GetAxis("Horizontal");
             mover = Input.GetAxis("Vertical");
@@ -101,18 +101,28 @@ public class MoverJugador : MonoBehaviour
 
             SonidoMotor();
         }
-        Jugador jugador = gameObject.GetComponent<Jugador>();
-        miAnimator.SetBool("Explota", (jugador.GetEnergia() <= 0 && vive));
-        if (jugador.GetEnergia() <= 0 && vive)
+        miAnimator.SetBool("Explota", (jugador.GetEnergia() <= 0 && jugador.EstaVivo()));
+        if (jugador.GetEnergia() <= 0 && jugador.EstaVivo())
         {
+            audioSource.Stop();
+            audioSource.volume = 1;
             audioSource.PlayOneShot(explosionSFX);
-            vive = false;
+            jugador.JugadorMuere();
+        }
+        if (!audioSource.isPlaying && !jugador.EstaVivo())
+        {
+            gameObject.SetActive(false);
+        }
+        if (jugador.AlcanzoMeta() && transform.gameObject.activeSelf)
+        {
+            RetirarAuto();
         }
     }
 
     private void FixedUpdate()
     {
-        if (vive)
+        Jugador jugador = gameObject.GetComponent<Jugador>();
+        if (jugador.EstaVivo() && !jugador.AlcanzoMeta())
         {
             if (mover > 0 && rapidez < maxRapidez)                  // si se presiona la tecla para acelerar 
             {
@@ -141,8 +151,25 @@ public class MoverJugador : MonoBehaviour
         }
     }
 
+    private void RetirarAuto()
+    {
+        //transform.Rotate(0, 0, 0);
+        direccion = new Vector3(0,1,0);
+        transform.up = direccion;        
+        if (GetComponent<Renderer>().isVisible)
+        {
+            miRigidbody2D.velocity = direccion * maxRapidez;
+        }
+        else
+        {
+            audioSource.Stop();
+            gameObject.SetActive(false);
+        }
+    }
+
     public void OnAnimationEnd()
     {
-        gameObject.SetActive(false); //método que se llama en el evento al final de la explosión
+        miSprite = gameObject.GetComponent<SpriteRenderer>();
+        miSprite.enabled = false;
     }
 }

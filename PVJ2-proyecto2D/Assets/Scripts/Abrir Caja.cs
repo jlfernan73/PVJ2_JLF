@@ -8,21 +8,24 @@ using UnityEngine;
 public class AbrirCaja : MonoBehaviour
 {
     [Header("Configuracion")]
-    [SerializeField] private new ParticleSystem particleSystem;
+    [SerializeField] private ParticleSystem particleSystemTools;
     [SerializeField] private AudioClip cajaSFX;
     private AudioSource audioCaja;
     private SpriteRenderer miCaja;
     private void OnEnable()
     {
         audioCaja = GetComponent<AudioSource>();
+        particleSystemTools.transform.position = gameObject.transform.position;
     }
     private void Update()
     {
-        if (miCaja != null && !audioCaja.isPlaying)
+        if (!miCaja.enabled)
+        {
+            particleSystemTools.Play();
+        }
+        if (!miCaja.enabled  && !audioCaja.isPlaying)
         {
             gameObject.SetActive(false);
-            miCaja = null;
-            particleSystem.Play();
         }
     }
 

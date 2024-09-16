@@ -59,19 +59,20 @@ public class MoverEnemigo_persigue : MonoBehaviour
             }
         }
 
-        if (jugador.gameObject.activeSelf)
+        if (jugador.GetComponent<SpriteRenderer>().enabled)
         {
             // en cualquier caso se posiciona buscando al auto del jugador
             direccion = (jugador.position - new Vector3(-0.5f, 0, 0) - transform.position).normalized;  // busca al auto del jugador, ligeramente corrido en x
             angulo = Mathf.Atan2(-1 * direccion.x, direccion.y);          // calcula el ángulo con la arcotangente, para girar el auto
             transform.eulerAngles = new Vector3(0, 0, angulo / Mathf.Deg2Rad);   //gira el auto ese ángulo
             miRigidbody2D.velocity = new Vector2(-1 * rapidez * Mathf.Sin(angulo), rapidez * Mathf.Cos(angulo)); // recalcula el vector velocidad
+
+            if (rapidez < minRapidez)                       // sólo si la rapidez llegó al mínimo activa la aceleración
+            {
+                acelerar = true;
+            }
         }
 
-        if (rapidez < minRapidez)                       // sólo si la rapidez llegó al mínimo activa la aceleración
-        {
-            acelerar = true;
-        }
         miAnimator.SetFloat("Rapidez", rapidez);
     }
     private void FixedUpdate()
