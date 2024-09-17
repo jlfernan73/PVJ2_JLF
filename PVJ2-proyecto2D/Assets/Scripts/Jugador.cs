@@ -25,7 +25,7 @@ public class Jugador : MonoBehaviour
 
     private void OnEnable()
     {
-        musicaFondo.GetComponent<AudioSource>().Play();
+        //musicaFondo.GetComponent<AudioSource>().Play();
     }
 
     private void Update()

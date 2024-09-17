@@ -19,13 +19,16 @@ public class AbrirCaja : MonoBehaviour
     }
     private void Update()
     {
-        if (!miCaja.enabled)
+        if (miCaja != null)
         {
-            particleSystemTools.Play();
-        }
-        if (!miCaja.enabled  && !audioCaja.isPlaying)
-        {
-            gameObject.SetActive(false);
+            if (!miCaja.enabled)
+            {
+                particleSystemTools.Play();
+            }
+            if (!miCaja.enabled && !audioCaja.isPlaying)
+            {
+                gameObject.SetActive(false);
+            }
         }
     }
 

@@ -85,11 +85,11 @@ public class MoverEnemigo_persigue : MonoBehaviour
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Player"))      // si hay colisión con el jugador
-        {
+        //if (collision.gameObject.CompareTag("Player"))      // si hay colisión con el jugador
+        //{
             contador++;                                     // inicia el contador de espera
             miRigidbody2D.drag = 5f;                        // frena el auto
             minRapidez = 1f;                                // baja la rapidez mínima, para que no acelere
-        }
-    }
+        //}
+    }                                           
 }
