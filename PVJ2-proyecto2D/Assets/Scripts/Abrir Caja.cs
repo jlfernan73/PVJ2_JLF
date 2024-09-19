@@ -15,7 +15,7 @@ public class AbrirCaja : MonoBehaviour
     private void OnEnable()
     {
         audioCaja = GetComponent<AudioSource>();
-        particleSystemTools.transform.position = gameObject.transform.position;
+        particleSystemTools.transform.position = gameObject.transform.position - new Vector3(0,-1f,0);
     }
     private void Update()
     {
