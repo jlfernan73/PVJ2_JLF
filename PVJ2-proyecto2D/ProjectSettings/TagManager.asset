@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Meta
   - Diamante
+  - Musica
   layers:
   - Default
   - TransparentFX
@@ -17,8 +18,8 @@ TagManager:
   - Obstaculos
   - Enemigos
   - Items
-  - Decorados
-  - 
+  - Decorados altos
+  - Pista
   - 
   - 
   - 

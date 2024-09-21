@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 // clase para que un tipo de enemigo busque al auto del jugador y acelere hacia él
@@ -42,7 +43,6 @@ public class MoverEnemigo_persigue : MonoBehaviour
         dragInicial = miRigidbody2D.drag;           // el drag inicial toma el valor del seteo original
     }
 
-    // Codigo ejecutado en cada frame del juego (Intervalo variable)
     private void Update()
     {
         rapidez = miRigidbody2D.velocity.magnitude;
@@ -58,18 +58,25 @@ public class MoverEnemigo_persigue : MonoBehaviour
             }
         }
 
-        // en cualquier caso se posiciona buscando al auto del jugador
-        direccion = (jugador.position - new Vector3(-0.5f,0,0) - transform.position).normalized;  // busca al auto del jugador, ligeramente corrido en x
-        angulo = Mathf.Atan2(-1*direccion.x, direccion.y);          // calcula el ángulo con la arcotangente, para girar el auto
-        transform.eulerAngles = new Vector3(0, 0, angulo/ Mathf.Deg2Rad);   //gira el auto ese ángulo
-        miRigidbody2D.velocity = new Vector2(-1 * rapidez * Mathf.Sin(angulo), rapidez * Mathf.Cos(angulo)); // recalcula el vector velocidad
-
-        if (rapidez < minRapidez)                       // sólo si la rapidez llegó al mínimo activa la aceleración
+        // en caso que el jugador no haya explotado y aun esté activo, lo buscará
+        if (jugador.GetComponent<SpriteRenderer>().enabled)
         {
-            acelerar = true;
+            // en cualquier caso se posiciona buscando al auto del jugador
+            direccion = (jugador.position - new Vector3(-0.5f, 0, 0) - transform.position).normalized;  // busca al auto del jugador, ligeramente corrido en x
+            angulo = Mathf.Atan2(-1 * direccion.x, direccion.y);          // calcula el ángulo con la arcotangente, para girar el auto
+            transform.eulerAngles = new Vector3(0, 0, angulo / Mathf.Deg2Rad);   //gira el auto ese ángulo
+            miRigidbody2D.velocity = new Vector2(-1 * rapidez * Mathf.Sin(angulo), rapidez * Mathf.Cos(angulo)); // recalcula el vector velocidad
+
+            if (rapidez < minRapidez)                       // sólo si la rapidez llegó al mínimo activa la aceleración
+            {
+                acelerar = true;
+            }
         }
+
+        // definición de la condición para la única transición de las animaciones
         miAnimator.SetFloat("Rapidez", rapidez);
     }
+
     private void FixedUpdate()
     {
         if (acelerar)
@@ -78,13 +85,12 @@ public class MoverEnemigo_persigue : MonoBehaviour
             acelerar = false;
         }
     }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Player"))      // si hay colisión con el jugador
-        {
+        // si hay colisión con cualquier objeto
             contador++;                                     // inicia el contador de espera
             miRigidbody2D.drag = 5f;                        // frena el auto
             minRapidez = 1f;                                // baja la rapidez mínima, para que no acelere
-        }
-    }
+    }                                           
 }

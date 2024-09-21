@@ -63,6 +63,7 @@ public class MoverEnemigo_lineal : MonoBehaviour
         direccion = transform.up.normalized;                // se lee la dirección en que quedó el auto
         miRigidbody2D.velocity = new Vector2(rapidez * direccion.x, rapidez * direccion.y); // se recalcula el vector velocidad
 
+        // definición de las condiciones para las transiciones de las animaciones
         miAnimator.SetFloat("Rapidez", rapidez);
         miAnimator.SetBool("Girar", girar);
     }

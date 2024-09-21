@@ -7,9 +7,9 @@ using UnityEngine;
 
 public class Colectar : MonoBehaviour
 {
-    [SerializeField] private AudioClip diamanteSFX;
+    [SerializeField] private AudioClip diamanteSFX; // para asociar el clip del sonido de levantar diamante
     private AudioSource audioDiamante;
-    private SpriteRenderer miDiamante;
+    private SpriteRenderer miDiamante;              // se va a acceder al spriteRenderer del diamante 
 
     private void OnEnable()
     {
@@ -17,9 +17,9 @@ public class Colectar : MonoBehaviour
     }
     private void Update()
     {
-        if (miDiamante != null && !audioDiamante.isPlaying)
+        if (miDiamante != null && !miDiamante.enabled && !audioDiamante.isPlaying)     //si se ha desactivado el spriteRenderer del diamante y la música ya terminó
         {
-            gameObject.SetActive(false);
+            gameObject.SetActive(false);                        // se borra el diamante
             miDiamante = null;
         }
     }
@@ -30,12 +30,12 @@ public class Colectar : MonoBehaviour
         {
             Jugador jugador = collision.gameObject.GetComponent<Jugador>();
             miDiamante = gameObject.GetComponent<SpriteRenderer>();
-            if (jugador != null)                    // verifica si el componente Jugador no es null
+            if (jugador != null)                                // verifica si el componente Jugador no es null
             {
-                audioDiamante.PlayOneShot(diamanteSFX);
-                jugador.AgregarItem();              // suma uno a los ítems recolectados
+                audioDiamante.PlayOneShot(diamanteSFX);         // se ejecuta el sonido de recolección de diamante
+                jugador.AgregarItem();                          // suma uno a los ítems recolectados
                 Debug.Log("ITEM COLECTADO");
-                miDiamante.enabled = false;
+                miDiamante.enabled = false;                     // se desactiva el spriteRenderer del diamante (sin borrarlo)
             }
         }
     }
