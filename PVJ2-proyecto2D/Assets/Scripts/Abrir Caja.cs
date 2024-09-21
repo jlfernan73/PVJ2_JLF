@@ -8,26 +8,26 @@ using UnityEngine;
 public class AbrirCaja : MonoBehaviour
 {
     [Header("Configuracion")]
-    [SerializeField] private ParticleSystem particleSystemTools;
-    [SerializeField] private AudioClip cajaSFX;
+    [SerializeField] private ParticleSystem particleSystemTools;        // para asociar el sistema de partículas de cada caja en particular
+    [SerializeField] private AudioClip cajaSFX;                         // para asociar el clip de apertura de la caja
     private AudioSource audioCaja;
-    private SpriteRenderer miCaja;
+    private SpriteRenderer miCaja;                                      // se va a acceder al spriteRenderer de la caja
     private void OnEnable()
     {
         audioCaja = GetComponent<AudioSource>();
-        particleSystemTools.transform.position = gameObject.transform.position - new Vector3(0,-1f,0);
+        particleSystemTools.transform.position = gameObject.transform.position;  // se hace coincidir ambos centros (partículas y caja)
     }
     private void Update()
     {
         if (miCaja != null)
         {
-            if (!miCaja.enabled)
+            if (!miCaja.enabled)                    // si el spriteRenderer de la caja fue desactivado por la colisión (ver abajo)
             {
-                particleSystemTools.Play();
+                particleSystemTools.Play();         // activa el sistema de partículas con las herramientas
             }
-            if (!miCaja.enabled && !audioCaja.isPlaying)
+            if (!miCaja.enabled && !audioCaja.isPlaying)        // si además ya terminó de ejecutar el sonido de apertura de la caja
             {
-                gameObject.SetActive(false);
+                gameObject.SetActive(false);                    // se borra la caja
             }
         }
     }
@@ -35,14 +35,14 @@ public class AbrirCaja : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("Player"))
+        if (collision.gameObject.CompareTag("Player"))          // en caso de colisión con el jugador
         {
             Jugador jugador = collision.gameObject.GetComponent<Jugador>();
-            miCaja = gameObject.GetComponent<SpriteRenderer>();
-            if (jugador != null)                    // verifica si el componente Jugador no es null
+            miCaja = gameObject.GetComponent<SpriteRenderer>(); // se asigna el spriteRenderer del gameObject (la caja) a miCaja
+            if (jugador != null)                                // verifica si el componente Jugador no es null
             {
-                audioCaja.PlayOneShot(cajaSFX);
-                miCaja.enabled = false;
+                audioCaja.PlayOneShot(cajaSFX);                 // se activa el sonido de apertura de la caja
+                miCaja.enabled = false;                         // se desactiva el spriteRenderer de la caja (no se la borra todavía)
             }
         }
     }

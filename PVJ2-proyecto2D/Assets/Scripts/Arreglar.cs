@@ -10,8 +10,8 @@ public class Arreglar : MonoBehaviour
 {
     // Variables a configurar desde el editor
     [Header("Configuracion")]
-    [SerializeField] float puntos = 1f;            // puntos a adicionar a la energía del jugador
-    [SerializeField] private AudioClip toolSFX;
+    [SerializeField] float puntos = 1f;             // puntos a adicionar a la energía del jugador (configurable desde el inspector)
+    [SerializeField] private AudioClip toolSFX;     // para asociar el clip del sonido de levantar una herramienta
     private AudioSource audioTool;
     private void OnEnable()
     {
@@ -25,8 +25,8 @@ public class Arreglar : MonoBehaviour
             Jugador jugador = tool.GetComponent<Jugador>();
             if (jugador != null)                    // verifica si el componente Jugador no es null
             {
-                audioTool.Stop();
-                audioTool.PlayOneShot(toolSFX);
+                audioTool.Stop();                   // se detiene el sonido anterior (para que no se ejecute junto al siguiente)
+                audioTool.PlayOneShot(toolSFX);     // se ejecuta el sonido de levantar herramienta
                 jugador.ModificarEnergia(puntos);    // agrega los puntos a energía
                 Debug.Log("REPARACIONES REALIZADAS AL JUGADOR: " + puntos);
             }

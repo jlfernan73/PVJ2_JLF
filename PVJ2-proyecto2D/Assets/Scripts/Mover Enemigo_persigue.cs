@@ -43,7 +43,6 @@ public class MoverEnemigo_persigue : MonoBehaviour
         dragInicial = miRigidbody2D.drag;           // el drag inicial toma el valor del seteo original
     }
 
-    // Codigo ejecutado en cada frame del juego (Intervalo variable)
     private void Update()
     {
         rapidez = miRigidbody2D.velocity.magnitude;
@@ -59,6 +58,7 @@ public class MoverEnemigo_persigue : MonoBehaviour
             }
         }
 
+        // en caso que el jugador no haya explotado y aun esté activo, lo buscará
         if (jugador.GetComponent<SpriteRenderer>().enabled)
         {
             // en cualquier caso se posiciona buscando al auto del jugador
@@ -73,8 +73,10 @@ public class MoverEnemigo_persigue : MonoBehaviour
             }
         }
 
+        // definición de la condición para la única transición de las animaciones
         miAnimator.SetFloat("Rapidez", rapidez);
     }
+
     private void FixedUpdate()
     {
         if (acelerar)
@@ -83,13 +85,12 @@ public class MoverEnemigo_persigue : MonoBehaviour
             acelerar = false;
         }
     }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        //if (collision.gameObject.CompareTag("Player"))      // si hay colisión con el jugador
-        //{
+        // si hay colisión con cualquier objeto
             contador++;                                     // inicia el contador de espera
             miRigidbody2D.drag = 5f;                        // frena el auto
             minRapidez = 1f;                                // baja la rapidez mínima, para que no acelere
-        //}
     }                                           
 }

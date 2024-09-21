@@ -17,6 +17,7 @@ public class MoverJugador : MonoBehaviour
     [SerializeField] float aceleracion = 10f;       // modulo de la fuerza de arranque
     [SerializeField] float maxAngulo = 5.0f;        // máximo angulo de giro del auto al doblar
     [SerializeField] float maxRapidez = 20f;        // velocidad máxima que alcanza el auto al acelerar varias veces
+    //clips de los sonidos de distintas situaciones del auto
     [SerializeField] private AudioClip reversaSFX;
     [SerializeField] private AudioClip motorSFX;
     [SerializeField] private AudioClip explosionSFX;
@@ -30,31 +31,31 @@ public class MoverJugador : MonoBehaviour
     private float angulo = 0;                       // angulo de giro de las ruedas del automovil (respecto al eje del auto)
     private float deltaAngulo = 2f;                 // agregado de ángulo de las ruedas que se suma al angulo de giro
     private bool girando = false;                   // bandera para activacion del giro
-    private float volMotor = 0.1f;
-    private float pitchMotor = 1f;
+    private float volMotor = 0.1f;                  // se controla el volumen del sonido del motor
+    private float pitchMotor = 1f;                  // se controla la frecuencia de reproducción (que aumentará cuando acelere) 
 
-    // Variable para referenciar otro componente del objeto
+    // Variables para referenciar distintos componentes del objeto
     private Rigidbody2D miRigidbody2D;
     private SpriteRenderer miSprite;
     private Animator miAnimator;
     private AudioSource audioSource;
 
-    // Codigo ejecutado cuando el objeto se activa en el nivel
     private void OnEnable()
     {
         miRigidbody2D = GetComponent<Rigidbody2D>();
         miAnimator = GetComponent<Animator>();
         audioSource = GetComponent<AudioSource>();
-        audioSource.clip = motorSFX;
-        SonidoMotor();
-        audioSource.Play();
+        audioSource.clip = motorSFX;                // se carga el sonido del motor 
+        SonidoMotor();                              // se ejecuta el método que controla el sonido del motor
+        audioSource.Play();                         // se ejecuta el sonido
     }
 
-    // Codigo ejecutado en cada frame del juego (Intervalo variable)
     private void Update()
     {
         Jugador jugador = gameObject.GetComponent<Jugador>();
-        if (jugador.EstaVivo() && !jugador.AlcanzoMeta())
+
+        //si el jugador está vivo y aun no alcanzó la meta se habilita el control del auto
+        if (jugador.EstaVivo() && !jugador.AlcanzoMeta())       
         {
             girar = Input.GetAxis("Horizontal");
             mover = Input.GetAxis("Vertical");
@@ -95,24 +96,33 @@ public class MoverJugador : MonoBehaviour
                 direccion = transform.up.normalized;                                        // se lee la nueva dirección (normalizada) del auto
                 miRigidbody2D.velocity = sentido * direccion * rapidez;                     // se recalcula el vector velocidad con la nueva dirección
             }
+            // definición de las condiciones para las transiciones de las animaciones
             miAnimator.SetFloat("Giro", girar);
             miAnimator.SetBool("Avanza", (rapidez > 2f && sentido > 0));
             miAnimator.SetBool("Retrocede", (rapidez > 2f && sentido < 0));
 
             SonidoMotor();
         }
+
+        // definición de la condición de transición hacia la explosión
         miAnimator.SetBool("Explota", (jugador.GetEnergia() <= 0 && jugador.EstaVivo()));
+
+        // si se quedó sin energía pero aun no explotó, se lo hace explotar
         if (jugador.GetEnergia() <= 0 && jugador.EstaVivo())
         {
             audioSource.Stop();
             audioSource.volume = 1;
             audioSource.PlayOneShot(explosionSFX);
-            jugador.JugadorMuere();
+            jugador.JugadorExplota();                       
         }
+
+        // si ya explotó y se terminó la explosión, se borra el jugador
         if (!audioSource.isPlaying && !jugador.EstaVivo())
         {
             gameObject.SetActive(false);
         }
+
+        // si se alcanzó la meta y el auto aun no se borró
         if (jugador.AlcanzoMeta() && transform.gameObject.activeSelf)
         {
             RetirarAuto();
@@ -122,6 +132,7 @@ public class MoverJugador : MonoBehaviour
     private void FixedUpdate()
     {
         Jugador jugador = gameObject.GetComponent<Jugador>();
+        //aplicación de fuerza al acelerar sólo cuando el jugador está vivo y aun no alcanzó la meta
         if (jugador.EstaVivo() && !jugador.AlcanzoMeta())
         {
             if (mover > 0 && rapidez < maxRapidez)                  // si se presiona la tecla para acelerar 
@@ -133,42 +144,41 @@ public class MoverJugador : MonoBehaviour
             {
                 sentido = -1;
                 miRigidbody2D.AddForce(-direccion * 200f);          // aplica fuerza en la dirección reversa al auto
-                audioSource.pitch = 1;
+                audioSource.pitch = 1;                              // aplica condiciones de volumen y pitch normales
                 audioSource.volume = 1;
                 audioSource.PlayOneShot(reversaSFX);
             }
         }
     }
 
-    private void SonidoMotor()
+    private void SonidoMotor()                              // este método acondiciona el sonido del motor según la rapidez
     {
-        volMotor = 0.1f + rapidez / maxRapidez * 0.9f;
-        pitchMotor = 0.5f + rapidez / maxRapidez * 0.8f;
+        volMotor = 0.1f + rapidez / maxRapidez * 0.9f;      // el volumen aumentará a mayor rapidez (entre 0.1 y 1)
         audioSource.volume = volMotor;
-        if (sentido > 0)
+        pitchMotor = 0.5f + rapidez / maxRapidez * 0.8f;    // el pitch (frecuencia) aumentará a mayor rapidez (hasta 1.3)
+        if (sentido > 0)                                    // aunque sólo si no está retrocediendo
         {
             audioSource.pitch = pitchMotor;
         }
     }
 
-    private void RetirarAuto()
+    private void RetirarAuto()                          // este método se ejecuta cuando se llega a la meta, y saca el auto de pantalla
     {
-        //transform.Rotate(0, 0, 0);
-        direccion = new Vector3(0,1,0);
-        transform.up = direccion;        
-        if (GetComponent<Renderer>().isVisible)
+        direccion = new Vector3(0,1,0);                 // apunta el auto hacia arriba
+        transform.up = direccion;                       
+        if (GetComponent<Renderer>().isVisible)                 // si aun no salió de la pantalla lo lleva a su máxima velocidad
         {
             miRigidbody2D.velocity = direccion * maxRapidez;
         }
         else
-        {
+        {                                                       // si ya salió de la pantalla desactiva el objeto y detiene todo 
             audioSource.Stop();
             gameObject.SetActive(false);
         }
     }
 
-    public void OnAnimationEnd()
-    {
+    public void OnAnimationEnd()                                // método para desactivar el spriteRenderer al final de una animación
+    {                                                           // usado como evento al final de la animación de la explosión
         miSprite = gameObject.GetComponent<SpriteRenderer>();
         miSprite.enabled = false;
     }
