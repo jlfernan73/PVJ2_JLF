@@ -41,6 +41,20 @@ public class MoverEnemigo_persigue : MonoBehaviour
 
         minRapidez = rapidezMinima;                 // se transfiere el valor seteado de rapidez minima a la variables usada
         dragInicial = miRigidbody2D.drag;           // el drag inicial toma el valor del seteo original
+
+        if (jugador == null)
+        {
+            GameObject jugadorObject = GameObject.FindWithTag("Player");
+            if (jugadorObject != null)
+            {
+                jugador = jugadorObject.transform;
+            }
+            else
+            {
+                Debug.LogWarning("No se encontró el objeto jugador.");
+            }
+        }
+
     }
 
     private void Update()

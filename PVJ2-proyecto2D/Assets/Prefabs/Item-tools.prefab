@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 6874096953099937702}
   m_Layer: 9
   m_Name: Item-tools
-  m_TagString: Player
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -194,7 +194,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e36c18a0a59e2547969199028528d0b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  particleSystem: {fileID: 0}
+  particleSystemTools: {fileID: 0}
   cajaSFX: {fileID: 8300000, guid: 28c109f06f7a7664387cdc7580ba3106, type: 3}
 --- !u!82 &6874096953099937702
 AudioSource:
