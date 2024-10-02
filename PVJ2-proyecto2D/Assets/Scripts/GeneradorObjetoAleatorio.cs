@@ -14,16 +14,21 @@ public class GeneradorObjetoAleatorio : MonoBehaviour
     [Range(0.5f, 5f)]
     private float tiempoIntervalo;
 
+    private int contador = 0;       // lleva la cuenta de los objetos instanciados
+
     void Start()
     {
-        //InvokeRepeating(nameof(GenerarObjetoAleatorio), tiempoEspera, tiempoIntervalo);
     }
 
     void GenerarObjetoAleatorio()
     {
-        int indexAleatorio = Random.Range(0, objetosPrefabs.Length);
-        GameObject prefabAleatorio = objetosPrefabs[indexAleatorio];
-        Instantiate(prefabAleatorio, transform.position, Quaternion.identity);
+        if (contador < 10)  // no se instanciarán más de 10
+        {
+            int indexAleatorio = Random.Range(0, objetosPrefabs.Length);
+            GameObject prefabAleatorio = objetosPrefabs[indexAleatorio];
+            Instantiate(prefabAleatorio, transform.position, Quaternion.identity);
+            contador++;
+        }
     }
 
     private void OnBecameInvisible()
