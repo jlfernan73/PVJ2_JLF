@@ -53,7 +53,6 @@ public class MoverJugador : MonoBehaviour
     private void Update()
     {
         Jugador jugador = gameObject.GetComponent<Jugador>();
-
         //si el jugador está vivo y aun no alcanzó la meta se habilita el control del auto
         if (jugador.EstaVivo() && !jugador.AlcanzoMeta())       
         {
@@ -153,12 +152,16 @@ public class MoverJugador : MonoBehaviour
 
     private void SonidoMotor()                              // este método acondiciona el sonido del motor según la rapidez
     {
-        volMotor = 0.1f + rapidez / maxRapidez * 0.9f;      // el volumen aumentará a mayor rapidez (entre 0.1 y 1)
-        audioSource.volume = volMotor;
-        pitchMotor = 0.5f + rapidez / maxRapidez * 0.8f;    // el pitch (frecuencia) aumentará a mayor rapidez (hasta 1.3)
-        if (sentido > 0)                                    // aunque sólo si no está retrocediendo
+        Jugador jugador = gameObject.GetComponent<Jugador>();
+        if (jugador.EstaVivo())
         {
-            audioSource.pitch = pitchMotor;
+            volMotor = 0.1f + rapidez / maxRapidez * 0.9f;      // el volumen aumentará a mayor rapidez (entre 0.1 y 1)
+            audioSource.volume = volMotor;
+            pitchMotor = 0.5f + rapidez / maxRapidez * 0.8f;    // el pitch (frecuencia) aumentará a mayor rapidez (hasta 1.3)
+            if (sentido > 0)                                    // aunque sólo si no está retrocediendo
+            {
+                audioSource.pitch = pitchMotor;
+            }
         }
     }
 

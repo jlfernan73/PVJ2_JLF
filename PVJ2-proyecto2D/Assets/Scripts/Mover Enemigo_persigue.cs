@@ -49,12 +49,7 @@ public class MoverEnemigo_persigue : MonoBehaviour
             {
                 jugador = jugadorObject.transform;
             }
-            else
-            {
-                Debug.LogWarning("No se encontró el objeto jugador.");
-            }
         }
-
     }
 
     private void Update()
