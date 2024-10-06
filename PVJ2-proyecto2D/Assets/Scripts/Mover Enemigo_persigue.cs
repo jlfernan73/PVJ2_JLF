@@ -42,9 +42,9 @@ public class MoverEnemigo_persigue : MonoBehaviour
         minRapidez = rapidezMinima;                 // se transfiere el valor seteado de rapidez minima a la variables usada
         dragInicial = miRigidbody2D.drag;           // el drag inicial toma el valor del seteo original
 
-        if (jugador == null)
+        if (jugador == null)                                                //en caso que no se haya asignado desde el inspector un transform jugador al prefab
         {
-            GameObject jugadorObject = GameObject.FindWithTag("Player");
+            GameObject jugadorObject = GameObject.FindWithTag("Player");    //toma el gameObject de Player, para obtener su transform
             if (jugadorObject != null)
             {
                 jugador = jugadorObject.transform;
