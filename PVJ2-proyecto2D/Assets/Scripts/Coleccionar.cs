@@ -6,28 +6,34 @@ using static UnityEditor.Progress;
 
 public class Coleccionar : MonoBehaviour
 {
-    //[SerializeField] private List<GameObject> coleccionables;
     [SerializeField] private GameObject bolsa;
+    [SerializeField] private AudioClip colectarSFX;             // para asociar el clip del sonido de levantar el coleccionable
+    [SerializeField] private AudioClip usarColeccionableSFX;    // para asociar el clip del sonido de usar el coleccionable
 
     private Dictionary<String, GameObject> inventario;
     private GameObject bumper = null;
+    private GameObject nuevoColeccionable = null;
     private bool bumperActive = false;
     [SerializeField] private float bumperConteo = 0f;
 
+    private AudioSource audioColeccionable;
+    private SpriteRenderer miColeccionable;              // se va a acceder al spriteRenderer del coleccionable 
+
     void Awake()
     {
-        //coleccionables = new List<GameObject>();
         inventario = new Dictionary<String, GameObject>();
+        audioColeccionable = bolsa.GetComponent<AudioSource>();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (!collision.gameObject.CompareTag("Coleccionable")) {  return; }
 
-        GameObject nuevoColeccionable = collision.gameObject;
+        nuevoColeccionable = collision.gameObject;
         if (inventario.ContainsKey(nuevoColeccionable.name)) {  return; }
-        nuevoColeccionable.SetActive(false);
-        //coleccionables.Add(nuevoColeccionable);
+        miColeccionable = nuevoColeccionable.GetComponent<SpriteRenderer>();
+        audioColeccionable.PlayOneShot(colectarSFX);         // se ejecuta el sonido de recolección
+        miColeccionable.enabled = false;                           // se desactiva el spriteRenderer del coleccionable (sin borrarlo)
         inventario.Add(nuevoColeccionable.name, nuevoColeccionable);
         nuevoColeccionable.transform.SetParent(bolsa.transform);
     }
@@ -44,6 +50,12 @@ public class Coleccionar : MonoBehaviour
             bumperConteo -= 0.04f;
             if (bumperConteo < 0) DesactivarBumper();
         }
+        if (miColeccionable != null && !miColeccionable.enabled && !audioColeccionable.isPlaying)     //si se ha desactivado el spriteRenderer y la música ya terminó
+        {
+            nuevoColeccionable.SetActive(false);                        // se borra el coleccionable
+            miColeccionable = null;
+        }
+
     }
 
     private void UsarInventario(GameObject item)
@@ -56,9 +68,9 @@ public class Coleccionar : MonoBehaviour
 
         if (item.name == "Nitro") { movimientoJugador.activarNitro(); }
 
-        if (item.name == "Bumper") {
-            ActivarBumper(item);
-        }
+        if (item.name == "Bumper") { ActivarBumper(item);}
+
+        audioColeccionable.PlayOneShot(usarColeccionableSFX);         // se ejecuta el sonido de uso del coleccionable
     }
 
     private void ActivarBumper(GameObject item)
@@ -68,6 +80,7 @@ public class Coleccionar : MonoBehaviour
         item.transform.localScale = new Vector3(1.4f, 1.4f, 1f);
         item.transform.position = transform.position;
         bumper = item;
+        item.GetComponent<SpriteRenderer>().enabled = true;
         bumper.SetActive(true);
         bumperActive = true;
         bumperConteo = 100;
