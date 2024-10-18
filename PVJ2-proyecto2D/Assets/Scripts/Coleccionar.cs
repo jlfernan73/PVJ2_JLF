@@ -12,6 +12,7 @@ public class Coleccionar : MonoBehaviour
     private Dictionary<String, GameObject> inventario;
     private GameObject bumper = null;
     private bool bumperActive = false;
+    [SerializeField] private float bumperConteo = 0f;
 
     void Awake()
     {
@@ -40,6 +41,8 @@ public class Coleccionar : MonoBehaviour
         {
             bumper.transform.position = transform.position;
             bumper.transform.rotation = transform.rotation;
+            bumperConteo -= 0.04f;
+            if (bumperConteo < 0) DesactivarBumper();
         }
     }
 
@@ -54,15 +57,27 @@ public class Coleccionar : MonoBehaviour
         if (item.name == "Nitro") { movimientoJugador.activarNitro(); }
 
         if (item.name == "Bumper") {
-            item.GetComponent<CapsuleCollider2D>().isTrigger = false;
-            item.GetComponent<CapsuleCollider2D>().excludeLayers = LayerMask.GetMask("Default");
-            item.transform.localScale = new Vector3(1.4f,1.4f,1f);
-            item.transform.position = transform.position;
-            //jugador.GetComponent<CapsuleCollider2D>().excludeLayers = LayerMask.GetMask("Enemigos");
-            bumper = item;
-            bumper.SetActive(true);
-            bumperActive = true;
+            ActivarBumper(item);
         }
+    }
+
+    private void ActivarBumper(GameObject item)
+    {
+        item.GetComponent<CapsuleCollider2D>().isTrigger = false;
+        item.GetComponent<CapsuleCollider2D>().excludeLayers = LayerMask.GetMask("Default");
+        item.transform.localScale = new Vector3(1.4f, 1.4f, 1f);
+        item.transform.position = transform.position;
+        bumper = item;
+        bumper.SetActive(true);
+        bumperActive = true;
+        bumperConteo = 100;
+    }
+
+    private void DesactivarBumper()
+    {
+        bumperActive = false;
+        bumper.SetActive(false);
+        bumperConteo = 0;
     }
 
 }

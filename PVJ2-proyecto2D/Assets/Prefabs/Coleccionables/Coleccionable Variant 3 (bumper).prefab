@@ -34,23 +34,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5144151206834204090, guid: 30eebca4d84fd304d8a99ed1a242f58a, type: 3}
       propertyPath: m_LocalScale.x
-      value: 1.2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5144151206834204090, guid: 30eebca4d84fd304d8a99ed1a242f58a, type: 3}
       propertyPath: m_LocalScale.y
-      value: 1.2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5144151206834204090, guid: 30eebca4d84fd304d8a99ed1a242f58a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -56.86139
+      value: 6.56139
       objectReference: {fileID: 0}
     - target: {fileID: 5144151206834204090, guid: 30eebca4d84fd304d8a99ed1a242f58a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -76.829254
+      value: 8.629257
       objectReference: {fileID: 0}
     - target: {fileID: 5144151206834204090, guid: 30eebca4d84fd304d8a99ed1a242f58a, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -0.10723095
       objectReference: {fileID: 0}
     - target: {fileID: 5144151206834204090, guid: 30eebca4d84fd304d8a99ed1a242f58a, type: 3}
       propertyPath: m_LocalRotation.w
@@ -58,15 +58,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5144151206834204090, guid: 30eebca4d84fd304d8a99ed1a242f58a, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 5144151206834204090, guid: 30eebca4d84fd304d8a99ed1a242f58a, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 5144151206834204090, guid: 30eebca4d84fd304d8a99ed1a242f58a, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 5144151206834204090, guid: 30eebca4d84fd304d8a99ed1a242f58a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -110,13 +110,13 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2706231981762151740}
-  m_BodyType: 0
+  m_BodyType: 1
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 100
+  m_Mass: 1
   m_LinearDrag: 0
-  m_AngularDrag: 0.05
+  m_AngularDrag: 0.1
   m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -126,6 +126,6 @@ Rigidbody2D:
     serializedVersion: 2
     m_Bits: 0
   m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_SleepingMode: 0
+  m_CollisionDetection: 1
   m_Constraints: 0

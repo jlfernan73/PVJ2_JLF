@@ -35,6 +35,7 @@ public class MoverJugador : MonoBehaviour
     private float volMotor = 0.1f;                  // se controla el volumen del sonido del motor
     private float pitchMotor = 1f;                  // se controla la frecuencia de reproducción (que aumentará cuando acelere)
     private float maxRapidezInicial;
+    private float maxAnguloInicial;
     private float aceleracionInicial;
     private bool nitro = false;
 
@@ -52,6 +53,7 @@ public class MoverJugador : MonoBehaviour
         audioSource.clip = motorSFX;                // se carga el sonido del motor 
         SonidoMotor();                              // se ejecuta el método que controla el sonido del motor
         audioSource.Play();                         // se ejecuta el sonido
+        maxAnguloInicial = maxAngulo;
         maxRapidezInicial = maxRapidez;
         aceleracionInicial = aceleracion;
     }
@@ -66,11 +68,11 @@ public class MoverJugador : MonoBehaviour
             mover = Input.GetAxis("Vertical");
             if (nitro)
             {
-                if (mover == 0) { mover = 1; }
-                nitroTank -= 0.1f;
+                nitroTank -= 0.05f;
                 if(nitroTank < 0) { 
                     nitro = false;
                     maxRapidez = maxRapidezInicial;
+                    maxAngulo = maxAnguloInicial;
                     aceleracion = aceleracionInicial;
                 }
             }
@@ -209,8 +211,9 @@ public class MoverJugador : MonoBehaviour
     public void activarNitro()
     {
         nitro = true;
-        maxRapidez = maxRapidezInicial*1.5f;
-        aceleracion = aceleracionInicial * 3;
+        maxRapidez = maxRapidezInicial*1.25f;
+        maxAngulo = maxAnguloInicial + 5;
+        aceleracion = aceleracionInicial * 2;
         nitroTank = 100f;
     }
 }

@@ -78,7 +78,8 @@ public class Jugador : MonoBehaviour
         items++;
         if (items == itemsRequeridos) 
         {
-            barrera.GetComponent<Rigidbody2D>().mass = 1f;      //se aliviana la valla para poder pasar a la meta
+            barrera.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;      //se hace la valla dinámica poder moverla
+            barrera.GetComponent<Rigidbody2D>().mass = 1.0f;      //se aliviana la valla para poder pasar a la meta
         }
     }
 
