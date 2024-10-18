@@ -33,7 +33,7 @@ public class Colectar : MonoBehaviour
             if (jugador != null)                                // verifica si el componente Jugador no es null
             {
                 audioDiamante.PlayOneShot(diamanteSFX);         // se ejecuta el sonido de recolección de diamante
-                jugador.AgregarItem();                          // suma uno a los ítems recolectados
+                jugador.AgregarDiamantes();                          // suma uno a los ítems recolectados
                 Debug.Log("ITEM COLECTADO");
                 miDiamante.enabled = false;                     // se desactiva el spriteRenderer del diamante (sin borrarlo)
             }
