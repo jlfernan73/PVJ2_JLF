@@ -1,0 +1,99 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &1849037117220258903
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 772029355102694487, guid: 43e90dd5dd726f1468a45c4378122694, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: f85d5d269e75cc04f92f461c11b0a518, type: 3}
+    - target: {fileID: 1828883611192415925, guid: 43e90dd5dd726f1468a45c4378122694, type: 3}
+      propertyPath: aceleracion
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2484723991872070591, guid: 43e90dd5dd726f1468a45c4378122694, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -33.90213
+      objectReference: {fileID: 0}
+    - target: {fileID: 2484723991872070591, guid: 43e90dd5dd726f1468a45c4378122694, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -5.9153557
+      objectReference: {fileID: 0}
+    - target: {fileID: 2484723991872070591, guid: 43e90dd5dd726f1468a45c4378122694, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.18458578
+      objectReference: {fileID: 0}
+    - target: {fileID: 2484723991872070591, guid: 43e90dd5dd726f1468a45c4378122694, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2484723991872070591, guid: 43e90dd5dd726f1468a45c4378122694, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2484723991872070591, guid: 43e90dd5dd726f1468a45c4378122694, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2484723991872070591, guid: 43e90dd5dd726f1468a45c4378122694, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2484723991872070591, guid: 43e90dd5dd726f1468a45c4378122694, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2484723991872070591, guid: 43e90dd5dd726f1468a45c4378122694, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2484723991872070591, guid: 43e90dd5dd726f1468a45c4378122694, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2917704987627071065, guid: 43e90dd5dd726f1468a45c4378122694, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 83ee248d8391a7a4f8de033644c56547, type: 2}
+    - target: {fileID: 4146936783516192701, guid: 43e90dd5dd726f1468a45c4378122694, type: 3}
+      propertyPath: m_Name
+      value: Enemigo2bis Variant
+      objectReference: {fileID: 0}
+    - target: {fileID: 4146936783516192701, guid: 43e90dd5dd726f1468a45c4378122694, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 4146936783516192701, guid: 43e90dd5dd726f1468a45c4378122694, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
+      objectReference: {fileID: 0}
+    - target: {fileID: 6164983173501160349, guid: 43e90dd5dd726f1468a45c4378122694, type: 3}
+      propertyPath: m_UsedByEffector
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6530995491540696476, guid: 43e90dd5dd726f1468a45c4378122694, type: 3}
+      propertyPath: m_LinearDrag
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9137392367738891143, guid: 43e90dd5dd726f1468a45c4378122694, type: 3}
+      propertyPath: espera
+      value: 250
+      objectReference: {fileID: 0}
+    - target: {fileID: 9137392367738891143, guid: 43e90dd5dd726f1468a45c4378122694, type: 3}
+      propertyPath: aceleracion
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 9137392367738891143, guid: 43e90dd5dd726f1468a45c4378122694, type: 3}
+      propertyPath: rapidezMinima
+      value: 20
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 43e90dd5dd726f1468a45c4378122694, type: 3}

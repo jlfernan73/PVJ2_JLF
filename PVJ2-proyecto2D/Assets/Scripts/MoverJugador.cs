@@ -17,11 +17,12 @@ public class MoverJugador : MonoBehaviour
     [SerializeField] float aceleracion = 10f;       // modulo de la fuerza de arranque
     [SerializeField] float maxAngulo = 5.0f;        // máximo angulo de giro del auto al doblar
     [SerializeField] float maxRapidez = 20f;        // velocidad máxima que alcanza el auto al acelerar varias veces
+    [SerializeField] private float nitroTank = 100f;
     //clips de los sonidos de distintas situaciones del auto
     [SerializeField] private AudioClip reversaSFX;
     [SerializeField] private AudioClip motorSFX;
     [SerializeField] private AudioClip explosionSFX;
-
+    
     // Variables de uso interno en el script
     private float girar;                            // adquiere valores al presionar las flechas laterals (o A/D) para frenar
     private float mover;                            // adquiere valores al presionar las flecha up/down (o W/S) para acelerar
@@ -32,7 +33,10 @@ public class MoverJugador : MonoBehaviour
     private float deltaAngulo = 2f;                 // agregado de ángulo de las ruedas que se suma al angulo de giro
     private bool girando = false;                   // bandera para activacion del giro
     private float volMotor = 0.1f;                  // se controla el volumen del sonido del motor
-    private float pitchMotor = 1f;                  // se controla la frecuencia de reproducción (que aumentará cuando acelere) 
+    private float pitchMotor = 1f;                  // se controla la frecuencia de reproducción (que aumentará cuando acelere)
+    private float maxRapidezInicial;
+    private float aceleracionInicial;
+    private bool nitro = false;
 
     // Variables para referenciar distintos componentes del objeto
     private Rigidbody2D miRigidbody2D;
@@ -48,6 +52,8 @@ public class MoverJugador : MonoBehaviour
         audioSource.clip = motorSFX;                // se carga el sonido del motor 
         SonidoMotor();                              // se ejecuta el método que controla el sonido del motor
         audioSource.Play();                         // se ejecuta el sonido
+        maxRapidezInicial = maxRapidez;
+        aceleracionInicial = aceleracion;
     }
 
     private void Update()
@@ -58,6 +64,16 @@ public class MoverJugador : MonoBehaviour
         {
             girar = Input.GetAxis("Horizontal");
             mover = Input.GetAxis("Vertical");
+            if (nitro)
+            {
+                if (mover == 0) { mover = 1; }
+                nitroTank -= 0.1f;
+                if(nitroTank < 0) { 
+                    nitro = false;
+                    maxRapidez = maxRapidezInicial;
+                    aceleracion = aceleracionInicial;
+                }
+            }
             rapidez = miRigidbody2D.velocity.magnitude;     // se obtiene el módulo del vector velocidad, para mantenerlo en el vector al girar
             direccion = transform.up.normalized;            // se lee la dirección (normalizada) del auto
             if (girar != 0)                                 // si se presiona las teclas para girar
@@ -101,6 +117,8 @@ public class MoverJugador : MonoBehaviour
             miAnimator.SetBool("Retrocede", (rapidez > 2f && sentido < 0));
 
             SonidoMotor();
+            float combustibleGastado = -0.0001f * (1 + 5 * rapidez);
+            jugador.modificarCombustible(combustibleGastado);
         }
 
         // definición de la condición de transición hacia la explosión
@@ -157,7 +175,9 @@ public class MoverJugador : MonoBehaviour
         {
             volMotor = 0.1f + rapidez / maxRapidez * 0.9f;      // el volumen aumentará a mayor rapidez (entre 0.1 y 1)
             audioSource.volume = volMotor;
-            pitchMotor = 0.5f + rapidez / maxRapidez * 0.8f;    // el pitch (frecuencia) aumentará a mayor rapidez (hasta 1.3)
+            float rapidezUp = Mathf.Abs(Vector2.Dot(miRigidbody2D.velocity, transform.up) / transform.up.magnitude);
+            if (rapidezUp > maxRapidez) { rapidezUp = maxRapidez; }
+            pitchMotor = 0.5f + rapidezUp / maxRapidez * 0.8f;    // el pitch (frecuencia) aumentará a mayor rapidez (hasta 1.3)
             if (sentido > 0)                                    // aunque sólo si no está retrocediendo
             {
                 audioSource.pitch = pitchMotor;
@@ -184,5 +204,13 @@ public class MoverJugador : MonoBehaviour
     {                                                           // usado como evento al final de la animación de la explosión
         miSprite = gameObject.GetComponent<SpriteRenderer>();
         miSprite.enabled = false;
+    }
+
+    public void activarNitro()
+    {
+        nitro = true;
+        maxRapidez = maxRapidezInicial*1.5f;
+        aceleracion = aceleracionInicial * 3;
+        nitroTank = 100f;
     }
 }

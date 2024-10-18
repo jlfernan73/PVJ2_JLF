@@ -9,7 +9,9 @@ using UnityEditor;
 public class Jugador : MonoBehaviour
 {
     [Header("Configuracion")]
-    [SerializeField] private float energia = 100f;      //energía del jugador
+    [SerializeField] private float energia = 100f;      //energía inicial del jugador
+    [SerializeField] private float combustible = 100f;      //combustible inicial del jugador
+
     [SerializeField] private int items = 0;             //ítems colectados
     [SerializeField] private int itemsRequeridos = 100;             //ítems a colectar para poder ir a la meta
 
@@ -62,6 +64,13 @@ public class Jugador : MonoBehaviour
             humeando = false;
             particleSystemHumo.Stop();
         }
+    }
+
+    public void modificarCombustible(float cantidad)
+    {
+        combustible += cantidad;
+        if (combustible > 100) { combustible = 100; }
+        if (combustible < 0) {  combustible = 0; }
     }
 
     public void AgregarItem()                   // método público para agregar un ítem (usado para los diamantes)
