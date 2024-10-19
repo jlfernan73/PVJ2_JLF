@@ -2,9 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// Progresión del jugador con variables definidas via Scriptable Object
+
+
 public class Progresion : MonoBehaviour
 {
-    /*[SerializeField]*/
     private PerfilJugador perfilJugador;
     public PerfilJugador PerfilJugador { get => perfilJugador; }
 
@@ -30,8 +32,11 @@ public class Progresion : MonoBehaviour
 
     public void SubirNivel()
     {
+        Coleccionar cofreDiamantes = GetComponent<Coleccionar>();
+        cofreDiamantes.EntregarDiamantes(PerfilJugador.ExperienciaProximoNivel);
         PerfilJugador.Nivel++;
         PerfilJugador.Experiencia -= PerfilJugador.ExperienciaProximoNivel;
         PerfilJugador.ExperienciaProximoNivel += PerfilJugador.EscalarExperiencia;
+        Debug.Log("QUEDARON EN TU COFRE " + PerfilJugador.Experiencia + " DIAMANTES");
     }
 }

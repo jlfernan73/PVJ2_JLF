@@ -14,3 +14,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   experienciaProximoNivel: 150
   escalarExperiencia: 50
+  aceleracion: 30
+  consumoCombustible: 0.005
+  consumoObjeto: 2.5
+  maxAngulo: 60
+  maxRapidez: 17
+  reparacion: 5
+  energia: 72
+  combustible: 75.74472
+  nitroTank: 0
+  bumperConteo: 0
+  reversaSFX: {fileID: 8300000, guid: 25b0ccfe174143a4a9d93671743dc6ef, type: 3}
+  motorSFX: {fileID: 8300000, guid: 6914594e1f5434f4fb53921d090d19fe, type: 3}
+  explosionSFX: {fileID: 8300000, guid: 7169a0517054b9b43b9711f430610acc, type: 3}
+  diamanteSFX: {fileID: 8300000, guid: f177d1a845a14934ca3f18c560a73c01, type: 3}
+  colectarSFX: {fileID: 8300000, guid: 0fda8dbc4ba4ffb4a9ca56f442fd631f, type: 3}
+  usarColeccionableSFX: {fileID: 8300000, guid: 9d597d2a93040ed49b34c89932cc68af, type: 3}
+  toolSFX: {fileID: 8300000, guid: 9b6cf3d8d4f853a499135e480647ea6a, type: 3}

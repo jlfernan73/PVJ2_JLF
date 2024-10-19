@@ -9,20 +9,13 @@ using static UnityEngine.RuleTile.TilingRuleOutput;
 // clase para mover el automovil del jugador al presionar las cuatro teclas de desplazamiento
 // el auto acelera hacia adelante/atras con las flechas up/down (o W/S), y gira con las flechas laterales (o A/D)
 // el control es complejo para una sola mano, por eso conviene combinar (por ej. flechas laterales y W/S)
+// Contiene variables definidas via Scriptable Object
 
 public class MoverJugador : MonoBehaviour
 {
-    // Variables a configurar desde el editor
-    [Header("Monitoreo")]
-    [SerializeField] float aceleracion = 10f;       // modulo de la fuerza de arranque
-    [SerializeField] float maxAngulo = 5.0f;        // máximo angulo de giro del auto al doblar
-    [SerializeField] float maxRapidez = 20f;        // velocidad máxima que alcanza el auto al acelerar varias veces
-    [SerializeField] private float nitroTank = 100f;
-    //clips de los sonidos de distintas situaciones del auto
-    [SerializeField] private AudioClip reversaSFX;
-    [SerializeField] private AudioClip motorSFX;
-    [SerializeField] private AudioClip explosionSFX;
-    
+    private PerfilJugador perfilJugador;
+    public PerfilJugador PerfilJugador { get => perfilJugador; }
+
     // Variables de uso interno en el script
     private float girar;                            // adquiere valores al presionar las flechas laterals (o A/D) para frenar
     private float mover;                            // adquiere valores al presionar las flecha up/down (o W/S) para acelerar
@@ -47,15 +40,16 @@ public class MoverJugador : MonoBehaviour
 
     private void OnEnable()
     {
+        perfilJugador = GetComponent<Jugador>().PerfilJugador;
         miRigidbody2D = GetComponent<Rigidbody2D>();
         miAnimator = GetComponent<Animator>();
         audioSource = GetComponent<AudioSource>();
-        audioSource.clip = motorSFX;                // se carga el sonido del motor 
+        audioSource.clip = PerfilJugador.MotorSFX;                // se carga el sonido del motor 
         SonidoMotor();                              // se ejecuta el método que controla el sonido del motor
         audioSource.Play();                         // se ejecuta el sonido
-        maxAnguloInicial = maxAngulo;
-        maxRapidezInicial = maxRapidez;
-        aceleracionInicial = aceleracion;
+        maxAnguloInicial = PerfilJugador.MaxAngulo;
+        maxRapidezInicial = PerfilJugador.MaxRapidez;
+        aceleracionInicial = PerfilJugador.Aceleracion;
     }
 
     private void Update()
@@ -68,12 +62,13 @@ public class MoverJugador : MonoBehaviour
             mover = Input.GetAxis("Vertical");
             if (nitro)
             {
-                nitroTank -= 0.05f;
-                if(nitroTank < 0) { 
+                PerfilJugador.NitroTank -= PerfilJugador.ConsumoObj * Time.deltaTime * 1.5f;
+                if(PerfilJugador.NitroTank < 0) { 
                     nitro = false;
-                    maxRapidez = maxRapidezInicial;
-                    maxAngulo = maxAnguloInicial;
-                    aceleracion = aceleracionInicial;
+                    PerfilJugador.NitroTank = 0;
+                    PerfilJugador.MaxRapidez = maxRapidezInicial;
+                    PerfilJugador.MaxAngulo = maxAnguloInicial;
+                    PerfilJugador.Aceleracion = aceleracionInicial;
                 }
             }
             rapidez = miRigidbody2D.velocity.magnitude;     // se obtiene el módulo del vector velocidad, para mantenerlo en el vector al girar
@@ -81,11 +76,11 @@ public class MoverJugador : MonoBehaviour
             if (girar != 0)                                 // si se presiona las teclas para girar
             {
                 girando = true;                             // depende de la dirección de giro, se le agrega un delta al ángulo
-                if (girar > 0 && angulo >= -1 * maxAngulo)  // siempre que no se haya superado el máximo angulo de giro posible
+                if (girar > 0 && angulo >= -1 * PerfilJugador.MaxAngulo)  // siempre que no se haya superado el máximo angulo de giro posible
                 {
                     angulo -= deltaAngulo;
                 }
-                if (girar < 0 && angulo <= maxAngulo)
+                if (girar < 0 && angulo <= PerfilJugador.MaxAngulo)
                 {
                     angulo += deltaAngulo;
                 }
@@ -119,7 +114,7 @@ public class MoverJugador : MonoBehaviour
             miAnimator.SetBool("Retrocede", (rapidez > 2f && sentido < 0));
 
             SonidoMotor();
-            float combustibleGastado = -0.0001f * (1 + 5 * rapidez);
+            float combustibleGastado = -PerfilJugador.ConsumoComb * (1 + 5 * rapidez) * Time.deltaTime;
             jugador.modificarCombustible(combustibleGastado);
         }
 
@@ -131,7 +126,7 @@ public class MoverJugador : MonoBehaviour
         {
             audioSource.Stop();
             audioSource.volume = 1;
-            audioSource.PlayOneShot(explosionSFX);
+            audioSource.PlayOneShot(PerfilJugador.ExplosionSFX);
             jugador.JugadorExplota();                       
         }
 
@@ -154,18 +149,18 @@ public class MoverJugador : MonoBehaviour
         //aplicación de fuerza al acelerar sólo cuando el jugador está vivo y aun no alcanzó la meta
         if (jugador.EstaVivo() && !jugador.AlcanzoMeta())
         {
-            if (mover > 0 && rapidez < maxRapidez)                  // si se presiona la tecla para acelerar 
+            if (mover > 0 && rapidez < PerfilJugador.MaxRapidez)                  // si se presiona la tecla para acelerar 
             {
                 sentido = 1;
-                miRigidbody2D.AddForce(direccion * aceleracion);    // aplica fuerza en la dirección del auto
+                miRigidbody2D.AddForce(direccion * PerfilJugador.Aceleracion);    // aplica fuerza en la dirección del auto
             }
-            if (mover < 0 && rapidez < maxRapidez / 2)                // para dar marcha atrás
+            if (mover < 0 && rapidez < PerfilJugador.MaxRapidez / 2)                // para dar marcha atrás
             {
                 sentido = -1;
                 miRigidbody2D.AddForce(-direccion * 200f);          // aplica fuerza en la dirección reversa al auto
                 audioSource.pitch = 1;                              // aplica condiciones de volumen y pitch normales
                 audioSource.volume = 1;
-                audioSource.PlayOneShot(reversaSFX);
+                audioSource.PlayOneShot(PerfilJugador.ReversaSFX);
             }
         }
     }
@@ -175,11 +170,11 @@ public class MoverJugador : MonoBehaviour
         Jugador jugador = gameObject.GetComponent<Jugador>();
         if (jugador.EstaVivo())
         {
-            volMotor = 0.1f + rapidez / maxRapidez * 0.9f;      // el volumen aumentará a mayor rapidez (entre 0.1 y 1)
+            volMotor = 0.1f + rapidez / PerfilJugador.MaxRapidez * 0.9f;      // el volumen aumentará a mayor rapidez (entre 0.1 y 1)
             audioSource.volume = volMotor;
             float rapidezUp = Mathf.Abs(Vector2.Dot(miRigidbody2D.velocity, transform.up) / transform.up.magnitude);
-            if (rapidezUp > maxRapidez) { rapidezUp = maxRapidez; }
-            pitchMotor = 0.5f + rapidezUp / maxRapidez * 0.8f;    // el pitch (frecuencia) aumentará a mayor rapidez (hasta 1.3)
+            if (rapidezUp > PerfilJugador.MaxRapidez) { rapidezUp = PerfilJugador.MaxRapidez; }
+            pitchMotor = 0.5f + rapidezUp / PerfilJugador.MaxRapidez * 0.8f;    // el pitch (frecuencia) aumentará a mayor rapidez (hasta 1.3)
             if (sentido > 0)                                    // aunque sólo si no está retrocediendo
             {
                 audioSource.pitch = pitchMotor;
@@ -193,7 +188,7 @@ public class MoverJugador : MonoBehaviour
         transform.up = direccion;                       
         if (GetComponent<Renderer>().isVisible)                 // si aun no salió de la pantalla lo lleva a su máxima velocidad
         {
-            miRigidbody2D.velocity = direccion * maxRapidez;
+            miRigidbody2D.velocity = direccion * PerfilJugador.MaxRapidez;
         }
         else
         {                                                       // si ya salió de la pantalla desactiva el objeto y detiene todo 
@@ -211,9 +206,9 @@ public class MoverJugador : MonoBehaviour
     public void activarNitro()
     {
         nitro = true;
-        maxRapidez = maxRapidezInicial*1.25f;
-        maxAngulo = maxAnguloInicial + 5;
-        aceleracion = aceleracionInicial * 2;
-        nitroTank = 100f;
+        PerfilJugador.MaxRapidez = maxRapidezInicial*1.25f;
+        PerfilJugador.MaxAngulo = maxAnguloInicial + 5;
+        PerfilJugador.Aceleracion = aceleracionInicial * 2;
+        PerfilJugador.NitroTank = 100f;
     }
 }

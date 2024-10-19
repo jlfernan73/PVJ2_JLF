@@ -4,23 +4,28 @@ using System.Collections.Generic;
 using UnityEngine;
 using static UnityEditor.Progress;
 
+// clase para colectar ítems en Diccionario (objetos) y en una Cola (diamantes)
+// Diccionario: Inventario con 3 objetos (sólo puede colectar uno de cada uno en la bolsa) que se activan con los números
+//              1: Recarga de combustible; 2: Potenciador de Nitro; 3: Bumper (protege de choques con otros autos)
+// Cola: Diamantes necesarios para pasar de nivel (se almacenan en el cofre y se extraen de la cola para destruirlos al pasar de nivel)
+
 public class Coleccionar : MonoBehaviour
 {
+    private PerfilJugador perfilJugador;
+    public PerfilJugador PerfilJugador { get => perfilJugador; }
+
     [SerializeField] private GameObject bolsa;
     [SerializeField] private GameObject cofre;
-    [SerializeField] private AudioClip diamanteSFX;             // para asociar el clip del sonido de levantar diamante
-    [SerializeField] private AudioClip colectarSFX;             // para asociar el clip del sonido de levantar el coleccionable
-    [SerializeField] private AudioClip usarColeccionableSFX;    // para asociar el clip del sonido de usar el coleccionable
 
     private Dictionary<String, GameObject> inventario;
-    private List<GameObject> diamantes;
+    private Queue<GameObject> diamantes;
+
     private GameObject bumper = null;
     private GameObject nuevoColeccionable = null;
     private GameObject nuevoDiamante = null;
     private SpriteRenderer miColeccionable;             // se va a acceder al spriteRenderer del coleccionable 
     private SpriteRenderer miDiamante;                  // se va a acceder al spriteRenderer del diamante 
     private bool bumperActive = false;
-    [SerializeField] private float bumperConteo = 0f;
 
     private AudioSource audioColeccionable;
     private AudioSource audioDiamante;
@@ -29,12 +34,13 @@ public class Coleccionar : MonoBehaviour
 
     void Awake()
     {
+        perfilJugador = GetComponent<Jugador>().PerfilJugador;
         inventario = new Dictionary<String, GameObject>();
-        diamantes = new List<GameObject>();
+        diamantes = new Queue<GameObject>();
         audioColeccionable = bolsa.GetComponent<AudioSource>();
         audioDiamante = cofre.GetComponent<AudioSource>();
-    
         progresionJugador = GetComponent<Progresion>();
+        PerfilJugador.BumperConteo = 0;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -44,7 +50,7 @@ public class Coleccionar : MonoBehaviour
             nuevoColeccionable = collision.gameObject;
             if (inventario.ContainsKey(nuevoColeccionable.name)) { return; }
             miColeccionable = nuevoColeccionable.GetComponent<SpriteRenderer>();
-            audioColeccionable.PlayOneShot(colectarSFX);         // se ejecuta el sonido de recolección
+            audioColeccionable.PlayOneShot(PerfilJugador.ColectarSFX);         // se ejecuta el sonido de recolección
             miColeccionable.enabled = false;                           // se desactiva el spriteRenderer del coleccionable (sin borrarlo)
             inventario.Add(nuevoColeccionable.name, nuevoColeccionable);
             nuevoColeccionable.transform.SetParent(bolsa.transform);
@@ -56,15 +62,13 @@ public class Coleccionar : MonoBehaviour
                 nuevoDiamante.SetActive(false);                        // se borra el diamante
                 miDiamante = null;
             }
-            //Jugador jugador = gameObject.GetComponent<Jugador>();
             nuevoDiamante = collision.gameObject;
             miDiamante = nuevoDiamante.GetComponent<SpriteRenderer>();
-            audioDiamante.PlayOneShot(diamanteSFX);         // se ejecuta el sonido de recolección de diamante
-            //jugador.AgregarDiamantes();                          // suma uno a los ítems recolectados
+            audioDiamante.PlayOneShot(PerfilJugador.DiamanteSFX);         // se ejecuta el sonido de recolección de diamante
             progresionJugador.GanarExperiencia(1);
             Debug.Log("ITEM COLECTADO - EXPERIENCIA: " + progresionJugador.PerfilJugador.Experiencia);
             miDiamante.enabled = false;                     // se desactiva el spriteRenderer del diamante (sin borrarlo)
-            diamantes.Add(nuevoDiamante);                   // se agrega el diamante a la lista de diamantes
+            diamantes.Enqueue(nuevoDiamante);                   // se agrega el diamante a la lista de diamantes
             nuevoDiamante.transform.SetParent(cofre.transform);     //se guarda el diamante en el cofre
         }
 
@@ -79,8 +83,8 @@ public class Coleccionar : MonoBehaviour
         {
             bumper.transform.position = transform.position;
             bumper.transform.rotation = transform.rotation;
-            bumperConteo -= 0.04f;
-            if (bumperConteo < 0) DesactivarBumper();
+            PerfilJugador.BumperConteo -= PerfilJugador.ConsumoObj * Time.deltaTime;
+            if (PerfilJugador.BumperConteo < 0) DesactivarBumper();
         }
         if (miColeccionable != null && !miColeccionable.enabled && !audioColeccionable.isPlaying)     //si se ha desactivado el spriteRenderer y la música ya terminó
         {
@@ -106,7 +110,17 @@ public class Coleccionar : MonoBehaviour
 
         if (item.name == "Bumper") { ActivarBumper(item);}
 
-        audioColeccionable.PlayOneShot(usarColeccionableSFX);         // se ejecuta el sonido de uso del coleccionable
+        audioColeccionable.PlayOneShot(PerfilJugador.UsarColeccionableSFX);         // se ejecuta el sonido de uso del coleccionable
+    }
+
+    public void EntregarDiamantes(int cantidad)
+    {
+        for(int i=0;i<cantidad; i++)
+        {
+            GameObject diamanteEntregado = diamantes.Dequeue();
+            Destroy(diamanteEntregado);
+        }
+        Debug.Log("SE ENTREGARON " + cantidad + " DIAMANTES");
     }
 
     private void ActivarBumper(GameObject item)
@@ -119,14 +133,14 @@ public class Coleccionar : MonoBehaviour
         item.GetComponent<SpriteRenderer>().enabled = true;
         bumper.SetActive(true);
         bumperActive = true;
-        bumperConteo = 100;
+        PerfilJugador.BumperConteo = 100;
     }
 
     private void DesactivarBumper()
     {
         bumperActive = false;
         bumper.SetActive(false);
-        bumperConteo = 0;
+        PerfilJugador.BumperConteo = 0;
     }
 
 }
