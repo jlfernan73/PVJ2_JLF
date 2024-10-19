@@ -8,12 +8,13 @@ using UnityEditor;
 
 public class Jugador : MonoBehaviour
 {
-    [Header("Configuracion")]
+    [SerializeField]
+    private PerfilJugador perfilJugador;
+    public PerfilJugador PerfilJugador { get => perfilJugador; }
+    
+    [Header("Monitoreo")]
     [SerializeField] private float energia = 100f;      //energía inicial del jugador
     [SerializeField] private float combustible = 100f;      //combustible inicial del jugador
-
-    [SerializeField] private int diamantes = 0;             //ítems colectados
-    [SerializeField] private int diamantesRequeridos = 150;             //ítems a colectar para poder ir a la meta
 
     // se incorporan sistemas de partículas para animar distintas situaciones
     [SerializeField] private ParticleSystem particleSystemCrash;        //choque al colisionar
@@ -26,14 +27,17 @@ public class Jugador : MonoBehaviour
     // se accede a estos transform para activar/desactivar según se cumplan condiciones
     [SerializeField] private Transform musicaFondo;                     //para poder apagar la música de fondo
     [SerializeField] private Transform musicaMeta;                      //y poner una música de llegada
-    [SerializeField] private Transform barrera;                         //para alivianar la barrera que impide llegar a la meta
+
+    private Progresion progresionJugador;
+
     // banderas para monitorear situaciones
     bool humeando = false;
     bool vive = true;
     bool meta = false;
 
-    private void OnEnable()
+    void Awake()
     {
+        progresionJugador = GetComponent<Progresion>();
     }
 
     private void Update()
@@ -70,10 +74,13 @@ public class Jugador : MonoBehaviour
     {
         combustible += cantidad;
         if (combustible > 100) { combustible = 100; }
-        if (combustible < 0) {  combustible = 0; }
+        if (combustible < 0) {  
+            combustible = 0;
+            energia = 0;
+        }
     }
 
-    public void AgregarDiamantes()                   // método público para agregar un ítem (usado para los diamantes)
+    /*public void AgregarDiamantes()                   // método público para agregar un ítem (usado para los diamantes)
     {
         diamantes++;
         if (diamantes == diamantesRequeridos) 
@@ -81,7 +88,7 @@ public class Jugador : MonoBehaviour
             barrera.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;      //se hace la valla dinámica poder moverla
             barrera.GetComponent<Rigidbody2D>().mass = 1.0f;      //se aliviana la valla para poder pasar a la meta
         }
-    }
+    }*/
 
     public float GetEnergia()           // método público para monitorear la energía del jugador desde otra clase
     {
@@ -117,8 +124,9 @@ public class Jugador : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)             //Método para chequear la llegada a Meta
     {
         if (!collision.gameObject.CompareTag("Meta")){return;}      //si el choque fue con otra cosa, sale del método
-        Debug.Log("LLEGASTE A LA META, GANASTE!!");
         meta = true;                                                // se indica que se llegó a la meta
+        progresionJugador.SubirNivel();
+        Debug.Log("LLEGASTE A LA META!! NIVEL " + progresionJugador.PerfilJugador.Nivel + " COMPLETO");
         if (virtualCamera.Follow)
         {
             virtualCamera.Follow = null;                            // se deja de seguir al auto (ya que el auto avanzará hacia afuera)

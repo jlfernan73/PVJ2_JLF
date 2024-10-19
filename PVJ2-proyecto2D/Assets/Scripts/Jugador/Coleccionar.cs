@@ -25,12 +25,16 @@ public class Coleccionar : MonoBehaviour
     private AudioSource audioColeccionable;
     private AudioSource audioDiamante;
 
+    private Progresion progresionJugador;
+
     void Awake()
     {
         inventario = new Dictionary<String, GameObject>();
         diamantes = new List<GameObject>();
         audioColeccionable = bolsa.GetComponent<AudioSource>();
         audioDiamante = cofre.GetComponent<AudioSource>();
+    
+        progresionJugador = GetComponent<Progresion>();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -52,12 +56,13 @@ public class Coleccionar : MonoBehaviour
                 nuevoDiamante.SetActive(false);                        // se borra el diamante
                 miDiamante = null;
             }
-            Jugador jugador = gameObject.GetComponent<Jugador>();
+            //Jugador jugador = gameObject.GetComponent<Jugador>();
             nuevoDiamante = collision.gameObject;
             miDiamante = nuevoDiamante.GetComponent<SpriteRenderer>();
             audioDiamante.PlayOneShot(diamanteSFX);         // se ejecuta el sonido de recolección de diamante
-            jugador.AgregarDiamantes();                          // suma uno a los ítems recolectados
-            Debug.Log("ITEM COLECTADO");
+            //jugador.AgregarDiamantes();                          // suma uno a los ítems recolectados
+            progresionJugador.GanarExperiencia(1);
+            Debug.Log("ITEM COLECTADO - EXPERIENCIA: " + progresionJugador.PerfilJugador.Experiencia);
             miDiamante.enabled = false;                     // se desactiva el spriteRenderer del diamante (sin borrarlo)
             diamantes.Add(nuevoDiamante);                   // se agrega el diamante a la lista de diamantes
             nuevoDiamante.transform.SetParent(cofre.transform);     //se guarda el diamante en el cofre

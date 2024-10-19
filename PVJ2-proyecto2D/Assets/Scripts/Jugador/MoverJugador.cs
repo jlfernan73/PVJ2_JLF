@@ -13,7 +13,7 @@ using static UnityEngine.RuleTile.TilingRuleOutput;
 public class MoverJugador : MonoBehaviour
 {
     // Variables a configurar desde el editor
-    [Header("Configuracion")]
+    [Header("Monitoreo")]
     [SerializeField] float aceleracion = 10f;       // modulo de la fuerza de arranque
     [SerializeField] float maxAngulo = 5.0f;        // máximo angulo de giro del auto al doblar
     [SerializeField] float maxRapidez = 20f;        // velocidad máxima que alcanza el auto al acelerar varias veces
