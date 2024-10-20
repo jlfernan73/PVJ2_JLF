@@ -8,10 +8,10 @@ using UnityEngine;
 
 public class Arreglar : MonoBehaviour
 {
+    //sonido y valor de energía agregada se controlan desde el SO PerfilJugador
     private PerfilJugador perfilJugador;
     public PerfilJugador PerfilJugador { get => perfilJugador; }
 
-    //[SerializeField] private AudioClip toolSFX;     // para asociar el clip del sonido de levantar una herramienta
     private AudioSource audioTool;
     private void OnEnable()
     {

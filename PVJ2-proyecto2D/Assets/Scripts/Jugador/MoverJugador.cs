@@ -16,7 +16,7 @@ public class MoverJugador : MonoBehaviour
     private PerfilJugador perfilJugador;
     public PerfilJugador PerfilJugador { get => perfilJugador; }
 
-    // Variables de uso interno en el script
+    // Variables de uso interno
     private float girar;                            // adquiere valores al presionar las flechas laterals (o A/D) para frenar
     private float mover;                            // adquiere valores al presionar las flecha up/down (o W/S) para acelerar
     private Vector2 direccion = new Vector2(0, 1);  // vector 2D con la direccion del automovil
@@ -27,7 +27,8 @@ public class MoverJugador : MonoBehaviour
     private bool girando = false;                   // bandera para activacion del giro
     private float volMotor = 0.1f;                  // se controla el volumen del sonido del motor
     private float pitchMotor = 1f;                  // se controla la frecuencia de reproducción (que aumentará cuando acelere)
-    private float maxRapidezInicial;
+    //dado que Nitro modifica algunas variables, es necesario saber a qué valores volver
+    private float maxRapidezInicial;                
     private float maxAnguloInicial;
     private float aceleracionInicial;
     private bool nitro = false;
@@ -40,7 +41,7 @@ public class MoverJugador : MonoBehaviour
 
     private void OnEnable()
     {
-        perfilJugador = GetComponent<Jugador>().PerfilJugador;
+        perfilJugador = GetComponent<Jugador>().PerfilJugador;      // para acceder a los datos del SO
         miRigidbody2D = GetComponent<Rigidbody2D>();
         miAnimator = GetComponent<Animator>();
         audioSource = GetComponent<AudioSource>();
@@ -60,10 +61,10 @@ public class MoverJugador : MonoBehaviour
         {
             girar = Input.GetAxis("Horizontal");
             mover = Input.GetAxis("Vertical");
-            if (nitro)
+            if (nitro)                                  //si está activado el Nitro
             {
-                PerfilJugador.NitroTank -= PerfilJugador.ConsumoObj * Time.deltaTime * 1.5f;
-                if(PerfilJugador.NitroTank < 0) { 
+                PerfilJugador.NitroTank -= PerfilJugador.ConsumoObj * Time.deltaTime * 1.5f;   //consumo del nitro
+                if(PerfilJugador.NitroTank < 0) {           //acciones al terminarse
                     nitro = false;
                     PerfilJugador.NitroTank = 0;
                     PerfilJugador.MaxRapidez = maxRapidezInicial;
@@ -114,8 +115,8 @@ public class MoverJugador : MonoBehaviour
             miAnimator.SetBool("Retrocede", (rapidez > 2f && sentido < 0));
 
             SonidoMotor();
-            float combustibleGastado = -PerfilJugador.ConsumoComb * (1 + 5 * rapidez) * Time.deltaTime;
-            jugador.modificarCombustible(combustibleGastado);
+            float combustibleGastado = -PerfilJugador.ConsumoComb * (1 + 5 * rapidez) * Time.deltaTime; //consumo de combustible
+            jugador.modificarCombustible(combustibleGastado);                       
         }
 
         // definición de la condición de transición hacia la explosión
@@ -203,7 +204,7 @@ public class MoverJugador : MonoBehaviour
         miSprite.enabled = false;
     }
 
-    public void activarNitro()
+    public void activarNitro()                              // método para activar el objeto Nitro
     {
         nitro = true;
         PerfilJugador.MaxRapidez = maxRapidezInicial*1.25f;

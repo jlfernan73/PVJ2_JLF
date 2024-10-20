@@ -33,13 +33,11 @@ public class GeneradorObjetoAleatorio : MonoBehaviour
 
     private void OnBecameInvisible()
     {
-        Debug.Log("Aparece un spawner en la escena");
         CancelInvoke(nameof(GenerarObjetoAleatorio));
     }
 
     private void OnBecameVisible()
     {
-        Debug.Log("Desaparece el spawner de la escena");
         InvokeRepeating(nameof(GenerarObjetoAleatorio), tiempoEspera, tiempoIntervalo);
     }
 }

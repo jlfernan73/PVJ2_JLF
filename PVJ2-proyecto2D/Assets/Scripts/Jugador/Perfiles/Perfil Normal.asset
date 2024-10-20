@@ -15,13 +15,13 @@ MonoBehaviour:
   experienciaProximoNivel: 150
   escalarExperiencia: 50
   aceleracion: 30
-  consumoCombustible: 0.005
-  consumoObjeto: 2.5
   maxAngulo: 60
   maxRapidez: 17
+  consumoCombustible: 0.005
+  consumoObjeto: 2.5
   reparacion: 5
-  energia: 72
-  combustible: 75.74472
+  energia: 80
+  combustible: 51.32877
   nitroTank: 0
   bumperConteo: 0
   reversaSFX: {fileID: 8300000, guid: 25b0ccfe174143a4a9d93671743dc6ef, type: 3}

@@ -10,7 +10,7 @@ public class PerfilJugador : ScriptableObject
     private int nivel;
     public int Nivel { get => nivel; set => nivel = value; }
 
-    private int experiencia;
+    private int experiencia;                                        // corresponde al número de diamantes colectados
     public int Experiencia { get => experiencia; set => experiencia = value; }
 
     [Header("Configuraciones de experiencia")]
@@ -31,6 +31,12 @@ public class PerfilJugador : ScriptableObject
     [SerializeField] private float aceleracion = 30f;       // modulo de la fuerza de arranque
     public float Aceleracion { get => aceleracion; set => aceleracion = value; }
 
+    [SerializeField] private float maxAngulo = 60.0f;        // máximo angulo de giro del auto al doblar
+    public float MaxAngulo { get => maxAngulo; set => maxAngulo = value; }
+
+    [SerializeField] private float maxRapidez = 17f;        // velocidad máxima que alcanza el auto al acelerar varias veces
+    public float MaxRapidez { get => maxRapidez; set => maxRapidez = value; }
+
     [Tooltip("Velocidad de consumo de combustible (en reposo)")]
     [SerializeField] private float consumoCombustible = 0.005f;        // velocidad de consumo de combustible (en reposo)
     public float ConsumoComb { get => consumoCombustible; set => consumoCombustible = value; }
@@ -38,12 +44,6 @@ public class PerfilJugador : ScriptableObject
     [Tooltip("Velocidad de desgaste del objeto activado")]
     [SerializeField] private float consumoObjeto = 2.5f;        // velocidad de consumo del objeto activado
     public float ConsumoObj { get => consumoObjeto; set => consumoObjeto = value; }
-
-    [SerializeField] private float maxAngulo = 60.0f;        // máximo angulo de giro del auto al doblar
-    public float MaxAngulo { get => maxAngulo; set => maxAngulo = value; }
-
-    [SerializeField] private float maxRapidez = 17f;        // velocidad máxima que alcanza el auto al acelerar varias veces
-    public float MaxRapidez { get => maxRapidez; set => maxRapidez = value; }
 
     [Tooltip("Puntos de energía adicionada por herramienta colectada")]
     [SerializeField] float reparacion = 5f;             // puntos a adicionar a la energía del jugador al colectar herramienta
@@ -57,7 +57,7 @@ public class PerfilJugador : ScriptableObject
     [SerializeField] private float combustible;      //combustible inicial del jugador
     public float Combustible { get => combustible; set => combustible = value; }
 
-    [Tooltip("Carga del tanque de nitro activado")]
+    [Tooltip("Carga del tanque de nitro (si fue activado)")]
     [SerializeField] private float nitroTank;
     public float NitroTank { get => nitroTank; set => nitroTank = value; }
 

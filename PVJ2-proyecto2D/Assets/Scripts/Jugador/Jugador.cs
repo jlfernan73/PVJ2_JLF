@@ -37,6 +37,7 @@ public class Jugador : MonoBehaviour
     void Awake()
     {
         progresionJugador = GetComponent<Progresion>();
+        //inicialización de atributos
         PerfilJugador.Energia = 100f;
         PerfilJugador.Combustible = 100f;
         PerfilJugador.NitroTank = 0;
@@ -71,11 +72,11 @@ public class Jugador : MonoBehaviour
         }
     }
 
-    public void modificarCombustible(float cantidad)
+    public void modificarCombustible(float cantidad)    //método público para modificar el combustible desde MoverJugador y desde Coleccionar
     {
         PerfilJugador.Combustible += cantidad;
         if (PerfilJugador.Combustible > 100) { PerfilJugador.Combustible = 100; }
-        if (PerfilJugador.Combustible < 0) {
+        if (PerfilJugador.Combustible < 0) {            //si se queda sin combustible, también se queda sin energía
             PerfilJugador.Combustible = 0;
             PerfilJugador.Energia = 0;
         }
