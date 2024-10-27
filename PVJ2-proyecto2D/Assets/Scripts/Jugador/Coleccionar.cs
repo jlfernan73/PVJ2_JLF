@@ -112,7 +112,7 @@ public class Coleccionar : MonoBehaviour
     {
         item.GetComponent<CapsuleCollider2D>().isTrigger = false;       //deja de colisionar tipo trigger
         item.GetComponent<CapsuleCollider2D>().excludeLayers = LayerMask.GetMask("Default");    //no colisionará con Default (donde está el auto)
-        item.transform.localScale = new Vector3(1.4f, 1.4f, 1f);        //se lo agranda un poco para que rodee al auto
+        item.transform.localScale = new Vector3(1.45f, 1.45f, 1f);        //se lo agranda un poco para que rodee al auto
         item.transform.position = transform.position;                   //se lo ubica en el centro del auto
         bumper = item;                                                  //se asigna el item al objeto bumper (para seguir moviendolo) 
         bumper.SetActive(true);                                         //se lo activa

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
 using UnityEditor;
+using UnityEngine.Events;
 
 // clase Jugador con variables definidas via Scriptable Object
 
@@ -34,9 +35,13 @@ public class Jugador : MonoBehaviour
     bool vive = true;
     bool meta = false;
 
+    //----Eventos del jugador----
+    [SerializeField] UnityEvent<float> OnEnergyChanged;
+
     void Awake()
     {
         progresionJugador = GetComponent<Progresion>();
+        OnEnergyChanged.Invoke(perfilJugador.Energia);
         //inicialización de atributos
         PerfilJugador.Energia = 100f;
         PerfilJugador.Combustible = 100f;

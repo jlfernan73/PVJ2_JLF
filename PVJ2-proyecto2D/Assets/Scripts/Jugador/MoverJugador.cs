@@ -95,7 +95,7 @@ public class MoverJugador : MonoBehaviour
 
             if (girando)                                // en cualquier caso en que se encuentre girando
             {
-                float radioGiro = Mathf.Cos(angulo * Mathf.Deg2Rad) * (1 + rapidez) / 60f;     //se calcula un radio de giro en base al ángulo y a la rapidez
+                float radioGiro = Mathf.Cos(angulo * Mathf.Deg2Rad) * (0.5f + rapidez) / 70f;     //se calcula un radio de giro en base al ángulo y a la rapidez
                 float velocidadAngular;
                 if (angulo > 0)
                 {
@@ -106,8 +106,8 @@ public class MoverJugador : MonoBehaviour
                     velocidadAngular = -1 * sentido * (rapidez / radioGiro);
                 }
                 transform.Rotate(0, 0, velocidadAngular * Time.deltaTime);                  // se rota el auto
+                miRigidbody2D.velocity = (miRigidbody2D.velocity.normalized + sentido*(new Vector2 (transform.up.normalized.x, transform.up.normalized.y) - direccion.normalized)) * rapidez;                     // se recalcula el vector velocidad con la nueva dirección
                 direccion = transform.up.normalized;                                        // se lee la nueva dirección (normalizada) del auto
-                miRigidbody2D.velocity = sentido * direccion * rapidez;                     // se recalcula el vector velocidad con la nueva dirección
             }
             // definición de las condiciones para las transiciones de las animaciones
             miAnimator.SetFloat("Giro", girar);
