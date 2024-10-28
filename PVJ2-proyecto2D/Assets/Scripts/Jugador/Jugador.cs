@@ -143,6 +143,7 @@ public class Jugador : MonoBehaviour
         meta = true;                                                // se indica que se llegó a la meta
         Debug.Log("LLEGASTE A LA META!! NIVEL " + progresionJugador.PerfilJugador.Nivel + " COMPLETO");
         progresionJugador.SubirNivel();
+        ReportarDiamantes();
         if (virtualCamera.Follow)
         {
             virtualCamera.Follow = null;                            // se deja de seguir al auto (ya que el auto avanzará hacia afuera)
@@ -153,5 +154,4 @@ public class Jugador : MonoBehaviour
         musicaFondo.GetComponent<AudioSource>().Stop();             // se detiene la música de fondo
         musicaMeta.GetComponent<AudioSource>().Play();              // y se pone la música de llegada
     }
-
 }

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0311a0bdfe1b5fb41aab6c5cc7bc996b, type: 3}
   m_Name: Perfil Normal
   m_EditorClassIdentifier: 
-  experienciaProximoNivel: 150
+  experienciaProximoNivel: 200
   escalarExperiencia: 50
   aceleracion: 90
   maxAngulo: 45
@@ -20,8 +20,8 @@ MonoBehaviour:
   consumoCombustible: 0.01
   consumoObjeto: 2.5
   reparacion: 5
-  energia: 92
-  combustible: 44.483196
+  energia: 77
+  combustible: 25.23021
   nitroTank: 0
   bumperConteo: 0
   reversaSFX: {fileID: 8300000, guid: 25b0ccfe174143a4a9d93671743dc6ef, type: 3}
