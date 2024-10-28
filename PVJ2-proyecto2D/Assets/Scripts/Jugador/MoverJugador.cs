@@ -120,10 +120,10 @@ public class MoverJugador : MonoBehaviour
         }
 
         // definición de la condición de transición hacia la explosión
-        miAnimator.SetBool("Explota", (jugador.GetEnergia() <= 0 && jugador.EstaVivo()));
+        miAnimator.SetBool("Explota", (PerfilJugador.Energia <= 0 && jugador.EstaVivo()));
 
         // si se quedó sin energía pero aun no explotó, se lo hace explotar
-        if (jugador.GetEnergia() <= 0 && jugador.EstaVivo())
+        if (PerfilJugador.Energia <= 0 && jugador.EstaVivo())
         {
             audioSource.Stop();
             audioSource.volume = 1;

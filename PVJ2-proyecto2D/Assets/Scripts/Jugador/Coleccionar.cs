@@ -43,6 +43,7 @@ public class Coleccionar : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        Jugador jugador = gameObject.GetComponent<Jugador>();       //para acceder a los métodos de Jugador 
         if (collision.gameObject.CompareTag("Coleccionable"))                   // recolección del objeto
         {
             nuevoColeccionable = collision.gameObject;
@@ -51,12 +52,16 @@ public class Coleccionar : MonoBehaviour
             inventario.Add(nuevoColeccionable.name, nuevoColeccionable);        //se agrega el objeto al coleccionable
             nuevoColeccionable.transform.SetParent(bolsa.transform);            //se lo manda a la bolsa
             nuevoColeccionable.SetActive(false);                                //se lo desactiva
+            if (nuevoColeccionable.name == "Gasolina") { jugador.ModificarItem(1, true); }
+            if (nuevoColeccionable.name == "Nitro") { jugador.ModificarItem(2, true); }
+            if (nuevoColeccionable.name == "Bumper") { jugador.ModificarItem(3, true); }
         }
         if (collision.gameObject.CompareTag("Diamante"))                        //recolección del diamante
         {
             nuevoDiamante = collision.gameObject;
             audioDiamante.PlayOneShot(PerfilJugador.DiamanteSFX);         // se ejecuta el sonido de recolección de diamante
             progresionJugador.GanarExperiencia(1);                     // se suma experiencia (asociada a la cantidad de diamantes colectados)
+            jugador.ReportarDiamantes();                                //actualiza la experiencia (diamantes) en el panel 
             Debug.Log("ITEM COLECTADO - EXPERIENCIA: " + progresionJugador.PerfilJugador.Experiencia);
             diamantes.Enqueue(nuevoDiamante);                           // se agrega el diamante a la cola con diamantes
             nuevoDiamante.transform.SetParent(cofre.transform);         //se guarda el diamante en el cofre
@@ -83,18 +88,23 @@ public class Coleccionar : MonoBehaviour
 
     private void UsarInventario(GameObject item)
     {
+        Jugador jugador = gameObject.GetComponent<Jugador>();       //para acceder a los métodos de Jugador 
         inventario.Remove(item.name);                                               //se quita el objeto del inventario
         item.transform.SetParent(null);                                             //y de la bolsa
         audioColeccionable.PlayOneShot(PerfilJugador.UsarColeccionableSFX);         // se ejecuta el sonido de uso del coleccionable
         if (item.name == "Gasolina") {
-            Jugador jugador = gameObject.GetComponent<Jugador>();       //para acceder a los métodos de Jugador 
             jugador.modificarCombustible(50.0f);                        //adiciona combustible
+            jugador.ModificarItem(1, false);
         }
         if (item.name == "Nitro") {
             MoverJugador movimientoJugador = gameObject.GetComponent<MoverJugador>();   //para acceder a los métodos de MoverJugador
             movimientoJugador.activarNitro();                                           //activa Nitro (modifica aceleracion y rapidezMax)
+            jugador.ModificarItem(2, false);
         }
-        if (item.name == "Bumper") { ActivarBumper(item);}              //activa el bumper
+        if (item.name == "Bumper") { 
+            ActivarBumper(item);
+            jugador.ModificarItem(3, false);
+        }              
 
     }
 

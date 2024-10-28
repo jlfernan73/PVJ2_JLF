@@ -37,15 +37,26 @@ public class Jugador : MonoBehaviour
 
     //----Eventos del jugador----
     [SerializeField] UnityEvent<float> OnEnergyChanged;
+    [SerializeField] UnityEvent<float> OnFuelChanged;
+    [SerializeField] UnityEvent<string> OnTextChanged;
+    [SerializeField] UnityEvent<int,bool> OnItemChanged;
 
-    void Awake()
+    void Start()
     {
         progresionJugador = GetComponent<Progresion>();
-        OnEnergyChanged.Invoke(perfilJugador.Energia);
         //inicialización de atributos
         PerfilJugador.Energia = 100f;
         PerfilJugador.Combustible = 100f;
+        PerfilJugador.Experiencia = 0;
         PerfilJugador.NitroTank = 0;
+
+        OnEnergyChanged.Invoke(perfilJugador.Energia);
+        OnFuelChanged.Invoke(perfilJugador.Combustible);
+        OnTextChanged.Invoke(perfilJugador.Experiencia.ToString());
+        for(int i = 1; i < 4; i++)
+        {
+            OnItemChanged.Invoke(i, false);
+        }
     }
 
     private void Update()
@@ -75,6 +86,7 @@ public class Jugador : MonoBehaviour
             humeando = false;
             particleSystemHumo.Stop();
         }
+        OnEnergyChanged.Invoke(perfilJugador.Energia);
     }
 
     public void modificarCombustible(float cantidad)    //método público para modificar el combustible desde MoverJugador y desde Coleccionar
@@ -85,12 +97,19 @@ public class Jugador : MonoBehaviour
             PerfilJugador.Combustible = 0;
             PerfilJugador.Energia = 0;
         }
+        OnFuelChanged.Invoke(perfilJugador.Combustible);
     }
 
-    public float GetEnergia()           // método público para monitorear la energía del jugador desde otra clase
+    public void ReportarDiamantes()
     {
-        return PerfilJugador.Energia;
+        OnTextChanged.Invoke(perfilJugador.Experiencia.ToString());
     }
+
+    public void ModificarItem(int objeto, bool estado)
+    {
+        OnItemChanged.Invoke(objeto,estado);
+    }
+
     public bool EstaVivo()              // método público para monitorear desde otra clase si el jugador está vivo
     {
         return vive;
