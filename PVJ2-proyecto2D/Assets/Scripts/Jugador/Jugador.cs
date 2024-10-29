@@ -95,7 +95,7 @@ public class Jugador : MonoBehaviour
         if (PerfilJugador.Combustible > 100) { PerfilJugador.Combustible = 100; }
         if (PerfilJugador.Combustible < 0) {            //si se queda sin combustible, también se queda sin energía
             PerfilJugador.Combustible = 0;
-            PerfilJugador.Energia = 0;
+            ModificarEnergia(-PerfilJugador.Energia);
         }
         OnFuelChanged.Invoke(perfilJugador.Combustible);
     }

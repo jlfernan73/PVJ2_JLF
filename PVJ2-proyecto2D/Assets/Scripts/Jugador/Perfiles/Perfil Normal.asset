@@ -17,11 +17,11 @@ MonoBehaviour:
   aceleracion: 90
   maxAngulo: 45
   maxRapidez: 20
-  consumoCombustible: 0.01
-  consumoObjeto: 2.5
+  consumoCombustible: 0.012
+  consumoObjeto: 3
   reparacion: 5
-  energia: 77
-  combustible: 25.23021
+  energia: 0
+  combustible: 44.54245
   nitroTank: 0
   bumperConteo: 0
   reversaSFX: {fileID: 8300000, guid: 25b0ccfe174143a4a9d93671743dc6ef, type: 3}
