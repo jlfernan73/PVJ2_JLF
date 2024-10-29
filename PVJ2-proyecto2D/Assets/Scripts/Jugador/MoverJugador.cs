@@ -23,7 +23,7 @@ public class MoverJugador : MonoBehaviour
     private float sentido = 1f;                     //sentido de avance (1: arriba, -1: abajo)
     private float rapidez = 0;                      // modulo del vector velocidad
     private float angulo = 0;                       // angulo de giro de las ruedas del automovil (respecto al eje del auto)
-    private float deltaAngulo = 2f;                 // agregado de ángulo de las ruedas que se suma al angulo de giro
+    private float deltaAngulo = 4f;                 // agregado de ángulo de las ruedas que se suma al angulo de giro
     private bool girando = false;                   // bandera para activacion del giro
     private float volMotor = 0.1f;                  // se controla el volumen del sonido del motor
     private float pitchMotor = 1f;                  // se controla la frecuencia de reproducción (que aumentará cuando acelere)
@@ -95,7 +95,7 @@ public class MoverJugador : MonoBehaviour
 
             if (girando)                                // en cualquier caso en que se encuentre girando
             {
-                float radioGiro = Mathf.Cos(angulo * Mathf.Deg2Rad) * (0.5f + rapidez) / 70f;     //se calcula un radio de giro en base al ángulo y a la rapidez
+                float radioGiro = Mathf.Cos(angulo * Mathf.Deg2Rad) * (1f + 0.75f*rapidez) / 60f;     //se calcula un radio de giro en base al ángulo y a la rapidez
                 float velocidadAngular;
                 if (angulo > 0)
                 {
