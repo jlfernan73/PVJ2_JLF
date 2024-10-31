@@ -23,7 +23,7 @@ public class MoverJugador : MonoBehaviour
     private float sentido = 1f;                     //sentido de avance (1: arriba, -1: abajo)
     private float rapidez = 0;                      // modulo del vector velocidad
     private float angulo = 0;                       // angulo de giro de las ruedas del automovil (respecto al eje del auto)
-    private float deltaAngulo = 2f;                 // agregado de ángulo de las ruedas que se suma al angulo de giro
+    private float deltaAngulo = 4f;                 // agregado de ángulo de las ruedas que se suma al angulo de giro
     private bool girando = false;                   // bandera para activacion del giro
     private float volMotor = 0.1f;                  // se controla el volumen del sonido del motor
     private float pitchMotor = 1f;                  // se controla la frecuencia de reproducción (que aumentará cuando acelere)
@@ -95,7 +95,7 @@ public class MoverJugador : MonoBehaviour
 
             if (girando)                                // en cualquier caso en que se encuentre girando
             {
-                float radioGiro = Mathf.Cos(angulo * Mathf.Deg2Rad) * (1 + rapidez) / 60f;     //se calcula un radio de giro en base al ángulo y a la rapidez
+                float radioGiro = Mathf.Cos(angulo * Mathf.Deg2Rad) * (1f + 0.75f*rapidez) / 60f;     //se calcula un radio de giro en base al ángulo y a la rapidez
                 float velocidadAngular;
                 if (angulo > 0)
                 {
@@ -106,8 +106,8 @@ public class MoverJugador : MonoBehaviour
                     velocidadAngular = -1 * sentido * (rapidez / radioGiro);
                 }
                 transform.Rotate(0, 0, velocidadAngular * Time.deltaTime);                  // se rota el auto
+                miRigidbody2D.velocity = (miRigidbody2D.velocity.normalized + sentido*(new Vector2 (transform.up.normalized.x, transform.up.normalized.y) - direccion.normalized)) * rapidez;                     // se recalcula el vector velocidad con la nueva dirección
                 direccion = transform.up.normalized;                                        // se lee la nueva dirección (normalizada) del auto
-                miRigidbody2D.velocity = sentido * direccion * rapidez;                     // se recalcula el vector velocidad con la nueva dirección
             }
             // definición de las condiciones para las transiciones de las animaciones
             miAnimator.SetFloat("Giro", girar);
@@ -120,10 +120,10 @@ public class MoverJugador : MonoBehaviour
         }
 
         // definición de la condición de transición hacia la explosión
-        miAnimator.SetBool("Explota", (jugador.GetEnergia() <= 0 && jugador.EstaVivo()));
+        miAnimator.SetBool("Explota", (PerfilJugador.Energia <= 0 && jugador.EstaVivo()));
 
         // si se quedó sin energía pero aun no explotó, se lo hace explotar
-        if (jugador.GetEnergia() <= 0 && jugador.EstaVivo())
+        if (PerfilJugador.Energia <= 0 && jugador.EstaVivo())
         {
             audioSource.Stop();
             audioSource.volume = 1;

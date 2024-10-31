@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
 using UnityEditor;
+using UnityEngine.Events;
 
 // clase Jugador con variables definidas via Scriptable Object
 
@@ -34,13 +35,28 @@ public class Jugador : MonoBehaviour
     bool vive = true;
     bool meta = false;
 
-    void Awake()
+    //----Eventos del jugador----
+    [SerializeField] UnityEvent<float> OnEnergyChanged;
+    [SerializeField] UnityEvent<float> OnFuelChanged;
+    [SerializeField] UnityEvent<string> OnTextChanged;
+    [SerializeField] UnityEvent<int,bool> OnItemChanged;
+
+    void Start()
     {
         progresionJugador = GetComponent<Progresion>();
         //inicialización de atributos
         PerfilJugador.Energia = 100f;
         PerfilJugador.Combustible = 100f;
+        PerfilJugador.Experiencia = 0;
         PerfilJugador.NitroTank = 0;
+
+        OnEnergyChanged.Invoke(perfilJugador.Energia);
+        OnFuelChanged.Invoke(perfilJugador.Combustible);
+        OnTextChanged.Invoke(perfilJugador.Experiencia.ToString());
+        for(int i = 1; i < 4; i++)
+        {
+            OnItemChanged.Invoke(i, false);
+        }
     }
 
     private void Update()
@@ -70,6 +86,7 @@ public class Jugador : MonoBehaviour
             humeando = false;
             particleSystemHumo.Stop();
         }
+        OnEnergyChanged.Invoke(perfilJugador.Energia);
     }
 
     public void modificarCombustible(float cantidad)    //método público para modificar el combustible desde MoverJugador y desde Coleccionar
@@ -78,14 +95,21 @@ public class Jugador : MonoBehaviour
         if (PerfilJugador.Combustible > 100) { PerfilJugador.Combustible = 100; }
         if (PerfilJugador.Combustible < 0) {            //si se queda sin combustible, también se queda sin energía
             PerfilJugador.Combustible = 0;
-            PerfilJugador.Energia = 0;
+            ModificarEnergia(-PerfilJugador.Energia);
         }
+        OnFuelChanged.Invoke(perfilJugador.Combustible);
     }
 
-    public float GetEnergia()           // método público para monitorear la energía del jugador desde otra clase
+    public void ReportarDiamantes()
     {
-        return PerfilJugador.Energia;
+        OnTextChanged.Invoke(perfilJugador.Experiencia.ToString());
     }
+
+    public void ModificarItem(int objeto, bool estado)
+    {
+        OnItemChanged.Invoke(objeto,estado);
+    }
+
     public bool EstaVivo()              // método público para monitorear desde otra clase si el jugador está vivo
     {
         return vive;
@@ -119,6 +143,7 @@ public class Jugador : MonoBehaviour
         meta = true;                                                // se indica que se llegó a la meta
         Debug.Log("LLEGASTE A LA META!! NIVEL " + progresionJugador.PerfilJugador.Nivel + " COMPLETO");
         progresionJugador.SubirNivel();
+        ReportarDiamantes();
         if (virtualCamera.Follow)
         {
             virtualCamera.Follow = null;                            // se deja de seguir al auto (ya que el auto avanzará hacia afuera)
@@ -129,5 +154,4 @@ public class Jugador : MonoBehaviour
         musicaFondo.GetComponent<AudioSource>().Stop();             // se detiene la música de fondo
         musicaMeta.GetComponent<AudioSource>().Play();              // y se pone la música de llegada
     }
-
 }

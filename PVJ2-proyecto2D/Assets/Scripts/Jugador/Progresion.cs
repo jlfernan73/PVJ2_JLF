@@ -22,7 +22,7 @@ public class Progresion : MonoBehaviour
     public void GanarExperiencia(int nuevaExperiencia)
     {
         PerfilJugador.Experiencia += nuevaExperiencia;                                  // suma la experiencia
-        if (PerfilJugador.Experiencia >= PerfilJugador.ExperienciaProximoNivel)         //se alcanza el objetivo del nivel
+        if (PerfilJugador.Experiencia == PerfilJugador.ExperienciaProximoNivel)         //se alcanza el objetivo del nivel
         {
             Debug.Log("EXPERIENCIA DEL NIVEL COMPLETA");
             barrera.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;      //se hace la valla dinámica poder moverla
