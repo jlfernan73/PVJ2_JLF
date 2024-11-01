@@ -79,7 +79,6 @@ public class Coleccionar : MonoBehaviour
         //acciones asociadas al uso del bumper
         if (bumperActive)
         {
-            bumper.transform.position = transform.position;     //la posición y rotación del bumper sigue la del jugador
             bumper.transform.rotation = transform.rotation;     
             PerfilJugador.BumperConteo -= PerfilJugador.ConsumoObj * Time.deltaTime;    //consumo de uso del bumper
             if (PerfilJugador.BumperConteo < 0) DesactivarBumper();                     //pasado el tiempo, se desactiva el bumper
@@ -122,17 +121,21 @@ public class Coleccionar : MonoBehaviour
     {
         item.GetComponent<CapsuleCollider2D>().isTrigger = false;       //deja de colisionar tipo trigger
         item.GetComponent<CapsuleCollider2D>().excludeLayers = LayerMask.GetMask("Default");    //no colisionará con Default (donde está el auto)
-        item.transform.localScale = new Vector3(1.45f, 1.45f, 1f);        //se lo agranda un poco para que rodee al auto
+        item.transform.localScale = new Vector3(1.6f, 1.6f, 1f);        //se lo agranda un poco para que rodee al auto
         item.transform.position = transform.position;                   //se lo ubica en el centro del auto
+        item.transform.rotation = transform.rotation;
         bumper = item;                                                  //se asigna el item al objeto bumper (para seguir moviendolo) 
         bumper.SetActive(true);                                         //se lo activa
         bumperActive = true;                                            //se avisa que está activo
+        GetComponent<FixedJoint2D>().connectedBody = bumper.GetComponent<Rigidbody2D>();
+        GetComponent<FixedJoint2D>().enabled = true;
         PerfilJugador.BumperConteo = 100;                               //se inicia en 100 el contador
     }
 
     private void DesactivarBumper()                                     //desactivación del bumper
     {
         bumperActive = false;                                           //se avisa que está inactivo
+        GetComponent<FixedJoint2D>().enabled = false;
         bumper.SetActive(false);                                        //se desactiva el gameObject
         PerfilJugador.BumperConteo = 0;                                 //se pone en 0 el contador
     }
