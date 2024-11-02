@@ -9,6 +9,7 @@ TagManager:
   - Musica
   - Grua
   - Coleccionable
+  - Chispas
   layers:
   - Default
   - TransparentFX
