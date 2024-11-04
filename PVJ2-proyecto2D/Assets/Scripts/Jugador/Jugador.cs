@@ -38,7 +38,8 @@ public class Jugador : MonoBehaviour
     //----Eventos del jugador----
     [SerializeField] UnityEvent<float> OnEnergyChanged;
     [SerializeField] UnityEvent<float> OnFuelChanged;
-    [SerializeField] UnityEvent<string> OnTextChanged;
+    [SerializeField] UnityEvent<string> OnDiamantesChanged;
+    [SerializeField] UnityEvent<string> OnPuntajeChanged;
     [SerializeField] UnityEvent<int,bool> OnItemChanged;
 
     void Start()
@@ -52,8 +53,9 @@ public class Jugador : MonoBehaviour
 
         OnEnergyChanged.Invoke(perfilJugador.Energia);
         OnFuelChanged.Invoke(perfilJugador.Combustible);
-        OnTextChanged.Invoke(perfilJugador.Experiencia.ToString());
-        for(int i = 1; i < 4; i++)
+        OnDiamantesChanged.Invoke(perfilJugador.Experiencia.ToString());
+        OnPuntajeChanged.Invoke(GameManager.Instance.GetPuntaje().ToString());
+        for (int i = 1; i < 4; i++)
         {
             OnItemChanged.Invoke(i, false);
         }
@@ -68,6 +70,7 @@ public class Jugador : MonoBehaviour
     public void ModificarEnergia(float puntos)      // método público para modificar la energía
     {                                               // sin superar 100 ni bajar de 0
         PerfilJugador.Energia += puntos;
+        GameManager.Instance.AdPuntaje((int)puntos);
         if (PerfilJugador.Energia > 100)
         {
             PerfilJugador.Energia = 100;
@@ -87,6 +90,7 @@ public class Jugador : MonoBehaviour
             particleSystemHumo.Stop();
         }
         OnEnergyChanged.Invoke(perfilJugador.Energia);
+        OnPuntajeChanged.Invoke(GameManager.Instance.GetPuntaje().ToString());
     }
 
     public void modificarCombustible(float cantidad)    //método público para modificar el combustible desde MoverJugador y desde Coleccionar
@@ -102,7 +106,8 @@ public class Jugador : MonoBehaviour
 
     public void ReportarDiamantes()
     {
-        OnTextChanged.Invoke(perfilJugador.Experiencia.ToString());
+        OnDiamantesChanged.Invoke(perfilJugador.Experiencia.ToString());
+        OnPuntajeChanged.Invoke(GameManager.Instance.GetPuntaje().ToString());
     }
 
     public void ModificarItem(int objeto, bool estado)

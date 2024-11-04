@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
 
 public class ObjectPool : MonoBehaviour
 {
@@ -16,6 +17,7 @@ public class ObjectPool : MonoBehaviour
         for (int i = 0; i < poolSize; i++)
         {
             GameObject obj = Instantiate(objectPrefab);
+            obj.transform.SetParent(transform);
             obj.SetActive(false);
             pooledObjects.Add(obj);
         }

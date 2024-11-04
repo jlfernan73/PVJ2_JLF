@@ -66,6 +66,7 @@ public class Coleccionar : MonoBehaviour
             diamantes.Enqueue(nuevoDiamante);                           // se agrega el diamante a la cola con diamantes
             nuevoDiamante.transform.SetParent(cofre.transform);         //se guarda el diamante en el cofre
             nuevoDiamante.SetActive(false);                             // se desactiva el diamante
+            GameManager.Instance.AdPuntaje(10);
         }
     }
 

@@ -5,10 +5,10 @@ using UnityEngine;
 public class GeneradorObjetoLoopWithPool : MonoBehaviour
 {
     [SerializeField]
-    [Range(0.5f, 5f)]
+    [Range(0.2f, 2f)]
     private float tiempoEspera;
     [SerializeField]
-    [Range(0.5f, 5f)]
+    [Range(0.2f, 2f)]
     private float tiempoIntervalo;
 
     private ObjectPool objectPool;

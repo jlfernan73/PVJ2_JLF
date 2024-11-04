@@ -20,8 +20,8 @@ MonoBehaviour:
   consumoCombustible: 0.012
   consumoObjeto: 3
   reparacion: 5
-  energia: 0
-  combustible: 37.690754
+  energia: 32
+  combustible: 3.8577428
   nitroTank: 0
   bumperConteo: 0
   reversaSFX: {fileID: 8300000, guid: 25b0ccfe174143a4a9d93671743dc6ef, type: 3}

@@ -6,7 +6,8 @@ using TMPro;
 
 public class HUDcontroller : MonoBehaviour
 {
-    [SerializeField] TextMeshProUGUI miTexto;
+    [SerializeField] TextMeshProUGUI textoDiamantes;
+    [SerializeField] TextMeshProUGUI textoPuntaje;
     [SerializeField] GameObject barraEnergia;
     [SerializeField] GameObject barraCombustible;
     [SerializeField] GameObject GasolinaItem;
@@ -25,9 +26,9 @@ public class HUDcontroller : MonoBehaviour
         }
     }
 
-    public void ActualizarTextoHUD(string nuevoTexto)
+    public void ActualizarTextoDiamantes(string nuevoTexto)
     {
-        miTexto.text = nuevoTexto;
+        textoDiamantes.text = nuevoTexto;
     }
 
     public void ActualizarBarraEnergia(float energia)
@@ -53,6 +54,10 @@ public class HUDcontroller : MonoBehaviour
             case 3:
                 BumperItem.SetActive(estado); break;
         }
+    }
+    public void ActualizarTextoPuntaje(string nuevoTexto)
+    {
+        textoPuntaje.text = nuevoTexto;
     }
 
 }
