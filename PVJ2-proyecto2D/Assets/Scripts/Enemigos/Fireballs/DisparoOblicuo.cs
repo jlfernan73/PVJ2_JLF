@@ -13,12 +13,4 @@ public class DisparoOblicuo : Fireball
         transform.Rotate(new Vector3(0, 0, angulo));                       //rota el firewall un angulo aleatorio
         miRigidbody2D.AddForce(transform.up.normalized * aceleracion);    // aplica fuerza en la dirección aleatoria resultante
     }
-    protected override void Actualizar()
-    {
-
-        if (colision && !audioColision.isPlaying)
-        {
-            gameObject.SetActive(false);
-        }
-    }
 }

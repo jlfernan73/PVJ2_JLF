@@ -12,11 +12,4 @@ public class DisparoFireball : Fireball
     {
         miRigidbody2D.AddForce(transform.up.normalized * aceleracion);    // aplica fuerza en la dirección en que fue instanciado
     }
-    protected override void Actualizar()
-    {
-        if (colision && !audioColision.isPlaying)
-        {
-            gameObject.SetActive(false);
-        }
-    }
 }

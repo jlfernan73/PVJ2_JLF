@@ -12,10 +12,12 @@ public abstract class Fireball : MonoBehaviour
     protected bool colision;
     protected AudioSource audioColision;
     protected float angulo;
+    protected float lifetime;
 
     protected void OnEnable()
     {
         colision = false;
+        lifetime = 0;
         gameObject.GetComponent<SpriteRenderer>().enabled = true;
         audioColision = GetComponent<AudioSource>();
         miRigidbody2D = GetComponent<Rigidbody2D>();
@@ -37,6 +39,13 @@ public abstract class Fireball : MonoBehaviour
     {
         Actualizar();
     }
+    protected void Actualizar()
+    {
+        lifetime+=Time.deltaTime;
+        if ((colision && !audioColision.isPlaying)||lifetime > 10f)
+        {
+            gameObject.SetActive(false);
+        }
+    }
     protected abstract void Disparar();
-    protected abstract void Actualizar();
 }

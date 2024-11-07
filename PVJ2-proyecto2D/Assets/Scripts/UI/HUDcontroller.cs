@@ -13,10 +13,11 @@ public class HUDcontroller : MonoBehaviour
     [SerializeField] GameObject GasolinaItem;
     [SerializeField] GameObject NitroItem;
     [SerializeField] GameObject BumperItem;
+    [SerializeField] GameObject MenuPausa;
     private Animator barraEnergiaAnimator;
     private Animator barraCombustibleAnimator;
 
-    public void Start()
+    public void Awake()
     {
         barraEnergiaAnimator = barraEnergia.GetComponent<Animator>();
         barraCombustibleAnimator = barraCombustible.GetComponent<Animator>();
@@ -24,7 +25,45 @@ public class HUDcontroller : MonoBehaviour
         {
             ActualizarEstadoObjeto(i, false);
         }
+        ActualizarMenuPausa(false);
     }
+
+    private void OnEnable()
+        {
+            GameEvents.OnPause += Pausa;
+            GameEvents.OnResume += Reanuda;
+        }
+    private void OnDisable()
+        {
+            GameEvents.OnPause -= Pausa;
+            GameEvents.OnResume -= Reanuda;
+        }
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (Time.timeScale != 0)
+            {
+                GameEvents.TriggerPause();
+            }
+            else
+            {
+                GameEvents.TriggerResume();
+            }
+        }
+    }
+    private void Pausa()
+    {
+        ActualizarMenuPausa(true);
+        Time.timeScale = 0;
+
+    }
+    public void Reanuda()
+    {
+        ActualizarMenuPausa(false);
+        Time.timeScale = 1;
+    }
+        
 
     public void ActualizarTextoDiamantes(string nuevoTexto)
     {
@@ -58,6 +97,11 @@ public class HUDcontroller : MonoBehaviour
     public void ActualizarTextoPuntaje(string nuevoTexto)
     {
         textoPuntaje.text = nuevoTexto;
+    }
+
+    public void ActualizarMenuPausa(bool estado)
+    {
+        MenuPausa.SetActive(estado);
     }
 
 }
