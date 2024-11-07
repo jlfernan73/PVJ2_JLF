@@ -14,6 +14,8 @@ public class HUDcontroller : MonoBehaviour
     [SerializeField] GameObject NitroItem;
     [SerializeField] GameObject BumperItem;
     [SerializeField] GameObject MenuPausa;
+    [SerializeField] GameObject MenuGameOver;
+    [SerializeField] GameObject MenuVictoria;
     private Animator barraEnergiaAnimator;
     private Animator barraCombustibleAnimator;
 
@@ -26,18 +28,24 @@ public class HUDcontroller : MonoBehaviour
             ActualizarEstadoObjeto(i, false);
         }
         ActualizarMenuPausa(false);
+        ActualizarMenuGameOver(false);
+        ActualizarMenuVictoria(false);
     }
 
     private void OnEnable()
-        {
-            GameEvents.OnPause += Pausa;
-            GameEvents.OnResume += Reanuda;
-        }
+    {
+       GameEvents.OnPause += Pausa;
+       GameEvents.OnResume += Reanuda;
+       GameEvents.OnGameOver += GameOver;
+       GameEvents.OnVictory += Victoria;
+    }
     private void OnDisable()
-        {
-            GameEvents.OnPause -= Pausa;
-            GameEvents.OnResume -= Reanuda;
-        }
+    {
+        GameEvents.OnPause -= Pausa;
+        GameEvents.OnResume -= Reanuda;
+        GameEvents.OnGameOver -= GameOver;
+        GameEvents.OnVictory -= Victoria;
+    }
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
@@ -51,6 +59,14 @@ public class HUDcontroller : MonoBehaviour
                 GameEvents.TriggerResume();
             }
         }
+        if (GameManager.Instance.GetGameOver())
+        {
+            GameEvents.TriggerGameOver();
+        }
+        if (GameManager.Instance.GetVictoria())
+        {
+            GameEvents.TriggerVictory();
+        }
     }
     private void Pausa()
     {
@@ -63,7 +79,14 @@ public class HUDcontroller : MonoBehaviour
         ActualizarMenuPausa(false);
         Time.timeScale = 1;
     }
-        
+    public void GameOver()
+    {
+        ActualizarMenuGameOver(true);
+    }
+    public void Victoria()
+    {
+        ActualizarMenuVictoria(true);
+    }
 
     public void ActualizarTextoDiamantes(string nuevoTexto)
     {
@@ -102,6 +125,14 @@ public class HUDcontroller : MonoBehaviour
     public void ActualizarMenuPausa(bool estado)
     {
         MenuPausa.SetActive(estado);
+    }
+    public void ActualizarMenuGameOver(bool estado)
+    {
+        MenuGameOver.SetActive(estado);
+    }
+    public void ActualizarMenuVictoria(bool estado)
+    {
+        MenuVictoria.SetActive(estado);
     }
 
 }

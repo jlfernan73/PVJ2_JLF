@@ -7,12 +7,14 @@ public class MainUIcontroller : MonoBehaviour
     public void CargarSiguienteEscena()
     {
         int indiceEscenaActual = SceneManager.GetActiveScene().buildIndex;
-        SceneManager.LoadScene(indiceEscenaActual+1);                       //Para pasar de nivel (no resetea el puntaje)
+        SceneManager.LoadScene(indiceEscenaActual+1);                       //Para pasar de nivel (no resetea variables globales)
     }
     public void CargarEscena(int escena)
     {
         SceneManager.LoadScene(escena, LoadSceneMode.Single);               //Usado cuando reinicia
-        GameManager.Instance.ResetPuntaje();                                //Resetea el puntaje
+        GameManager.Instance.ResetPuntaje();                                //Resetea variables globales
+        GameManager.Instance.SetGameOver(false);
+        GameManager.Instance.SetVictoria(false);
     }
     public void CargarEscenaAdicional(int escena)                           //Abre la escena sin cerrar la original
     {

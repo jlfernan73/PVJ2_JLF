@@ -195,6 +195,7 @@ public class MoverJugador : MonoBehaviour
         {                                                       // si ya salió de la pantalla desactiva el objeto y detiene todo 
             audioSource.Stop();
             gameObject.SetActive(false);
+            GameManager.Instance.SetVictoria(true);
         }
     }
 
@@ -202,6 +203,7 @@ public class MoverJugador : MonoBehaviour
     {                                                           // usado como evento al final de la animación de la explosión
         miSprite = gameObject.GetComponent<SpriteRenderer>();
         miSprite.enabled = false;
+        GameManager.Instance.SetGameOver(true);
     }
 
     public void activarNitro()                              // método para activar el objeto Nitro
