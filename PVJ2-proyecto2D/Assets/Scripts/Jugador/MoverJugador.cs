@@ -51,6 +51,7 @@ public class MoverJugador : MonoBehaviour
         maxAnguloInicial = PerfilJugador.MaxAngulo;
         maxRapidezInicial = PerfilJugador.MaxRapidez;
         aceleracionInicial = PerfilJugador.Aceleracion;
+        miAnimator.SetBool("Reinicia", false);
     }
 
     private void Update()
@@ -128,13 +129,25 @@ public class MoverJugador : MonoBehaviour
             audioSource.Stop();
             audioSource.volume = 1;
             audioSource.PlayOneShot(PerfilJugador.ExplosionSFX);
+            Reinicio(false);
             jugador.JugadorExplota();                       
         }
 
         // si ya explotó y se terminó la explosión, se borra el jugador
         if (!audioSource.isPlaying && !jugador.EstaVivo())
         {
-            gameObject.SetActive(false);
+            if(GameManager.Instance.GetVidas() < 0)
+            {
+                gameObject.SetActive(false);
+                Reinicio(false);
+                GameManager.Instance.SetGameOver(true);
+            }
+            else
+            {
+                Reinicio(true);
+                GetComponent<Jugador>().ResetJugador();
+
+            }
         }
 
         // si se alcanzó la meta y el auto aun no se borró
@@ -199,13 +212,6 @@ public class MoverJugador : MonoBehaviour
         }
     }
 
-    public void OnAnimationEnd()                                // método para desactivar el spriteRenderer al final de una animación
-    {                                                           // usado como evento al final de la animación de la explosión
-        miSprite = gameObject.GetComponent<SpriteRenderer>();
-        miSprite.enabled = false;
-        GameManager.Instance.SetGameOver(true);
-    }
-
     public void activarNitro()                              // método para activar el objeto Nitro
     {
         nitro = true;
@@ -213,5 +219,10 @@ public class MoverJugador : MonoBehaviour
         PerfilJugador.MaxAngulo = maxAnguloInicial + 5;
         PerfilJugador.Aceleracion = aceleracionInicial * 2;
         PerfilJugador.NitroTank = 100f;
+    }
+    public void Reinicio(bool valor)
+    {
+        miAnimator.SetBool("Reinicia", valor);
+
     }
 }

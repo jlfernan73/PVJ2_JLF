@@ -10,6 +10,7 @@ TagManager:
   - Grua
   - Coleccionable
   - Chispas
+  - Enemigo
   layers:
   - Default
   - TransparentFX

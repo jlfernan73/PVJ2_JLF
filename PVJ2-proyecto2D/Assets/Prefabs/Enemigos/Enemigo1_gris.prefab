@@ -18,7 +18,7 @@ GameObject:
   - component: {fileID: 2168251848920216677}
   m_Layer: 8
   m_Name: Enemigo1_gris
-  m_TagString: Untagged
+  m_TagString: Enemigo
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

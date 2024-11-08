@@ -70,7 +70,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4146936783516192701, guid: 43e90dd5dd726f1468a45c4378122694, type: 3}
       propertyPath: m_TagString
-      value: Untagged
+      value: Enemigo
       objectReference: {fileID: 0}
     - target: {fileID: 6164983173501160349, guid: 43e90dd5dd726f1468a45c4378122694, type: 3}
       propertyPath: m_UsedByEffector

@@ -4,6 +4,7 @@ using UnityEngine;
 using Cinemachine;
 using UnityEditor;
 using UnityEngine.Events;
+using static UnityEditor.Progress;
 
 // clase Jugador con variables definidas via Scriptable Object
 
@@ -64,7 +65,6 @@ public class Jugador : MonoBehaviour
     private void Update()
     {
         particleSystemHumo.transform.position = gameObject.transform.position;          // la posición del sist. de partículas de humo sigue la del auto
-        particleSystemExplosion.transform.position = gameObject.transform.position;     // idem con la posición del sistema de partículas de la explosión
     }
 
     public void ModificarEnergia(float puntos)      // método público para modificar la energía
@@ -126,6 +126,7 @@ public class Jugador : MonoBehaviour
     public void JugadorExplota()          // método público para hacer que el jugador explote
     {
         vive = false;
+        GameManager.Instance.ModificarVida(-1);
     }
 
     public void Colision()                                      // método público que acciona los efectos de la colisión
@@ -137,10 +138,26 @@ public class Jugador : MonoBehaviour
     public void OnExplosion()                                   // método público que acciona los efectos de la explosión
     {                                                           // usado como evento al inicio de la animación de la explosión
         particleSystemHumo.Stop();                              // se detiene el humo
+        particleSystemExplosion.transform.position = gameObject.transform.position;     // posición del sistema de partículas de la explosión
         particleSystemExplosion.Play();                         // se ejecuta la proyección de partículas incendiadas
         Collider2D collider2D = GetComponent<Collider2D>();
         collider2D.enabled = false;                             // se desactiva el collider del auto
     }
+
+
+    public void ResetJugador()
+    {
+        vive = true;
+        gameObject.transform.position = particleSystemExplosion.transform.position;
+        GetComponent<Collider2D>().enabled = true;                             // se reactiva el collider del auto
+        GetComponent<Coleccionar>().VaciarInventario();
+        PerfilJugador.Energia = 100f;
+        PerfilJugador.Combustible = 100f;
+        PerfilJugador.NitroTank = 0;
+        OnEnergyChanged.Invoke(perfilJugador.Energia);
+        OnFuelChanged.Invoke(perfilJugador.Combustible);
+    }
+
 
     private void OnTriggerEnter2D(Collider2D collision)             //Método para chequear la llegada a Meta
     {

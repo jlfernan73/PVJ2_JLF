@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.Progress;
 
 // clase para colectar ítems en Diccionario (objetos) y en una Cola (diamantes)
 // Diccionario: Inventario con 3 objetos (sólo puede colectar uno de cada uno en la bolsa) que se activan con los números
@@ -106,6 +107,19 @@ public class Coleccionar : MonoBehaviour
             jugador.ModificarItem(3, false);
         }              
 
+    }
+
+    public void VaciarInventario()
+    {
+        Jugador jugador = gameObject.GetComponent<Jugador>();       //para acceder a los métodos de Jugador
+        if (inventario.ContainsKey("Gasolina")) { inventario["Gasolina"].transform.SetParent(null); }
+        if (inventario.ContainsKey("Nitro")) { inventario["Nitro"].transform.SetParent(null); }
+        if (inventario.ContainsKey("Bumper")) { inventario["Bumper"].transform.SetParent(null); }
+        inventario.Clear();                                               //se quitan los objetos del inventario
+        for (int i = 1; i<4; i++)
+        {
+            jugador.ModificarItem(i, false);
+        }
     }
 
     public void EntregarDiamantes(int cantidad)             // método usado al final del nivel, para entregar los diamantes requeridos

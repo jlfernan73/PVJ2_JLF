@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
 
+    private int vidas;
     private int puntaje;
     private bool gameOver;
     private bool victoria;
@@ -17,6 +18,7 @@ public class GameManager : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
+            vidas = 3;
             puntaje = 0;
             gameOver = false;
             victoria = false;
@@ -25,6 +27,9 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
+    private void Update()
+    {
     }
     public void AdPuntaje(int puntos)
     {
@@ -38,6 +43,19 @@ public class GameManager : MonoBehaviour
     public int GetPuntaje()
     {
         return puntaje;
+    }
+    public void ModificarVida(int cantidad)
+    {
+        vidas+=cantidad;
+        if (vidas > 5) { vidas = 5; }
+    }
+    public void ResetVidas()
+    {
+        vidas = 3;
+    }
+    public int GetVidas()
+    {
+        return vidas;
     }
     public bool GetGameOver()
     {
