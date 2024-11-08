@@ -8,6 +8,8 @@ public class HUDcontroller : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI textoDiamantes;
     [SerializeField] TextMeshProUGUI textoPuntaje;
+    [SerializeField] GameObject iconoVida;
+    [SerializeField] GameObject contenedorIconosVida;
     [SerializeField] GameObject barraEnergia;
     [SerializeField] GameObject barraCombustible;
     [SerializeField] GameObject GasolinaItem;
@@ -86,6 +88,48 @@ public class HUDcontroller : MonoBehaviour
     public void Victoria()
     {
         ActualizarMenuVictoria(true);
+    }
+
+    public void ActualizarVidasHUD(int vidas)
+    {
+        if (EstaVacioContenedor())
+        {
+            CargarContenedor(vidas);
+            return;
+        }
+        if (CantidadIconosVida() > vidas)
+        {
+            EliminarUltimoIcono();
+        }
+        else
+        {
+            CrearIcono();
+        }
+    }
+
+    private bool EstaVacioContenedor()
+    {
+        return contenedorIconosVida.transform.childCount == 0;
+    }
+    private int CantidadIconosVida()
+    {
+        return contenedorIconosVida.transform.childCount;
+    }
+    private void EliminarUltimoIcono()
+    {
+        Transform contenedor = contenedorIconosVida.transform;
+        GameObject.Destroy(contenedor.GetChild(contenedor.childCount - 1).gameObject);
+    }
+    private void CargarContenedor(int cantidadIconos)
+    {
+        for(int i=0; i<cantidadIconos; i++)
+        {
+            CrearIcono();
+        }
+    }
+    private void CrearIcono()
+    {
+        Instantiate(iconoVida, contenedorIconosVida.transform);
     }
 
     public void ActualizarTextoDiamantes(string nuevoTexto)

@@ -136,7 +136,7 @@ public class MoverJugador : MonoBehaviour
         // si ya explotó y se terminó la explosión, se borra el jugador
         if (!audioSource.isPlaying && !jugador.EstaVivo())
         {
-            if(GameManager.Instance.GetVidas() < 0)
+            if(GameManager.Instance.GetVidas() < 1)
             {
                 gameObject.SetActive(false);
                 Reinicio(false);

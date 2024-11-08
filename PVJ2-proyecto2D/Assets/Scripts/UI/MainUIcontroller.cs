@@ -13,6 +13,7 @@ public class MainUIcontroller : MonoBehaviour
     {
         SceneManager.LoadScene(escena, LoadSceneMode.Single);               //Usado cuando reinicia
         GameManager.Instance.ResetPuntaje();                                //Resetea variables globales
+        GameManager.Instance.ResetVidas();
         GameManager.Instance.SetGameOver(false);
         GameManager.Instance.SetVictoria(false);
     }

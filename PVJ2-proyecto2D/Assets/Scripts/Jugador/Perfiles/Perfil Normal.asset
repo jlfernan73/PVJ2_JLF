@@ -14,14 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   experienciaProximoNivel: 200
   escalarExperiencia: 50
-  aceleracion: 90
+  aceleracion: 95
   maxAngulo: 45
   maxRapidez: 20
   consumoCombustible: 0.012
   consumoObjeto: 3
   reparacion: 5
-  energia: 32
-  combustible: 3.8577428
+  energia: 36
+  combustible: 95.92691
   nitroTank: 0
   bumperConteo: 0
   reversaSFX: {fileID: 8300000, guid: 25b0ccfe174143a4a9d93671743dc6ef, type: 3}

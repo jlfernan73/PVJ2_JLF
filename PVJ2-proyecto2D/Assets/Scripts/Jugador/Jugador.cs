@@ -42,6 +42,7 @@ public class Jugador : MonoBehaviour
     [SerializeField] UnityEvent<string> OnDiamantesChanged;
     [SerializeField] UnityEvent<string> OnPuntajeChanged;
     [SerializeField] UnityEvent<int,bool> OnItemChanged;
+    [SerializeField] UnityEvent<int> OnVidasChanged;
 
     void Start()
     {
@@ -56,6 +57,7 @@ public class Jugador : MonoBehaviour
         OnFuelChanged.Invoke(perfilJugador.Combustible);
         OnDiamantesChanged.Invoke(perfilJugador.Experiencia.ToString());
         OnPuntajeChanged.Invoke(GameManager.Instance.GetPuntaje().ToString());
+        OnVidasChanged.Invoke(GameManager.Instance.GetVidas()-1);
         for (int i = 1; i < 4; i++)
         {
             OnItemChanged.Invoke(i, false);
@@ -147,6 +149,7 @@ public class Jugador : MonoBehaviour
 
     public void ResetJugador()
     {
+        OnVidasChanged.Invoke(GameManager.Instance.GetVidas()-1);
         vive = true;
         gameObject.transform.position = particleSystemExplosion.transform.position;
         GetComponent<Collider2D>().enabled = true;                             // se reactiva el collider del auto
