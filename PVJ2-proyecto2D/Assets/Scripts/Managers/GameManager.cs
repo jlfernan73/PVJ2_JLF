@@ -7,7 +7,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
 
-    [SerializeField] private int vidasIniciales;
+    private int vidasIniciales;
     private int vidas;
     private int puntaje;
     private bool gameOver;
@@ -19,7 +19,7 @@ public class GameManager : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
-            vidas = vidasIniciales;
+            vidas = 0;
             puntaje = 0;
             gameOver = false;
             victoria = false;
@@ -28,9 +28,6 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-    }
-    private void Update()
-    {
     }
     public void AdPuntaje(int puntos)
     {
@@ -45,10 +42,14 @@ public class GameManager : MonoBehaviour
     {
         return puntaje;
     }
+    public void SetVidasIniciales(int cantidad)
+    {
+        vidas = cantidad;
+    }
     public void ModificarVida(int cantidad)
     {
         vidas+=cantidad;
-        if (vidas > 5) { vidas = 5; }
+        if (vidas > 10) { vidas = 10; }
     }
     public void ResetVidas()
     {

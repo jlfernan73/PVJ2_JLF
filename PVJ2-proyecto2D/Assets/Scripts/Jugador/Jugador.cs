@@ -4,7 +4,6 @@ using UnityEngine;
 using Cinemachine;
 using UnityEditor;
 using UnityEngine.Events;
-using static UnityEditor.Progress;
 
 // clase Jugador con variables definidas via Scriptable Object
 
@@ -28,6 +27,7 @@ public class Jugador : MonoBehaviour
     // se accede a estos transform para activar/desactivar según se cumplan condiciones
     [SerializeField] private Transform musicaFondo;                     //para poder apagar la música de fondo
     [SerializeField] private Transform musicaMeta;                      //y poner una música de llegada
+    [SerializeField] private Transform protector;
 
     private Progresion progresionJugador;
 
@@ -35,6 +35,10 @@ public class Jugador : MonoBehaviour
     bool humeando = false;
     bool vive = true;
     bool meta = false;
+    bool estatico = false;
+    bool protegido = false;
+
+    float tiempoInicial;        // para chequear periodos de tiempo
 
     //----Eventos del jugador----
     [SerializeField] UnityEvent<float> OnEnergyChanged;
@@ -57,16 +61,35 @@ public class Jugador : MonoBehaviour
         OnFuelChanged.Invoke(perfilJugador.Combustible);
         OnDiamantesChanged.Invoke(perfilJugador.Experiencia.ToString());
         OnPuntajeChanged.Invoke(GameManager.Instance.GetPuntaje().ToString());
-        OnVidasChanged.Invoke(GameManager.Instance.GetVidas()-1);
+        GameManager.Instance.SetVidasIniciales(perfilJugador.VidasIniciales);
+        OnVidasChanged.Invoke(perfilJugador.VidasIniciales-1);
         for (int i = 1; i < 4; i++)
         {
             OnItemChanged.Invoke(i, false);
         }
+        tiempoInicial = Time.time;
     }
 
     private void Update()
     {
         particleSystemHumo.transform.position = gameObject.transform.position;          // la posición del sist. de partículas de humo sigue la del auto
+        // condiciones iniciales luego de explosion
+        if ((Time.time - tiempoInicial) <= 5 && protegido)
+        {
+            protector.transform.position = transform.position;
+            protector.transform.rotation = transform.rotation;
+        }
+        if ((Time.time - tiempoInicial) > 1 && estatico)
+        {
+            //GetComponent<Collider2D>().excludeLayers = LayerMask.GetMask("Nothing");    //reactiva la colisión con Enemigos por un tiempo
+            GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
+            estatico = false;
+        }
+        if ((Time.time - tiempoInicial) > 5 && protegido)
+        {
+            protector.GetComponent<Collider2D>().enabled = false;
+            protegido = false;
+        }
     }
 
     public void ModificarEnergia(float puntos)      // método público para modificar la energía
@@ -152,13 +175,19 @@ public class Jugador : MonoBehaviour
         OnVidasChanged.Invoke(GameManager.Instance.GetVidas()-1);
         vive = true;
         gameObject.transform.position = particleSystemExplosion.transform.position;
+        GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
+        //GetComponent<Collider2D>().excludeLayers = LayerMask.GetMask("Enemigos");    //no colisionará con Enemigos por un tiempo
         GetComponent<Collider2D>().enabled = true;                             // se reactiva el collider del auto
+        protector.GetComponent<Collider2D>().enabled = true;
         GetComponent<Coleccionar>().VaciarInventario();
         PerfilJugador.Energia = 100f;
         PerfilJugador.Combustible = 100f;
         PerfilJugador.NitroTank = 0;
         OnEnergyChanged.Invoke(perfilJugador.Energia);
         OnFuelChanged.Invoke(perfilJugador.Combustible);
+        tiempoInicial = Time.time;
+        estatico = true;
+        protegido = true;
     }
 
 

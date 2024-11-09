@@ -51,7 +51,7 @@ public class MoverEnemigo_persigue : AutoEnemigo
         }
 
         // en caso que el jugador no haya explotado y aun esté activo, lo buscará
-        if (jugador.GetComponent<SpriteRenderer>().enabled)
+        if (jugador.GetComponent<Collider2D>().enabled)
         {
             // en cualquier caso se posiciona buscando al auto del jugador
             direccion = (jugador.position - new Vector3(-0.5f, 0, 0) - transform.position).normalized;  // busca al auto del jugador, ligeramente corrido en x

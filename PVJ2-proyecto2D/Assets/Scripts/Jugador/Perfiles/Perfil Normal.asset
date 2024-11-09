@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0311a0bdfe1b5fb41aab6c5cc7bc996b, type: 3}
   m_Name: Perfil Normal
   m_EditorClassIdentifier: 
+  vidasIniciales: 5
   experienciaProximoNivel: 200
   escalarExperiencia: 50
   aceleracion: 95
@@ -20,8 +21,8 @@ MonoBehaviour:
   consumoCombustible: 0.012
   consumoObjeto: 3
   reparacion: 5
-  energia: 36
-  combustible: 95.92691
+  energia: 0
+  combustible: 64.969826
   nitroTank: 0
   bumperConteo: 0
   reversaSFX: {fileID: 8300000, guid: 25b0ccfe174143a4a9d93671743dc6ef, type: 3}
