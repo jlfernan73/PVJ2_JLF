@@ -31,8 +31,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7812605981845138248}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: -9.75, y: -3.81, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -42.47, y: -18.27, z: 0}
   m_LocalScale: {x: 1.1, y: 1.1, z: 1.1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -166,6 +166,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   aceleracion: 50
   minRapidez: 10
+  energiaEnemigo: 50
+  particlesCrashEnemigo: {fileID: 5907176111680881880, guid: 1ae86b0a184035c4e803fb888d31f9fd, type: 3}
+  particlesHumo: {fileID: 771850418373021830, guid: 619c0ffc3a54dcb489f9094c24fe4ad1, type: 3}
   maxImpulso: 25
 --- !u!114 &727871569476425700
 MonoBehaviour:

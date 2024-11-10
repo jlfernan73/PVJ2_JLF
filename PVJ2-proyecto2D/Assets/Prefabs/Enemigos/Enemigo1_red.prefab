@@ -60,9 +60,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemigo1_red
       objectReference: {fileID: 0}
+    - target: {fileID: 7812605981845138248, guid: 316d4825b8a0281418aadc5c811ca361, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8694917786592734510, guid: 316d4825b8a0281418aadc5c811ca361, type: 3}
       propertyPath: minRapidez
       value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 8694917786592734510, guid: 316d4825b8a0281418aadc5c811ca361, type: 3}
+      propertyPath: particlesHumo
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8694917786592734510, guid: 316d4825b8a0281418aadc5c811ca361, type: 3}
+      propertyPath: particlesCrashEnemigo
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

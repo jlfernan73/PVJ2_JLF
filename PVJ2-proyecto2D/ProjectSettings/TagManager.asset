@@ -11,6 +11,7 @@ TagManager:
   - Coleccionable
   - Chispas
   - Enemigo
+  - Proyectil
   layers:
   - Default
   - TransparentFX

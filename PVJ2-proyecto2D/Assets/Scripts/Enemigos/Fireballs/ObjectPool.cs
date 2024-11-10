@@ -27,14 +27,9 @@ public class ObjectPool : MonoBehaviour
     {
         foreach (GameObject obj in pooledObjects)
         {
-            if(!obj.activeInHierarchy) return obj;
+            if (!obj.activeInHierarchy) return obj;
         }
         return null;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

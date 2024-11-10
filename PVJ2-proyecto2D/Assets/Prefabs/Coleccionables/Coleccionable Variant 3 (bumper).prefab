@@ -12,6 +12,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Coleccionable Variant 3 (bumper)
       objectReference: {fileID: 0}
+    - target: {fileID: 92879133958183858, guid: 30eebca4d84fd304d8a99ed1a242f58a, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4444424063162801757, guid: 30eebca4d84fd304d8a99ed1a242f58a, type: 3}
       propertyPath: m_Size.x
       value: 2.000001

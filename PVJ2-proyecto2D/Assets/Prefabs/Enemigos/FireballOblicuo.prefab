@@ -18,7 +18,7 @@ GameObject:
   - component: {fileID: 4587032539851958323}
   m_Layer: 7
   m_Name: FireballOblicuo
-  m_TagString: Enemigo
+  m_TagString: Proyectil
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

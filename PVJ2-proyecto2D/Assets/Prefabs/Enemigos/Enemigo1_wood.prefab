@@ -18,31 +18,31 @@ PrefabInstance:
       objectReference: {fileID: 21300000, guid: ea7f404334b7e954bb30725f01528c0b, type: 3}
     - target: {fileID: 4284777772486664368, guid: 316d4825b8a0281418aadc5c811ca361, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -73.2
+      value: -42.47
       objectReference: {fileID: 0}
     - target: {fileID: 4284777772486664368, guid: 316d4825b8a0281418aadc5c811ca361, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 6.9
+      value: -18.27
       objectReference: {fileID: 0}
     - target: {fileID: 4284777772486664368, guid: 316d4825b8a0281418aadc5c811ca361, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.18458578
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4284777772486664368, guid: 316d4825b8a0281418aadc5c811ca361, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4284777772486664368, guid: 316d4825b8a0281418aadc5c811ca361, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 4284777772486664368, guid: 316d4825b8a0281418aadc5c811ca361, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 4284777772486664368, guid: 316d4825b8a0281418aadc5c811ca361, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 1
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 4284777772486664368, guid: 316d4825b8a0281418aadc5c811ca361, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -63,6 +63,10 @@ PrefabInstance:
     - target: {fileID: 7812605981845138248, guid: 316d4825b8a0281418aadc5c811ca361, type: 3}
       propertyPath: m_Name
       value: Enemigo1_wood
+      objectReference: {fileID: 0}
+    - target: {fileID: 7812605981845138248, guid: 316d4825b8a0281418aadc5c811ca361, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8694917786592734510, guid: 316d4825b8a0281418aadc5c811ca361, type: 3}
       propertyPath: maxImpulso

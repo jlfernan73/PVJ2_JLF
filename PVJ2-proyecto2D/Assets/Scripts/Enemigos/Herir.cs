@@ -30,8 +30,14 @@ public class Herir : MonoBehaviour
                 audioColision.PlayOneShot(choqueSFX);       // se ejecuta el sonido de la colisión
                 jugador.Colision();                         // se llama al método público de la clase Jugador que ejecuta acciones específicas de la colisión (partículas y sonido)
                 jugador.ModificarEnergia(-puntos);          // resta puntos a la energía
-                Debug.Log("PUNTOS DE DAÑO REALIZADOS AL JUGADOR " + puntos);
             }
+        }
+        if (CompareTag("Enemigo"))
+        {
+            AutoEnemigo enemigo = GetComponent<AutoEnemigo>();
+            enemigo.Colision();                         
+            enemigo.ModificarEnergia(-1f);          // resta 1 punto a la energía
+
         }
     }
 }
