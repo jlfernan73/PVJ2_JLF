@@ -8,17 +8,21 @@ public abstract class AutoEnemigo : MonoBehaviour
     [Header("Configuracion")]
     [SerializeField] protected float aceleracion = 40f;       // módulo de la fuerza de aceleración
     [SerializeField] protected float minRapidez = 20;         // valor al que baja la velocidad para volver a acelerar
-    [SerializeField] protected float energiaEnemigo = 100;
+    [SerializeField] protected float energiaInicial = 100;
+    [SerializeField] protected AudioClip explosionSFX;
+    protected AudioSource audioExplosion;
     public GameObject particlesCrashEnemigo;        //crash al colisionar
     protected ParticleSystem particleSystemCrashEnemigo;       
 
     public GameObject particlesHumo;        //humo
     protected ParticleSystem particleSystemHumo;       
     
+    protected float energiaEnemigo;
     protected Vector2 direccion;                      // dirección de avance del auto
     protected float rapidez;                          // módulo de la velocidad
     protected bool acelerar = true;                   // bandera para activar el impulso
     protected bool humeando = false;
+    protected bool vive = true;
 
     protected Rigidbody2D miRigidbody2D;
     protected Animator miAnimator;
@@ -41,21 +45,41 @@ public abstract class AutoEnemigo : MonoBehaviour
         miRigidbody2D = GetComponent<Rigidbody2D>();
         miAnimator = GetComponent<Animator>();
         miSprite = GetComponent<SpriteRenderer>();
+        audioExplosion = GetComponent<AudioSource>();
+        vive = true;
+        energiaEnemigo = energiaInicial;
+        miAnimator.SetBool("Vive", true);
         Inicializar();                                  //inicializa los valores de las variables propias de cada tipo de auto
     }
 
     private void Update()
     {
-        Mover();
-        if (particleSystemHumo != null)
+        if (vive)
         {
-            particleSystemHumo.transform.position = transform.position;          // la posición del sist. de partículas de humo sigue la del auto
+            Mover();
+            if (particleSystemHumo != null)
+            {
+                particleSystemHumo.transform.position = transform.position;          // la posición del sist. de partículas de humo sigue la del auto
+            }
+        }
+        else
+        {
+            if (!audioExplosion.isPlaying)
+            {
+                GetComponent<Collider2D>().enabled = true;
+                gameObject.SetActive(false);
+                particlesCrashEnemigo.SetActive(false);
+                particlesHumo.SetActive(false);
+            }
         }
     }
 
     private void FixedUpdate()
     {
-        Acelerar();
+        if (vive)
+        {
+            Acelerar();
+        }
     }
 
     protected abstract void Inicializar();
@@ -74,9 +98,10 @@ public abstract class AutoEnemigo : MonoBehaviour
     public void ModificarEnergia(float puntos)      // método público para modificar la energía
     {                                               // sin bajar de 0
         energiaEnemigo += puntos;
-        if (energiaEnemigo < 0)
+        if (energiaEnemigo <= 0)
         {
-            energiaEnemigo = 0;                        // con energía nula el jugador aun vivirá hasta explotar
+            energiaEnemigo = 0;
+            Explota();
         }
         if (energiaEnemigo < 25 && !humeando)          // acá se activa el sistema de partículas del humo
         {
@@ -103,5 +128,12 @@ public abstract class AutoEnemigo : MonoBehaviour
     public void AsignarHumo(GameObject particulas)
     {
         particlesHumo = particulas;
+    }
+    protected void Explota()
+    {
+        vive = false;
+        GetComponent<Collider2D>().enabled = false;
+        audioExplosion.PlayOneShot(explosionSFX);       // se ejecuta el sonido de la explosion
+        miAnimator.SetBool("Vive", false);
     }
 }
