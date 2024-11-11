@@ -12,6 +12,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Coleccionable Variant 1 (gasolina)
       objectReference: {fileID: 0}
+    - target: {fileID: 92879133958183858, guid: 30eebca4d84fd304d8a99ed1a242f58a, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4967510730321720727, guid: 30eebca4d84fd304d8a99ed1a242f58a, type: 3}
       propertyPath: m_Sprite
       value: 

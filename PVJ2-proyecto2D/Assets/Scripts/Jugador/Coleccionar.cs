@@ -66,6 +66,7 @@ public class Coleccionar : MonoBehaviour
             diamantes.Enqueue(nuevoDiamante);                           // se agrega el diamante a la cola con diamantes
             nuevoDiamante.transform.SetParent(cofre.transform);         //se guarda el diamante en el cofre
             nuevoDiamante.SetActive(false);                             // se desactiva el diamante
+            GameManager.Instance.AdPuntaje(10);
         }
     }
 
@@ -79,7 +80,6 @@ public class Coleccionar : MonoBehaviour
         //acciones asociadas al uso del bumper
         if (bumperActive)
         {
-            bumper.transform.position = transform.position;     //la posición y rotación del bumper sigue la del jugador
             bumper.transform.rotation = transform.rotation;     
             PerfilJugador.BumperConteo -= PerfilJugador.ConsumoObj * Time.deltaTime;    //consumo de uso del bumper
             if (PerfilJugador.BumperConteo < 0) DesactivarBumper();                     //pasado el tiempo, se desactiva el bumper
@@ -108,6 +108,19 @@ public class Coleccionar : MonoBehaviour
 
     }
 
+    public void VaciarInventario()
+    {
+        Jugador jugador = gameObject.GetComponent<Jugador>();       //para acceder a los métodos de Jugador
+        if (inventario.ContainsKey("Gasolina")) { inventario["Gasolina"].transform.SetParent(null); }
+        if (inventario.ContainsKey("Nitro")) { inventario["Nitro"].transform.SetParent(null); }
+        if (inventario.ContainsKey("Bumper")) { inventario["Bumper"].transform.SetParent(null); }
+        inventario.Clear();                                               //se quitan los objetos del inventario
+        for (int i = 1; i<4; i++)
+        {
+            jugador.ModificarItem(i, false);
+        }
+    }
+
     public void EntregarDiamantes(int cantidad)             // método usado al final del nivel, para entregar los diamantes requeridos
     {
         for(int i=0;i<cantidad; i++)                        
@@ -122,17 +135,21 @@ public class Coleccionar : MonoBehaviour
     {
         item.GetComponent<CapsuleCollider2D>().isTrigger = false;       //deja de colisionar tipo trigger
         item.GetComponent<CapsuleCollider2D>().excludeLayers = LayerMask.GetMask("Default");    //no colisionará con Default (donde está el auto)
-        item.transform.localScale = new Vector3(1.45f, 1.45f, 1f);        //se lo agranda un poco para que rodee al auto
+        item.transform.localScale = new Vector3(1.7f, 1.7f, 1f);        //se lo agranda un poco para que rodee al auto
         item.transform.position = transform.position;                   //se lo ubica en el centro del auto
+        item.transform.rotation = transform.rotation;
         bumper = item;                                                  //se asigna el item al objeto bumper (para seguir moviendolo) 
         bumper.SetActive(true);                                         //se lo activa
         bumperActive = true;                                            //se avisa que está activo
+        GetComponent<FixedJoint2D>().connectedBody = bumper.GetComponent<Rigidbody2D>();
+        GetComponent<FixedJoint2D>().enabled = true;
         PerfilJugador.BumperConteo = 100;                               //se inicia en 100 el contador
     }
 
     private void DesactivarBumper()                                     //desactivación del bumper
     {
         bumperActive = false;                                           //se avisa que está inactivo
+        GetComponent<FixedJoint2D>().enabled = false;
         bumper.SetActive(false);                                        //se desactiva el gameObject
         PerfilJugador.BumperConteo = 0;                                 //se pone en 0 el contador
     }

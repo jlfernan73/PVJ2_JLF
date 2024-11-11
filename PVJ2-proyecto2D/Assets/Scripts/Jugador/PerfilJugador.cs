@@ -13,7 +13,13 @@ public class PerfilJugador : ScriptableObject
     private int experiencia;                                        // corresponde al número de diamantes colectados
     public int Experiencia { get => experiencia; set => experiencia = value; }
 
-    [Header("Configuraciones de experiencia")]
+    [Header("Configuraciones de juego")]
+    [SerializeField]
+    [Tooltip("Vidas iniciales")]
+    [Range(1, 5)]
+    private int vidasIniciales;
+    public int VidasIniciales { get => vidasIniciales;}
+
     [SerializeField]
     [Tooltip("Experiencia necesaria para pasar al proximo nivel")]
     [Range(50, 500)]

@@ -4,45 +4,32 @@ using UnityEngine;
 
 // clase para que un tipo de enemigo se mueva linealmente un cierto tramo, y luego gire
 // para ello acelera, y espera hasta que la velocidad baje a un cierto valor, y vuelve a acelerar
+// (hereda de AutoEnemigo)
 
-public class MoverEnemigo_lineal : MonoBehaviour
+public class MoverEnemigo_lineal : AutoEnemigo
 {
-    // Variables a configurar desde el editor
     [Header("Configuracion")]
-    [SerializeField] float aceleracion = 40f;       // módulo de la fuerza de aceleración
-    [SerializeField] float minRapidez = 20;         // valor al que baja la velocidad para volver a acelerar
     [SerializeField] float maxImpulso = 3;          // número de veces que repite la aceleración antes de girar 90 grados
 
-    // Variables de uso interno en el script
-    private Vector2 direccion;                      // dirección de avance del auto
-    private float rapidez;                          // módulo de la velocidad
-    private float deltaAngulo = 0;                  // usado a modo de contador del angulo de giro
-    private int impulso = 0;                        // contador del número de impulsos
-    private bool acelerar = true;                   // bandera para activar el impulso
-    private bool girar = false;                     // bandera para activar el giro
+    private float deltaAngulo;                  // usado a modo de contador del angulo de giro
+    private int impulso;                        // contador del número de impulsos
+    private bool girar;                     // bandera para activar el giro
 
-    // Variable para referenciar otro componente del objeto
-    private Rigidbody2D miRigidbody2D;
-    private Animator miAnimator;
-    private SpriteRenderer miSprite;
-
-    // Codigo ejecutado cuando el objeto se activa en el nivel
-    private void OnEnable()
+    protected override void Inicializar()
     {
-        miRigidbody2D = GetComponent<Rigidbody2D>();
-        miAnimator = GetComponent<Animator>();
-        miSprite = GetComponent<SpriteRenderer>();
+        deltaAngulo = 0;
+        impulso = 0;
+        girar = false;
     }
 
-    // Codigo ejecutado en cada frame del juego (Intervalo variable)
-    private void Update()
+    protected override void Mover()
     {
         rapidez = miRigidbody2D.velocity.magnitude;         // se obtiene el módulo de la velocidad
         if (rapidez < minRapidez && !girar)                 // si la rapidez llegó al mínimo y no está girando
         {
             acelerar = true;                                // activa el impulso
         }
-        if(impulso > maxImpulso)                            // pero si ya se superó el número de máximos impulsos
+        if (impulso > maxImpulso)                            // pero si ya se superó el número de máximos impulsos
         {
             impulso = 0;                                    // se activa el giro y se reinicia
             girar = true;
@@ -50,10 +37,10 @@ public class MoverEnemigo_lineal : MonoBehaviour
         }
         if (girar)                                          // si el giro está activado
         {
-            if(deltaAngulo < 90)                            // si el ángulo de giro aun no alcanzó los 90 grados
+            if (deltaAngulo < 90)                            // si el ángulo de giro aun no alcanzó los 90 grados
             {
                 transform.eulerAngles = new Vector3(0, 0, transform.eulerAngles.z + 2);     //se suman 2 grados al ángulo del auto
-                deltaAngulo+=2;                                                             // y también al ángulo de giro
+                deltaAngulo += 2;                                                             // y también al ángulo de giro
             }
             else
             {
@@ -67,7 +54,7 @@ public class MoverEnemigo_lineal : MonoBehaviour
         miAnimator.SetFloat("Rapidez", rapidez);
         miAnimator.SetBool("Girar", girar);
     }
-    private void FixedUpdate()
+    protected override void Acelerar()
     {
         if (acelerar && !girar)                             // si tiene que impulsarse
         {

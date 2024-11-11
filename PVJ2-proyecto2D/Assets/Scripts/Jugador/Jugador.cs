@@ -27,6 +27,7 @@ public class Jugador : MonoBehaviour
     // se accede a estos transform para activar/desactivar según se cumplan condiciones
     [SerializeField] private Transform musicaFondo;                     //para poder apagar la música de fondo
     [SerializeField] private Transform musicaMeta;                      //y poner una música de llegada
+    [SerializeField] private Transform protector;
 
     private Progresion progresionJugador;
 
@@ -34,12 +35,18 @@ public class Jugador : MonoBehaviour
     bool humeando = false;
     bool vive = true;
     bool meta = false;
+    bool estatico = false;
+    bool protegido = false;
+
+    float tiempoInicial;        // para chequear periodos de tiempo
 
     //----Eventos del jugador----
     [SerializeField] UnityEvent<float> OnEnergyChanged;
     [SerializeField] UnityEvent<float> OnFuelChanged;
-    [SerializeField] UnityEvent<string> OnTextChanged;
+    [SerializeField] UnityEvent<string> OnDiamantesChanged;
+    [SerializeField] UnityEvent<string> OnPuntajeChanged;
     [SerializeField] UnityEvent<int,bool> OnItemChanged;
+    [SerializeField] UnityEvent<int> OnVidasChanged;
 
     void Start()
     {
@@ -52,22 +59,43 @@ public class Jugador : MonoBehaviour
 
         OnEnergyChanged.Invoke(perfilJugador.Energia);
         OnFuelChanged.Invoke(perfilJugador.Combustible);
-        OnTextChanged.Invoke(perfilJugador.Experiencia.ToString());
-        for(int i = 1; i < 4; i++)
+        OnDiamantesChanged.Invoke(perfilJugador.Experiencia.ToString());
+        OnPuntajeChanged.Invoke(GameManager.Instance.GetPuntaje().ToString());
+        GameManager.Instance.SetVidasIniciales(perfilJugador.VidasIniciales);
+        OnVidasChanged.Invoke(perfilJugador.VidasIniciales-1);
+        for (int i = 1; i < 4; i++)
         {
             OnItemChanged.Invoke(i, false);
         }
+        tiempoInicial = Time.time;
     }
 
     private void Update()
     {
         particleSystemHumo.transform.position = gameObject.transform.position;          // la posición del sist. de partículas de humo sigue la del auto
-        particleSystemExplosion.transform.position = gameObject.transform.position;     // idem con la posición del sistema de partículas de la explosión
+        // condiciones iniciales luego de explosion
+        if ((Time.time - tiempoInicial) <= 5 && protegido)
+        {
+            protector.transform.position = transform.position;
+            protector.transform.rotation = transform.rotation;
+        }
+        if ((Time.time - tiempoInicial) > 1 && estatico)
+        {
+            //GetComponent<Collider2D>().excludeLayers = LayerMask.GetMask("Nothing");    //reactiva la colisión con Enemigos por un tiempo
+            GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
+            estatico = false;
+        }
+        if ((Time.time - tiempoInicial) > 5 && protegido)
+        {
+            protector.GetComponent<Collider2D>().enabled = false;
+            protegido = false;
+        }
     }
 
     public void ModificarEnergia(float puntos)      // método público para modificar la energía
     {                                               // sin superar 100 ni bajar de 0
         PerfilJugador.Energia += puntos;
+        GameManager.Instance.AdPuntaje((int)puntos);
         if (PerfilJugador.Energia > 100)
         {
             PerfilJugador.Energia = 100;
@@ -87,6 +115,7 @@ public class Jugador : MonoBehaviour
             particleSystemHumo.Stop();
         }
         OnEnergyChanged.Invoke(perfilJugador.Energia);
+        OnPuntajeChanged.Invoke(GameManager.Instance.GetPuntaje().ToString());
     }
 
     public void modificarCombustible(float cantidad)    //método público para modificar el combustible desde MoverJugador y desde Coleccionar
@@ -102,7 +131,8 @@ public class Jugador : MonoBehaviour
 
     public void ReportarDiamantes()
     {
-        OnTextChanged.Invoke(perfilJugador.Experiencia.ToString());
+        OnDiamantesChanged.Invoke(perfilJugador.Experiencia.ToString());
+        OnPuntajeChanged.Invoke(GameManager.Instance.GetPuntaje().ToString());
     }
 
     public void ModificarItem(int objeto, bool estado)
@@ -121,6 +151,7 @@ public class Jugador : MonoBehaviour
     public void JugadorExplota()          // método público para hacer que el jugador explote
     {
         vive = false;
+        GameManager.Instance.ModificarVida(-1);
     }
 
     public void Colision()                                      // método público que acciona los efectos de la colisión
@@ -132,10 +163,33 @@ public class Jugador : MonoBehaviour
     public void OnExplosion()                                   // método público que acciona los efectos de la explosión
     {                                                           // usado como evento al inicio de la animación de la explosión
         particleSystemHumo.Stop();                              // se detiene el humo
+        particleSystemExplosion.transform.position = gameObject.transform.position;     // posición del sistema de partículas de la explosión
         particleSystemExplosion.Play();                         // se ejecuta la proyección de partículas incendiadas
         Collider2D collider2D = GetComponent<Collider2D>();
         collider2D.enabled = false;                             // se desactiva el collider del auto
     }
+
+
+    public void ResetJugador()
+    {
+        OnVidasChanged.Invoke(GameManager.Instance.GetVidas()-1);
+        vive = true;
+        gameObject.transform.position = particleSystemExplosion.transform.position;
+        GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
+        //GetComponent<Collider2D>().excludeLayers = LayerMask.GetMask("Enemigos");    //no colisionará con Enemigos por un tiempo
+        GetComponent<Collider2D>().enabled = true;                             // se reactiva el collider del auto
+        protector.GetComponent<Collider2D>().enabled = true;
+        GetComponent<Coleccionar>().VaciarInventario();
+        PerfilJugador.Energia = 100f;
+        PerfilJugador.Combustible = 100f;
+        PerfilJugador.NitroTank = 0;
+        OnEnergyChanged.Invoke(perfilJugador.Energia);
+        OnFuelChanged.Invoke(perfilJugador.Combustible);
+        tiempoInicial = Time.time;
+        estatico = true;
+        protegido = true;
+    }
+
 
     private void OnTriggerEnter2D(Collider2D collision)             //Método para chequear la llegada a Meta
     {

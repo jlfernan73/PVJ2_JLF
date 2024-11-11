@@ -9,6 +9,11 @@ TagManager:
   - Musica
   - Grua
   - Coleccionable
+  - Chispas
+  - Enemigo
+  - Proyectil
+  - Rueda
+  - Pista
   layers:
   - Default
   - TransparentFX
