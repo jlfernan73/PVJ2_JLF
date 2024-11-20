@@ -146,7 +146,7 @@ public class MoverJugador : MonoBehaviour
             {
                 Reinicio(true);
                 GetComponent<Jugador>().ResetJugador();
-
+                audioSource.Play();
             }
         }
 

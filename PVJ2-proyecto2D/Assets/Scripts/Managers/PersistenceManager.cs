@@ -63,13 +63,5 @@ public class PersistenceManager : MonoBehaviour
     {
         PlayerPrefs.DeleteAll();
     }
-    public void SaveMusicConfig(bool status)
-    {
-        SetBool("Music", status);
-    }
-    public void SaveVolumeConfig(float volume)
-    {
-        SetFloat("MusicVolume", volume);
-    }
 
 }
