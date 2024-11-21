@@ -63,7 +63,7 @@ public class Jugador : MonoBehaviour
         OnPuntajeChanged.Invoke(GameManager.Instance.GetPuntaje().ToString());
         GameManager.Instance.SetVidasIniciales(perfilJugador.VidasIniciales);
         OnVidasChanged.Invoke(perfilJugador.VidasIniciales-1);
-        for (int i = 1; i < 4; i++)
+        for (int i = 1; i < 5; i++)
         {
             OnItemChanged.Invoke(i, false);
         }

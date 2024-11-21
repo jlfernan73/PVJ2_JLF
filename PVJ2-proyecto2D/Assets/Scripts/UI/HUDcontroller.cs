@@ -15,6 +15,7 @@ public class HUDcontroller : MonoBehaviour
     [SerializeField] GameObject GasolinaItem;
     [SerializeField] GameObject NitroItem;
     [SerializeField] GameObject BumperItem;
+    [SerializeField] GameObject CannonItem;
     [SerializeField] GameObject MenuPausa;
     [SerializeField] GameObject MenuGameOver;
     [SerializeField] GameObject MenuVictoria;
@@ -25,7 +26,7 @@ public class HUDcontroller : MonoBehaviour
     {
         barraEnergiaAnimator = barraEnergia.GetComponent<Animator>();
         barraCombustibleAnimator = barraCombustible.GetComponent<Animator>();
-        for (int i=1;i<4;i++)
+        for (int i=1;i<5;i++)
         {
             ActualizarEstadoObjeto(i, false);
         }
@@ -159,6 +160,8 @@ public class HUDcontroller : MonoBehaviour
                 NitroItem.SetActive(estado); break;
             case 3:
                 BumperItem.SetActive(estado); break;
+            case 4:
+                CannonItem.SetActive(estado); break;
         }
     }
     public void ActualizarTextoPuntaje(string nuevoTexto)
