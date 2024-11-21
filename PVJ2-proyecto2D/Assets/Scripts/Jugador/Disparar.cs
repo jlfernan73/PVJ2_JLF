@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class Disparar : MonoBehaviour
 {
-    //    private ObjectPool objectPool;
+    private PerfilJugador perfilJugador;
+    public PerfilJugador PerfilJugador { get => perfilJugador; }
+
     [SerializeField] private GameObject objectPrefab;
     [SerializeField] protected GameObject particlesChispas;
     [SerializeField]
@@ -13,6 +15,11 @@ public class Disparar : MonoBehaviour
     bool disparando = false;
     bool recargando = false;
     float tiempoRecarga;
+
+    private void Awake()
+    {
+        perfilJugador = GameObject.FindWithTag("Player").GetComponent<Jugador>().PerfilJugador;
+    }
 
     private void Update()
     {
@@ -25,6 +32,7 @@ public class Disparar : MonoBehaviour
             if (disparando && !recargando)
             {
                 GenerarObjeto();
+                PerfilJugador.CannonConteo -= 1;
                 recargando = true;
                 tiempoRecarga = 0f;
             }

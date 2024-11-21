@@ -71,9 +71,9 @@ public class PerfilJugador : ScriptableObject
     [SerializeField] private float bumperConteo = 0f;
     public float BumperConteo { get => bumperConteo; set => bumperConteo = value; }
 
-    [Tooltip("Porcentaje de tiempo remanente del cañón activado")]
-    [SerializeField] private float cannonConteo = 0f;
-    public float CannonConteo { get => cannonConteo; set => cannonConteo = value; }
+    [Tooltip("Proyectiles remanentes del cañón activado")]
+    [SerializeField] private int cannonConteo = 0;
+    public int CannonConteo { get => cannonConteo; set => cannonConteo = value; }
 
 
     [Header("Configuraciones de SFX")]

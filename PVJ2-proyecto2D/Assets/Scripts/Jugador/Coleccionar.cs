@@ -2,11 +2,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEditor.Progress;
 
 // clase para colectar ítems en Diccionario (objetos) y en una Cola (diamantes)
 // Diccionario: Inventario con 3 objetos (sólo puede colectar uno de cada uno en la bolsa) que se activan con los números
-//              1: Recarga de combustible; 2: Potenciador de Nitro; 3: Bumper (protege de choques con otros autos)
+//              1: Recarga de combustible; 2: Potenciador de Nitro;
+//              3: Bumper (protege de choques con otros autos); 4: Cañón (dispara fireballs con LeftCtrl)
 // Cola: Diamantes necesarios para pasar de nivel (se almacenan en el cofre y se extraen de la cola para destruirlos al pasar de nivel)
 
 public class Coleccionar : MonoBehaviour
@@ -87,6 +87,7 @@ public class Coleccionar : MonoBehaviour
         //acciones asociadas al uso del bumper
         if (bumperActive)
         {
+            bumper.transform.position = transform.position;       
             bumper.transform.rotation = transform.rotation;     
             PerfilJugador.BumperConteo -= PerfilJugador.ConsumoObj * Time.deltaTime;    //consumo de uso del bumper
             if (PerfilJugador.BumperConteo < 0 || !GetComponent<Jugador>().EstaVivo()) DesactivarBumper();                     //pasado el tiempo, se desactiva el bumper
@@ -94,12 +95,9 @@ public class Coleccionar : MonoBehaviour
         //acciones asociadas a la presencia del cañón
         if (cannonActive)
         {
-            cannon.GetComponent<SpriteRenderer>().sortingLayerName = "Frente";
-            cannon.GetComponent<SpriteRenderer>().sortingOrder = 2;
             cannon.transform.position = transform.position;
             cannon.transform.rotation = transform.rotation;
-            PerfilJugador.CannonConteo -= (PerfilJugador.ConsumoObj/2) * Time.deltaTime;    //consumo de uso del cañón (la mitad del bumper)
-            if (PerfilJugador.CannonConteo < 0 || !GetComponent<Jugador>().EstaVivo()) DesactivarCannon();                     //pasado el tiempo, se desactiva el cañón
+            if (PerfilJugador.CannonConteo == 0 || !GetComponent<Jugador>().EstaVivo()) DesactivarCannon();                     //pasado el tiempo, se desactiva el cañón
         }
     }
 
@@ -169,13 +167,15 @@ public class Coleccionar : MonoBehaviour
     }
     private void ActivarCannon(GameObject item)                         //activación del cañón (el item es el cañón)
     {
+        item.GetComponent<SpriteRenderer>().sortingLayerName = "Frente";
+        item.GetComponent<SpriteRenderer>().sortingOrder = 2;
         item.GetComponent<CapsuleCollider2D>().enabled = false;       //no colisiona
         item.transform.position = transform.position;                   //se lo ubica en el centro del auto
         item.transform.rotation = transform.rotation;
         cannon = item;                                                  //se asigna el item al objeto cañon (para seguir moviendolo) 
         cannon.SetActive(true);                                         //se lo activa
         cannonActive = true;                                            //se avisa que está activo
-        PerfilJugador.CannonConteo = 100;                               //se inicia en 100 el contador
+        PerfilJugador.CannonConteo = 75;                               //se inicia en 50 el contador de disparos
     }
 
     private void DesactivarBumper()                                     //desactivación del bumper

@@ -16,6 +16,7 @@ public class MainUIcontroller : MonoBehaviour
         GameManager.Instance.ResetVidas();
         GameManager.Instance.SetGameOver(false);
         GameManager.Instance.SetVictoria(false);
+        Time.timeScale = 1;
     }
     public void CargarEscenaAdicional(int escena)                           //Abre la escena sin cerrar la original
     {
@@ -24,6 +25,15 @@ public class MainUIcontroller : MonoBehaviour
     public void CerrarEscenaAdicional(int escena)                           //Cierra la escena abierta en simultaneo
     {
         SceneManager.UnloadSceneAsync(escena);
+    }
+    public void RecargarEscena()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name, LoadSceneMode.Single);
+        GameManager.Instance.ResetPuntaje();                                //Resetea variables globales
+        GameManager.Instance.ResetVidas();
+        GameManager.Instance.SetGameOver(false);
+        GameManager.Instance.SetVictoria(false);
+        Time.timeScale = 1;
     }
     public void SalirJuego()                                                //Sale del juego
     {

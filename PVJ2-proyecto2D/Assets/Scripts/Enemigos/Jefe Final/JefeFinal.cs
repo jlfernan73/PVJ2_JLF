@@ -208,6 +208,9 @@ public class JefeFinal : MonoBehaviour
         Instantiate(prefabProyectil, bolaGrua.position, Quaternion.identity);       //activa la bola proyectil
         yield return new WaitForSeconds(0.2f);
 
+        AutoEnemigo enemigo = baseGrua.GetComponent<AutoEnemigo>();
+        enemigo.ModificarEnergia(-20.0f);
+
         // volver hacia la posición inicial, similar a Rotacion()
         tiempoInicio = Time.time;
         direccionRotacion *= -1;
