@@ -15,8 +15,8 @@ public class Progresion : MonoBehaviour
     void Start()
     {
         perfilJugador = GetComponent<Jugador>().PerfilJugador;
-        PerfilJugador.Nivel = 1;
-        PerfilJugador.Experiencia = 0;
+        //PerfilJugador.Nivel = 1;
+        //PerfilJugador.Experiencia = 0;
     }
 
     public void GanarExperiencia(int nuevaExperiencia)

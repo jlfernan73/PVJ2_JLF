@@ -13,16 +13,16 @@ MonoBehaviour:
   m_Name: Perfil Normal
   m_EditorClassIdentifier: 
   vidasIniciales: 5
-  experienciaProximoNivel: 200
-  escalarExperiencia: 50
+  experienciaProximoNivel: 100
+  escalarExperiencia: 100
   aceleracion: 95
   maxAngulo: 45
   maxRapidez: 20
   consumoCombustible: 0.012
   consumoObjeto: 3
   reparacion: 5
-  energia: 81
-  combustible: 54.876266
+  energia: 10
+  combustible: 97.08328
   nitroTank: 0
   bumperConteo: 0
   cannonConteo: 0

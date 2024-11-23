@@ -54,15 +54,13 @@ public class Jugador : MonoBehaviour
         //inicialización de atributos
         PerfilJugador.Energia = 100f;
         PerfilJugador.Combustible = 100f;
-        PerfilJugador.Experiencia = 0;
         PerfilJugador.NitroTank = 0;
 
         OnEnergyChanged.Invoke(perfilJugador.Energia);
         OnFuelChanged.Invoke(perfilJugador.Combustible);
-        OnDiamantesChanged.Invoke(perfilJugador.Experiencia.ToString());
+        OnDiamantesChanged.Invoke(GameManager.Instance.GetExperiencia().ToString());
         OnPuntajeChanged.Invoke(GameManager.Instance.GetPuntaje().ToString());
-        GameManager.Instance.SetVidasIniciales(perfilJugador.VidasIniciales);
-        OnVidasChanged.Invoke(perfilJugador.VidasIniciales-1);
+        OnVidasChanged.Invoke(GameManager.Instance.GetVidas() - 1);
         for (int i = 1; i < 5; i++)
         {
             OnItemChanged.Invoke(i, false);
@@ -176,7 +174,6 @@ public class Jugador : MonoBehaviour
         vive = true;
         gameObject.transform.position = particleSystemExplosion.transform.position;
         GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
-        //GetComponent<Collider2D>().excludeLayers = LayerMask.GetMask("Enemigos");    //no colisionará con Enemigos por un tiempo
         GetComponent<Collider2D>().enabled = true;                             // se reactiva el collider del auto
         protector.GetComponent<Collider2D>().enabled = true;
         GetComponent<Coleccionar>().VaciarInventario();
@@ -196,7 +193,7 @@ public class Jugador : MonoBehaviour
         if (!collision.gameObject.CompareTag("Meta")){return;}      //si el choque fue con otra cosa, sale del método
         meta = true;                                                // se indica que se llegó a la meta
         Debug.Log("LLEGASTE A LA META!! NIVEL " + progresionJugador.PerfilJugador.Nivel + " COMPLETO");
-        progresionJugador.SubirNivel();
+        //progresionJugador.SubirNivel();
         ReportarDiamantes();
         if (virtualCamera.Follow)
         {

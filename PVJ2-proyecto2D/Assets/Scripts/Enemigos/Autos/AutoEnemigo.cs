@@ -145,5 +145,9 @@ public abstract class AutoEnemigo : MonoBehaviour
         }
         miAnimator.SetBool("Vive", false);
     }
+    public bool GetVive()
+    {
+        return vive;
+    }
 
 }
