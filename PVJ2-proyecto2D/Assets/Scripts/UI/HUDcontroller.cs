@@ -8,6 +8,7 @@ public class HUDcontroller : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI textoDiamantes;
     [SerializeField] TextMeshProUGUI textoPuntaje;
+    [SerializeField] TextMeshProUGUI textoPopUp;
     [SerializeField] GameObject iconoVida;
     [SerializeField] GameObject contenedorIconosVida;
     [SerializeField] GameObject barraEnergia;
@@ -21,6 +22,7 @@ public class HUDcontroller : MonoBehaviour
     [SerializeField] GameObject MenuVictoria;
     private Animator barraEnergiaAnimator;
     private Animator barraCombustibleAnimator;
+    private Coroutine CorrutinaMensaje;
 
     public void Awake()
     {
@@ -131,6 +133,22 @@ public class HUDcontroller : MonoBehaviour
     private void CrearIcono()
     {
         Instantiate(iconoVida, contenedorIconosVida.transform);
+    }
+    public void MostrarMensajePopUp(string nuevoTexto, float tiempo)
+    {
+        if (CorrutinaMensaje != null)
+        {
+            StopCoroutine(CorrutinaMensaje);
+        }
+        CorrutinaMensaje = StartCoroutine(DisplayMensaje(nuevoTexto, tiempo));
+
+    }
+    private IEnumerator DisplayMensaje(string mensaje, float tiempo)
+    {
+        textoPopUp.text = mensaje; // Cambia el texto
+        textoPopUp.gameObject.SetActive(true); // Activa el texto
+        yield return new WaitForSeconds(tiempo); // Espera el tiempo especificado
+        textoPopUp.gameObject.SetActive(false); // Oculta el texto
     }
 
     public void ActualizarTextoDiamantes(string nuevoTexto)

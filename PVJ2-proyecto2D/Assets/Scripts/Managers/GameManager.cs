@@ -90,6 +90,10 @@ public class GameManager : MonoBehaviour
     {
         return PerfilJugador.Experiencia;
     }
+    public void ActualizarExperiencia()
+    {
+        PerfilJugador.Experiencia -= PerfilJugador.EscalarExperiencia;
+    }
     public void EscalarExperiencia()
     {
         PerfilJugador.ExperienciaProximoNivel += PerfilJugador.EscalarExperiencia;
@@ -97,5 +101,17 @@ public class GameManager : MonoBehaviour
     public void ResetExperienciaNivel()
     {
         PerfilJugador.ExperienciaProximoNivel = experienciaNecesaria;
+    }
+    public int GetNivel()
+    {
+        return PerfilJugador.Nivel;
+    }
+    public void SubirNivel()
+    {
+        PerfilJugador.Nivel ++;
+    }
+    public void ResetNivel()
+    {
+        PerfilJugador.Nivel = 1;
     }
 }
