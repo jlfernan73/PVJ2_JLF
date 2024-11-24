@@ -8,8 +8,13 @@ public class SaludJefe : AutoEnemigo
     [SerializeField] GameObject bolaGrua;
     [SerializeField] GameObject cabinaGrua;
     [SerializeField] Transform barrera;                         //se lo incluye para alivianar la barrera que impide llegar a la meta
+    [SerializeField] private AudioClip achievementSFX; 
     [SerializeField] UnityEvent<string, float> OnJefeKilled;
-
+    private AudioSource audioAchievement;
+    private void Awake()
+    {
+        audioAchievement = barrera.GetComponent<AudioSource>();
+    }
 
     private void Update()
     {
@@ -32,6 +37,7 @@ public class SaludJefe : AutoEnemigo
                 barrera.GetComponent<Rigidbody2D>().mass = 1.0f;                            //se aliviana la valla para poder pasar a la meta
                 string mensaje = "Vehículo jefe derrotado\nSegunda barrera desbloqueada";
                 OnJefeKilled.Invoke(mensaje, 3f);
+                audioAchievement.PlayOneShot(achievementSFX);
             }
         }
     }

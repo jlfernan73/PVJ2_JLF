@@ -521,6 +521,13 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3204375865436922566, guid: c44ac48a328ebff49838368e959efed4, type: 3}
+      propertyPath: m_text
+      value: "- Giro: Flechas Izq/Der y/o A/D\r\n- Acelerar: Flecha Up y/o W\r\n-
+        Retroceder: Flecha Down y/o S\r\n- Usar \xEDtems: Nros. 1, 2, 3 y 4\r\n-
+        Activar disparo (\xEDtem 4): Ctrl Izq\r\n- Frecuencia de disparo:  +/-\r\n-
+        Pausar: Esc"
+      objectReference: {fileID: 0}
     - target: {fileID: 3390152430084695776, guid: c44ac48a328ebff49838368e959efed4, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0

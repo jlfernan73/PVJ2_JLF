@@ -9,6 +9,8 @@ public class HUDcontroller : MonoBehaviour
     [SerializeField] TextMeshProUGUI textoDiamantes;
     [SerializeField] TextMeshProUGUI textoPuntaje;
     [SerializeField] TextMeshProUGUI textoPopUp;
+    [SerializeField] TextMeshProUGUI textoNivel;
+    [SerializeField] TextMeshProUGUI textoFinNivel;
     [SerializeField] GameObject iconoVida;
     [SerializeField] GameObject contenedorIconosVida;
     [SerializeField] GameObject barraEnergia;
@@ -149,6 +151,14 @@ public class HUDcontroller : MonoBehaviour
         textoPopUp.gameObject.SetActive(true); // Activa el texto
         yield return new WaitForSeconds(tiempo); // Espera el tiempo especificado
         textoPopUp.gameObject.SetActive(false); // Oculta el texto
+    }
+    public void ActualizarTextoNivel(string nuevoTexto)
+    {
+        textoNivel.text = nuevoTexto;
+    }
+    public void ActualizarTextoFinNivel(string nuevoTexto)
+    {
+        textoFinNivel.text = nuevoTexto;
     }
 
     public void ActualizarTextoDiamantes(string nuevoTexto)

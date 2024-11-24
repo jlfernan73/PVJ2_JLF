@@ -97,4 +97,7 @@ public class PerfilJugador : ScriptableObject
 
     [SerializeField] private AudioClip toolSFX;     // para asociar el clip del sonido de levantar una herramienta
     public AudioClip ToolSFX { get => toolSFX; set => toolSFX = value; }
+
+    [SerializeField] private AudioClip achievementSFX;     // para asociar el clip del sonido al destrabar la barrera
+    public AudioClip AchievementSFX { get => achievementSFX; set => achievementSFX = value; }
 }

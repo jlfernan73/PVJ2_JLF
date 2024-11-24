@@ -16,9 +16,14 @@ public class Disparar : MonoBehaviour
     bool recargando = false;
     float tiempoRecarga;
 
+    private AudioSource audioDisparo;
+    [SerializeField] private AudioClip disparoSFX;
+
+
     private void Awake()
     {
         perfilJugador = GameObject.FindWithTag("Player").GetComponent<Jugador>().PerfilJugador;
+        audioDisparo = GetComponent<AudioSource>();
     }
 
     private void Update()
@@ -78,6 +83,7 @@ public class Disparar : MonoBehaviour
                 chispas.SetActive(true);
                 fireball.AsignarChispas(chispas);
             }
+            audioDisparo.PlayOneShot(disparoSFX);     // se ejecuta el sonido del disparo
         }
     }
 

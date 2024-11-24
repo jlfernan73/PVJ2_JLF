@@ -201,6 +201,7 @@ public class Jugador : MonoBehaviour
         }
         particleSystemHumo.Stop();                                  // se detiene el humeo por si estaba ocurriendo
         PerfilJugador.BumperConteo = 0;                             // en caso que esté el bumper, se lo desactiva
+        PerfilJugador.CannonConteo = 0;                             // en caso que esté el cañon, se lo desactiva
         particleSystemStars.Play();                                 // se activan los fuegos artificiales 
         musicaFondo.GetComponent<AudioSource>().Stop();             // se detiene la música de fondo
         musicaMeta.GetComponent<AudioSource>().Play();              // y se pone la música de llegada

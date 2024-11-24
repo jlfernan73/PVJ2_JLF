@@ -138,6 +138,7 @@ MonoBehaviour:
   objectPrefab: {fileID: 6813768463583102093, guid: bd337a17527a8574b8f4db0aedebfd51, type: 3}
   particlesChispas: {fileID: 9082590783809085315, guid: bf488fdc8b747834099c0d5a88bc235a, type: 3}
   tiempoIntervalo: 0.5
+  disparoSFX: {fileID: 8300000, guid: 26af72b4884abcb41bbad9b90d48bbf8, type: 3}
 --- !u!114 &2860268579483758635
 MonoBehaviour:
   m_ObjectHideFlags: 0
