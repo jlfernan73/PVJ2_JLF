@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Assertions.Must;
+using UnityEngine.Events;
 using UnityEngine.Rendering;
 using static UnityEngine.RuleTile.TilingRuleOutput;
 
@@ -15,6 +16,8 @@ public class MoverJugador : MonoBehaviour
 {
     private PerfilJugador perfilJugador;
     public PerfilJugador PerfilJugador { get => perfilJugador; }
+
+    [SerializeField] UnityEvent<string> OnNivelEnd;
 
     // Variables de uso interno
     private float girar;                            // adquiere valores al presionar las flechas laterals (o A/D) para frenar
@@ -146,7 +149,7 @@ public class MoverJugador : MonoBehaviour
             {
                 Reinicio(true);
                 GetComponent<Jugador>().ResetJugador();
-
+                audioSource.Play();
             }
         }
 
@@ -208,6 +211,8 @@ public class MoverJugador : MonoBehaviour
         {                                                       // si ya salió de la pantalla desactiva el objeto y detiene todo 
             audioSource.Stop();
             gameObject.SetActive(false);
+            string mensaje = "Nivel " + PerfilJugador.Nivel.ToString() + " completo!!";
+            OnNivelEnd.Invoke(mensaje);
             GameManager.Instance.SetVictoria(true);
         }
     }

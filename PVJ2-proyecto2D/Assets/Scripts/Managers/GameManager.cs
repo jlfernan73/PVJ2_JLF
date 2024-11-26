@@ -6,10 +6,14 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
+    [SerializeField]
+    private PerfilJugador perfilJugador;
+    public PerfilJugador PerfilJugador { get => perfilJugador; }
 
     private int vidasIniciales;
     private int vidas;
     private int puntaje;
+    private int experienciaNecesaria;
     private bool gameOver;
     private bool victoria;
 
@@ -19,7 +23,10 @@ public class GameManager : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
-            vidas = 0;
+            vidas = PerfilJugador.VidasIniciales;
+            vidasIniciales = PerfilJugador.VidasIniciales;
+            experienciaNecesaria = PerfilJugador.ExperienciaProximoNivel;
+            ResetExperiencia();
             puntaje = 0;
             gameOver = false;
             victoria = false;
@@ -75,5 +82,36 @@ public class GameManager : MonoBehaviour
     {
         victoria = estado;
     }
-
+    public void ResetExperiencia()
+    {
+        PerfilJugador.Experiencia = 0;
+    }
+    public int GetExperiencia()
+    {
+        return PerfilJugador.Experiencia;
+    }
+    public void ActualizarExperiencia()
+    {
+        PerfilJugador.Experiencia -= PerfilJugador.EscalarExperiencia;
+    }
+    public void EscalarExperiencia()
+    {
+        PerfilJugador.ExperienciaProximoNivel += PerfilJugador.EscalarExperiencia;
+    }
+    public void ResetExperienciaNivel()
+    {
+        PerfilJugador.ExperienciaProximoNivel = experienciaNecesaria;
+    }
+    public int GetNivel()
+    {
+        return PerfilJugador.Nivel;
+    }
+    public void SubirNivel()
+    {
+        PerfilJugador.Nivel ++;
+    }
+    public void ResetNivel()
+    {
+        PerfilJugador.Nivel = 1;
+    }
 }

@@ -71,6 +71,11 @@ public class PerfilJugador : ScriptableObject
     [SerializeField] private float bumperConteo = 0f;
     public float BumperConteo { get => bumperConteo; set => bumperConteo = value; }
 
+    [Tooltip("Proyectiles remanentes del cañón activado")]
+    [SerializeField] private int cannonConteo = 0;
+    public int CannonConteo { get => cannonConteo; set => cannonConteo = value; }
+
+
     [Header("Configuraciones de SFX")]
     [SerializeField] private AudioClip reversaSFX;
     public AudioClip ReversaSFX { get => reversaSFX; set => reversaSFX = value; }
@@ -92,4 +97,7 @@ public class PerfilJugador : ScriptableObject
 
     [SerializeField] private AudioClip toolSFX;     // para asociar el clip del sonido de levantar una herramienta
     public AudioClip ToolSFX { get => toolSFX; set => toolSFX = value; }
+
+    [SerializeField] private AudioClip achievementSFX;     // para asociar el clip del sonido al destrabar la barrera
+    public AudioClip AchievementSFX { get => achievementSFX; set => achievementSFX = value; }
 }

@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 8091434259630341975}
   - component: {fileID: 7620187905708757938}
   - component: {fileID: 9040301391057733961}
-  m_Layer: 7
+  m_Layer: 11
   m_Name: Barrera
   m_TagString: Untagged
   m_Icon: {fileID: 0}

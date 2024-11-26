@@ -8,6 +8,9 @@ public class HUDcontroller : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI textoDiamantes;
     [SerializeField] TextMeshProUGUI textoPuntaje;
+    [SerializeField] TextMeshProUGUI textoPopUp;
+    [SerializeField] TextMeshProUGUI textoNivel;
+    [SerializeField] TextMeshProUGUI textoFinNivel;
     [SerializeField] GameObject iconoVida;
     [SerializeField] GameObject contenedorIconosVida;
     [SerializeField] GameObject barraEnergia;
@@ -15,17 +18,19 @@ public class HUDcontroller : MonoBehaviour
     [SerializeField] GameObject GasolinaItem;
     [SerializeField] GameObject NitroItem;
     [SerializeField] GameObject BumperItem;
+    [SerializeField] GameObject CannonItem;
     [SerializeField] GameObject MenuPausa;
     [SerializeField] GameObject MenuGameOver;
     [SerializeField] GameObject MenuVictoria;
     private Animator barraEnergiaAnimator;
     private Animator barraCombustibleAnimator;
+    private Coroutine CorrutinaMensaje;
 
     public void Awake()
     {
         barraEnergiaAnimator = barraEnergia.GetComponent<Animator>();
         barraCombustibleAnimator = barraCombustible.GetComponent<Animator>();
-        for (int i=1;i<4;i++)
+        for (int i=1;i<5;i++)
         {
             ActualizarEstadoObjeto(i, false);
         }
@@ -131,6 +136,30 @@ public class HUDcontroller : MonoBehaviour
     {
         Instantiate(iconoVida, contenedorIconosVida.transform);
     }
+    public void MostrarMensajePopUp(string nuevoTexto, float tiempo)
+    {
+        if (CorrutinaMensaje != null)
+        {
+            StopCoroutine(CorrutinaMensaje);
+        }
+        CorrutinaMensaje = StartCoroutine(DisplayMensaje(nuevoTexto, tiempo));
+
+    }
+    private IEnumerator DisplayMensaje(string mensaje, float tiempo)
+    {
+        textoPopUp.text = mensaje; // Cambia el texto
+        textoPopUp.gameObject.SetActive(true); // Activa el texto
+        yield return new WaitForSeconds(tiempo); // Espera el tiempo especificado
+        textoPopUp.gameObject.SetActive(false); // Oculta el texto
+    }
+    public void ActualizarTextoNivel(string nuevoTexto)
+    {
+        textoNivel.text = nuevoTexto;
+    }
+    public void ActualizarTextoFinNivel(string nuevoTexto)
+    {
+        textoFinNivel.text = nuevoTexto;
+    }
 
     public void ActualizarTextoDiamantes(string nuevoTexto)
     {
@@ -159,6 +188,8 @@ public class HUDcontroller : MonoBehaviour
                 NitroItem.SetActive(estado); break;
             case 3:
                 BumperItem.SetActive(estado); break;
+            case 4:
+                CannonItem.SetActive(estado); break;
         }
     }
     public void ActualizarTextoPuntaje(string nuevoTexto)

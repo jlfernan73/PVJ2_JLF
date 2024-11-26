@@ -23,6 +23,7 @@ public abstract class AutoEnemigo : MonoBehaviour
     protected bool acelerar = true;                   // bandera para activar el impulso
     protected bool humeando = false;
     protected bool vive = true;
+    protected float tiempoMuerto = 0f;
 
     protected Rigidbody2D miRigidbody2D;
     protected Animator miAnimator;
@@ -47,6 +48,7 @@ public abstract class AutoEnemigo : MonoBehaviour
         miSprite = GetComponent<SpriteRenderer>();
         audioExplosion = GetComponent<AudioSource>();
         vive = true;
+        tiempoMuerto = 0f;
         energiaEnemigo = energiaInicial;
         miAnimator.SetBool("Vive", true);
         Inicializar();                                  //inicializa los valores de las variables propias de cada tipo de auto
@@ -64,7 +66,8 @@ public abstract class AutoEnemigo : MonoBehaviour
         }
         else
         {
-            if (!audioExplosion.isPlaying)
+            tiempoMuerto += Time.deltaTime;
+            if (tiempoMuerto > 3f)
             {
                 GetComponent<Collider2D>().enabled = true;
                 gameObject.SetActive(false);
@@ -97,26 +100,29 @@ public abstract class AutoEnemigo : MonoBehaviour
 
     public void ModificarEnergia(float puntos)      // método público para modificar la energía
     {                                               // sin bajar de 0
-        energiaEnemigo += puntos;
-        if (energiaEnemigo <= 0)
+        if (vive)
         {
-            energiaEnemigo = 0;
-            Explota();
-        }
-        if (energiaEnemigo < 25 && !humeando)          // acá se activa el sistema de partículas del humo
-        {
-            humeando = true;
-            if(particleSystemHumo != null)
+            energiaEnemigo += puntos;
+            if (energiaEnemigo <= 0)
             {
-                particleSystemHumo.Play();
+                energiaEnemigo = 0;
+                Explota();
             }
-        }
-        if ((energiaEnemigo >= 25 || energiaEnemigo <= 0) && humeando) // y acá se lo desactiva
-        {
-            humeando = false;
-            if (particleSystemHumo != null)
+            if (energiaEnemigo < 25 && !humeando)          // acá se activa el sistema de partículas del humo
             {
-                particleSystemHumo.Stop();
+                humeando = true;
+                if (particleSystemHumo != null)
+                {
+                    particleSystemHumo.Play();
+                }
+            }
+            if ((energiaEnemigo >= 25 || energiaEnemigo <= 0) && humeando) // y acá se lo desactiva
+            {
+                humeando = false;
+                if (particleSystemHumo != null)
+                {
+                    particleSystemHumo.Stop();
+                }
             }
         }
     }
@@ -133,7 +139,15 @@ public abstract class AutoEnemigo : MonoBehaviour
     {
         vive = false;
         GetComponent<Collider2D>().enabled = false;
-        audioExplosion.PlayOneShot(explosionSFX);       // se ejecuta el sonido de la explosion
+        if (GetComponent<Renderer>().isVisible)
+        {
+            audioExplosion.PlayOneShot(explosionSFX);       // se ejecuta el sonido de la explosion sólo si está visible
+        }
         miAnimator.SetBool("Vive", false);
     }
+    public bool GetVive()
+    {
+        return vive;
+    }
+
 }

@@ -13,18 +13,19 @@ MonoBehaviour:
   m_Name: Perfil Normal
   m_EditorClassIdentifier: 
   vidasIniciales: 5
-  experienciaProximoNivel: 200
-  escalarExperiencia: 50
+  experienciaProximoNivel: 100
+  escalarExperiencia: 100
   aceleracion: 95
   maxAngulo: 45
   maxRapidez: 20
   consumoCombustible: 0.012
   consumoObjeto: 3
   reparacion: 5
-  energia: 0
-  combustible: 64.969826
+  energia: 60
+  combustible: 24.755058
   nitroTank: 0
   bumperConteo: 0
+  cannonConteo: 0
   reversaSFX: {fileID: 8300000, guid: 25b0ccfe174143a4a9d93671743dc6ef, type: 3}
   motorSFX: {fileID: 8300000, guid: 6914594e1f5434f4fb53921d090d19fe, type: 3}
   explosionSFX: {fileID: 8300000, guid: 7169a0517054b9b43b9711f430610acc, type: 3}
@@ -32,3 +33,4 @@ MonoBehaviour:
   colectarSFX: {fileID: 8300000, guid: 0fda8dbc4ba4ffb4a9ca56f442fd631f, type: 3}
   usarColeccionableSFX: {fileID: 8300000, guid: 9d597d2a93040ed49b34c89932cc68af, type: 3}
   toolSFX: {fileID: 8300000, guid: 9b6cf3d8d4f853a499135e480647ea6a, type: 3}
+  achievementSFX: {fileID: 8300000, guid: 65bf22d3fe46601409f3a9687cfbbe50, type: 3}

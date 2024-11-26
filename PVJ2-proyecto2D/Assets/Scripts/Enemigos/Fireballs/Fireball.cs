@@ -52,10 +52,18 @@ public abstract class Fireball : MonoBehaviour
     protected void Actualizar()
     {
         lifetime+=Time.deltaTime;
-        if ((colision && !audioColision.isPlaying && !particleSystemChispas.isPlaying)||lifetime > 10f)
+        if ((colision && !audioColision.isPlaying && !particleSystemChispas.isPlaying)||lifetime > 5f)
         {
-            gameObject.SetActive(false);
-            particlesChispas.SetActive(false);
+            if (transform.parent != null)
+            {
+                gameObject.SetActive(false);
+                particlesChispas.SetActive(false);
+            }
+            else
+            {
+                Destroy(gameObject);
+                Destroy(particlesChispas);
+            }
         }
     }
     public void AsignarChispas(GameObject particulas)

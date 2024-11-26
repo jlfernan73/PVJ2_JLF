@@ -176,7 +176,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   aceleracion: 10
   minRapidez: 20
-  energiaEnemigo: 100
+  energiaInicial: 200
   explosionSFX: {fileID: 8300000, guid: e877910355e73c546a7eabee0dac68a0, type: 3}
   particlesCrashEnemigo: {fileID: 5907176111680881880, guid: 1ae86b0a184035c4e803fb888d31f9fd, type: 3}
   particlesHumo: {fileID: 771850418373021830, guid: 619c0ffc3a54dcb489f9094c24fe4ad1, type: 3}
