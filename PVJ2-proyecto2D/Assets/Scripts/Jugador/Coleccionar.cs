@@ -67,12 +67,12 @@ public class Coleccionar : MonoBehaviour
             nuevoDiamante = collision.gameObject;
             audioDiamante.PlayOneShot(PerfilJugador.DiamanteSFX);         // se ejecuta el sonido de recolección de diamante
             progresionJugador.GanarExperiencia(1);                     // se suma experiencia (asociada a la cantidad de diamantes colectados)
+            GameManager.Instance.AdPuntaje(10);
             jugador.ReportarDiamantes();                                //actualiza la experiencia (diamantes) en el panel 
             Debug.Log("ITEM COLECTADO - EXPERIENCIA: " + progresionJugador.PerfilJugador.Experiencia);
             diamantes.Enqueue(nuevoDiamante);                           // se agrega el diamante a la cola con diamantes
             nuevoDiamante.transform.SetParent(cofre.transform);         //se guarda el diamante en el cofre
             nuevoDiamante.SetActive(false);                             // se desactiva el diamante
-            GameManager.Instance.AdPuntaje(10);
         }
     }
 

@@ -20,7 +20,7 @@ public class JefeFinal : MonoBehaviour
     [SerializeField] GameObject prefabProyectil;
 
     //dado que debe apuntar al jugador, la grua debe tener acceso al transform del jugador
-    [SerializeField] Transform jugador;
+    [SerializeField] GameObject jugador;
 
     // se accede al renderer de la grua, para identificar cuando esta sea visible en la pantalla
     // ya que sólo efectuará disparos si la misma está en pantalla
@@ -119,7 +119,7 @@ public class JefeFinal : MonoBehaviour
 
         //para determinar la direccion de rotación busca al auto del jugador
         Vector3 dirGrua = transform.up.normalized;
-        Vector3 dirJugador = (jugador.position - transform.position).normalized;
+        Vector3 dirJugador = (jugador.transform.position - transform.position).normalized;
         float angulo = Mathf.Sign(Vector3.Cross(dirGrua, dirJugador).z);        // obtiene el signo del producto cruzado de las direcciones
         int direccionRotacion = (int)(angulo / Mathf.Abs(angulo));              // -1 o 1 según el sentido horario o antihorario
 
@@ -185,7 +185,7 @@ public class JefeFinal : MonoBehaviour
 
         //Calculos para apuntar hacia el jugador
         Vector3 dirGrua = transform.up.normalized;
-        Vector3 dirJugador = (jugador.position - transform.position).normalized;
+        Vector3 dirJugador = (jugador.transform.position - transform.position).normalized;
         float anguloMax = Vector2.Angle(dirGrua, dirJugador);               // calcula el ángulo entre la direccion de la grua y el jugador
         float angulo = Mathf.Sign(Vector3.Cross(dirGrua, dirJugador).z);    // obtiene el signo del producto cruzado de las direcciones
         int direccionRotacion = (int)(angulo / Mathf.Abs(angulo));          // -1 sentido horario, 1 sentido antihorario
@@ -242,14 +242,14 @@ public class JefeFinal : MonoBehaviour
 
     private void ActualizarEstado()
     {
-        //si la grua aparece en pantalla, tendrá en consideración la posibilidad de disparar, sino no
-        if (grua.isVisible)
+        //si la grua aparece en pantalla y el auto existe, tendrá en consideración la posibilidad de disparar, sino no
+        if (grua.isVisible && jugador.GetComponent<Collider2D>().enabled)
         {
             estadoActual = Random.Range(0, 3);
         }
         else
         {
-            estadoActual = Random.Range(0, 2);
+            estadoActual = 3;
         }
     }
 }
